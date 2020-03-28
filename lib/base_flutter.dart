@@ -6,12 +6,7 @@ export 'package:base_flutter/src/base/IBaseView.dart';
 export 'package:base_flutter/src/base/BaseModel.dart';
 export 'package:base_flutter/src/base/BaseWidget.dart';
 export 'package:base_flutter/src/base/BasePresenter.dart';
-
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'package:base_flutter/src/utils/share_preference_utils.dart';
 
 
 
