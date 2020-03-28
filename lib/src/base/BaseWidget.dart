@@ -12,13 +12,17 @@ enum PageStatus{
 }
 
 abstract class BaseWidget extends StatefulWidget{
+
+  final Map<String,dynamic> params;
+
+  const BaseWidget({Key key,this.params}): super(key: key);
+
   @override
   State<BaseWidget> createState();
 
-  const BaseWidget({ Key key }) : super(key: key);
 }
 
-abstract class BaseState<T extends BaseWidget> extends State<T> implements IBaseView{
+abstract class BaseState< T extends BaseWidget> extends State<T> implements IBaseView{
 
   List<BasePresenter> presenterList;
 
@@ -28,7 +32,6 @@ abstract class BaseState<T extends BaseWidget> extends State<T> implements IBase
 
   @override
   Widget build(BuildContext context);
-
 
   @override
   void initState() {
