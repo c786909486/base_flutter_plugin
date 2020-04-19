@@ -12,4 +12,8 @@ abstract class IBaseView {
   BuildContext getContext();
   //弹出toast
   void showToast(String msg);
+
+  void showLoadingDialog({String msg = "加载中..."});
+
+  void hideDialog();
 }

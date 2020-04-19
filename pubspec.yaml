@@ -22,6 +22,10 @@ dependencies:
   dio_cookie_manager: ^1.0.0
   # 本地路径管理
   path_provider: ^1.6.5
+  # aes加密库
+  cipher2: ^0.3.5
+
+  get_it: ^4.0.0
 
 dev_dependencies:
   flutter_test:

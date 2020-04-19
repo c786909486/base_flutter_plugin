@@ -1,7 +1,7 @@
+import 'package:base_flutter/base_flutter.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'http_utils.dart';
 
 typedef onFinish = Function(String path);
 typedef onError = Function(String error);
@@ -57,7 +57,7 @@ class AppDownloadState extends State<AppDownloadDialog>{
     // TODO: implement initState
     super.initState();
     try{
-      var data = HttpGo.instance.downloadFile(widget.url, widget.path, (progress,total){
+      var data = Dio().download(widget.url, widget.path, onReceiveProgress: (progress,total){
         setState(() {
           process = progress/total;
         });

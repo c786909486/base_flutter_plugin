@@ -4,7 +4,7 @@ import 'BaseModel.dart';
 import 'IBasePresenter.dart';
 import 'IBaseView.dart';
 
-class BasePresenter<V extends IBaseView,M extends BaseModel> implements IBasePresenter{
+abstract class BasePresenter<V extends IBaseView,M extends BaseModel> implements IBasePresenter{
 
    V _mProxyView;
    M _mModel;
@@ -14,6 +14,9 @@ class BasePresenter<V extends IBaseView,M extends BaseModel> implements IBasePre
    }
 
     M getModel() {
+     if(_mModel==null){
+       _mModel = createModel();
+     }
      return _mModel;
    }
 
@@ -21,12 +24,14 @@ class BasePresenter<V extends IBaseView,M extends BaseModel> implements IBasePre
    @override
   void attach(IBaseView view) {
     _mProxyView = view;
-    _mModel = new BaseModel() as M;
    }
+
+   M createModel();
 
   @override
   void detach() {
     _mProxyView = null;
   }
+
 
 }

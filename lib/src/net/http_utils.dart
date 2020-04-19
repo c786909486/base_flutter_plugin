@@ -9,6 +9,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 
 
+typedef onRequestSuccess<T> = Function(Response<T> response);
+typedef onRequestFail = Function(String error);
+
 class HttpGo {
   static final StringGET = "get";
 
@@ -26,6 +29,8 @@ class HttpGo {
 
   BaseOptions options;
 
+  Map<String,dynamic> heads = new Map();
+
   static HttpGogetInstance({Key key, String baseUrl}) {
     if (instance == null) {
       instance = HttpGo(baseUrl: baseUrl);
@@ -41,7 +46,6 @@ class HttpGo {
   HttpGo({baseUrl}) {
 //BaseOptions、Options、RequestOptions 都可以配置参数，优先级别依次递增，且可以根据优先级别覆盖参数
     base_url = baseUrl;
-    print("1231231323");
     options = new BaseOptions(
 //请求基地址,可以包含子路径
 
@@ -49,7 +53,7 @@ class HttpGo {
 
       //连接服务器超时时间，单位是毫秒.
 
-      connectTimeout: 5000,
+      connectTimeout: 50000,
 
       //响应流上前后两次接受到数据的间隔，单位为毫秒。
 
@@ -63,6 +67,8 @@ class HttpGo {
       //表示期望以那种格式(方式)接受响应数据。接受三种类型 `json`, `stream`, `plain`, `bytes`. 默认值是`json`,
 
       responseType: ResponseType.plain,
+
+
     );
 
     dio = Dio(options);
@@ -72,20 +78,24 @@ class HttpGo {
     setCookie();
     //添加拦截器
 
-    dio.interceptors
-        .add(InterceptorsWrapper(onRequest: (RequestOptions options) {
-      print("请求之前");
+//    dio.interceptors
+//        .add(InterceptorsWrapper(onRequest: (RequestOptions options) {
+//      print("请求之前");
+//
+//      return options;
+//    }, onResponse: (Response response) {
+//      print("响应之前");
+//
+//      return response;
+//    }, onError: (DioError e) {
+//      print("错误之前");
+//
+//      return e;
+//    }));
+  }
 
-      return options;
-    }, onResponse: (Response response) {
-      print("响应之前");
-
-      return response;
-    }, onError: (DioError e) {
-      print("错误之前");
-
-      return e;
-    }));
+  void addInterceptor(InterceptorsWrapper wrapper) {
+    dio.interceptors.add(wrapper);
   }
 
   ///设置cookie
@@ -115,7 +125,6 @@ class HttpGo {
     } catch (e) {
       print('get error---------$e');
 
-
       formatError(e);
     }
 
@@ -135,21 +144,16 @@ class HttpGo {
 
   * post请求*/
 
-  post(url, {data, options, cancelToken}) async {
-    Response response;
+ void post<T>(url, {data, options, cancelToken,onRequestSuccess<T> successListener,onRequestFail errorListener}) async {
     print(url.toString());
     try {
-      response = await dio.post(url,
+      Response<T> response = await dio.post<T>(url,
           data: data, options: options, cancelToken: cancelToken);
 
-//      print('post success---------${response.data}');
-      return response.data;
+      successListener(response);
     } catch (e) {
       print('post error---------${e.toString()}');
-
-//      formatError(e);
-
-      return formatError(e);
+       errorListener(formatError(e));
     }
   }
 
@@ -161,8 +165,8 @@ class HttpGo {
     Response response;
 
     try {
-      response = await dio.download(urlPath, savePath,
-          onReceiveProgress: onReceiveProgres);
+      response = await Dio()
+          .download(urlPath, savePath, onReceiveProgress: onReceiveProgres);
 
       print('downloadFile success---------${response.data}');
 
@@ -170,10 +174,8 @@ class HttpGo {
     } catch (e) {
       print('downloadFile error---------$e');
 
-
       return formatError(e);
     }
-
   }
 
 /*
@@ -196,10 +198,12 @@ class HttpGo {
         return "响应超时";
       } else if (e.type == DioErrorType.RESPONSE) {
 // When the server response, but with a incorrect status, such as 404, 503...
-      return checkError(e.message);
+        return checkError(e.message);
       } else if (e.type == DioErrorType.CANCEL) {
 // When the request is cancelled, dio will throw a error with this type.
         return "";
+      } else if(e.type == DioErrorType.DEFAULT){
+        return e.message;
       } else {
 //DEFAULT Default error type, Some other Error. In this case, you can read the DioError.error if it is not null.
         return "未知错误";
@@ -208,15 +212,15 @@ class HttpGo {
       return "未知错误";
     }
   }
-  
-  String checkError(String message){
-    if(message.contains("404")){
+
+  String checkError(String message) {
+    if (message.contains("404")) {
       return "【404】调用方法未找到";
-    }else if(message.contains("500")){
+    } else if (message.contains("500")) {
       return "【500】服务器发生异常";
-    }else if(message.contains("500")){
+    } else if (message.contains("500")) {
       return "【500】服务器发生异常";
-    }else{
+    } else {
       return message;
     }
   }
@@ -240,3 +244,9 @@ Map<String, dynamic> RequestParams(Map<String, Object> value) {
   return {"json": json.encode(value)};
 //  return "json=${json.encode(value)}";
 }
+
+Map<String, dynamic> RequestParamsWithKey(String key,Map<String, Object> value) {
+  return {key: json.encode(value)};
+//  return "json=${json.encode(value)}";
+}
+

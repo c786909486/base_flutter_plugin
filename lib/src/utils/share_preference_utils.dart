@@ -30,6 +30,11 @@ Future<double> getDouble(String key) async {
   return prefs.getDouble(key);
 }
 
+Future<bool> getBoolean(String key) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getBool(key);
+}
+
 Future remove(String key) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.remove(key);
