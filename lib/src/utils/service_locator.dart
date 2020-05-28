@@ -1,9 +1,6 @@
-//import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
 
-//final GetIt getIt = GetIt.instance;
 void setupLocator(){
-//  getIt.registerSingleton(NavigateService());
 NavigateService.getInstance();
 }
 

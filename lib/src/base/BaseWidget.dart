@@ -39,8 +39,6 @@ abstract class BaseState< T extends BaseWidget> extends State<T> implements IBas
   @override
   Widget build(BuildContext context);
 
-  BuildContext _dialogContext;
-
   @override
   void initState() {
     presenterList = new List();
@@ -129,7 +127,6 @@ abstract class BaseState< T extends BaseWidget> extends State<T> implements IBas
             barrierDismissible: false,
             builder:(context) {
               _isShowDialog = true;
-              _dialogContext = context;
               return WillPopScope(
                 onWillPop: () async {
                   // 拦截到返回键，证明dialog被手动关闭
@@ -149,7 +146,7 @@ abstract class BaseState< T extends BaseWidget> extends State<T> implements IBas
 
   Widget createContentWidget(){
     if(status == PageStatus.loading){
-
+      
     }
   }
 
