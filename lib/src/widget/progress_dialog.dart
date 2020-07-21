@@ -1,5 +1,5 @@
 
-import 'package:base_flutter/base_flutter.dart';
+import 'package:base_flutter/src/base_mvp/BaseWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

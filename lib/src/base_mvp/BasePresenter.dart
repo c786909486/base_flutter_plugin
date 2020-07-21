@@ -24,9 +24,16 @@ abstract class BasePresenter<V extends IBaseView,M extends BaseModel> implements
    @override
   void attach(IBaseView view) {
     _mProxyView = view;
+    List<Map<String,String>> maps = [];
+    List<String> item =  maps.map((item){
+      return "";
+    }).toList();
    }
 
    M createModel();
+
+
+
 
   @override
   void detach() {
