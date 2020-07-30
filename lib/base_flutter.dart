@@ -18,13 +18,7 @@ export "package:base_flutter/src/base_mvvm/base_stateful_widget_mvvm.dart";
 export "package:base_flutter/src/base_mvvm/base_view_model_mvvm.dart";
 export "package:base_flutter/src/base_mvvm/base_view_mvvm.dart";
 
-class BaseFlutter{
-  static BuildContext application;
 
-  static void init(BuildContext context){
-    application = context;
-  }
-}
 
 
 

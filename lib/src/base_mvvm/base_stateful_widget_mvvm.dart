@@ -63,6 +63,10 @@ abstract class BaseMvvmState<M extends BaseViewModel>
           finishRefresh();
         },finishLoadMoreEvent: (){
           finishLoadMore();
+        },finishEvent: (data){
+          Navigator.of(context).pop(data);
+        },showContent: (){
+          showContent();
         });
         return buildRootView(createLoadingView());
       },),
@@ -72,7 +76,7 @@ abstract class BaseMvvmState<M extends BaseViewModel>
   M createViewModel();
 
   ///创建根布局
-  Widget buildRootView(Widget contentWidget);
+  Widget buildRootView(Widget loadingContentWidget);
 
   Widget createLoadingView(){
     if(_loadingState == LoadingState.showLoading){
@@ -82,12 +86,12 @@ abstract class BaseMvvmState<M extends BaseViewModel>
     }else if(_loadingState == LoadingState.showError){
       return _loadingViewPlugin.getErrorWidget(pageError, () => onRetryClick());
     }else {
-      return buildContentView();
+      return buildLoadingContentView();
     }
   }
 
   ///创建内容布局
-  Widget buildContentView();
+  Widget buildLoadingContentView();
 
   ///点击重试事件
   void onRetryClick();
@@ -123,6 +127,7 @@ abstract class BaseMvvmState<M extends BaseViewModel>
     }
   }
 
+  ///显示错误布局
   @override
   void showErrorPage(String error) {
     if(mounted){
@@ -133,6 +138,7 @@ abstract class BaseMvvmState<M extends BaseViewModel>
     }
   }
 
+  ///显示加载页面
   @override
   void showLoading() {
     if(mounted){
@@ -183,6 +189,13 @@ abstract class BaseMvvmState<M extends BaseViewModel>
   }
 
   void onCloseDialog(){
+    viewModel.onDialogDismiss();
+  }
 
+  @override
+  void dispose() {
+    super.dispose();
+    ///销毁viewmodel
+    viewModel.onDispose();
   }
 }

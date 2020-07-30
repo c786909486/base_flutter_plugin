@@ -57,8 +57,8 @@ class LoadingViewPlugin {
       return _globeLoadingWidget;
     } else {
       return Center(
-        child: CupertinoActivityIndicator(
-          radius: 30,
+        child: CircularProgressIndicator(
+
         ),
       );
     }

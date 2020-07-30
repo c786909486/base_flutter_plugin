@@ -31,7 +31,7 @@ class HttpGo {
 
   Map<String,dynamic> heads = new Map();
 
-  static HttpGogetInstance({Key key, String baseUrl}) {
+  static HttpGogetInstance({String baseUrl}) {
     if (instance == null) {
       instance = HttpGo(baseUrl: baseUrl);
     }
@@ -68,7 +68,6 @@ class HttpGo {
 
       responseType: ResponseType.plain,
 
-
     );
 
     dio = Dio(options);
@@ -78,20 +77,6 @@ class HttpGo {
     setCookie();
     //添加拦截器
 
-//    dio.interceptors
-//        .add(InterceptorsWrapper(onRequest: (RequestOptions options) {
-//      print("请求之前");
-//
-//      return options;
-//    }, onResponse: (Response response) {
-//      print("响应之前");
-//
-//      return response;
-//    }, onError: (DioError e) {
-//      print("错误之前");
-//
-//      return e;
-//    }));
   }
 
   void addInterceptor(InterceptorsWrapper wrapper) {
@@ -103,7 +88,6 @@ class HttpGo {
     // 获取文档目录的路径
     Directory appDocDir = await getApplicationDocumentsDirectory();
     String dir = appDocDir.path + "/.cookies/";
-    print('cookie路径地址：' + dir);
     var cookieJar = PersistCookieJar(dir: dir);
     dio.interceptors.add(CookieManager(cookieJar));
   }
@@ -112,24 +96,6 @@ class HttpGo {
 
   * get请求*/
 
-  get(url, {data, options, cancelToken}) async {
-    Response response;
-
-    try {
-      response = await dio.get(url,
-          queryParameters: data, options: options, cancelToken: cancelToken);
-
-      print('get success---------${response.statusCode}');
-
-      print('get success---------${response.data}');
-    } catch (e) {
-      print('get error---------$e');
-
-      formatError(e);
-    }
-
-    return response.data;
-  }
 
   void setProxy(String host, int port) {
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
@@ -145,7 +111,6 @@ class HttpGo {
   * post请求*/
 
  void post<T>(url, {data, options, cancelToken,onRequestSuccess<T> successListener,onRequestFail errorListener}) async {
-    print(url.toString());
     try {
       Response<T> response = await dio.post<T>(url,
           data: data, options: options, cancelToken: cancelToken);
@@ -157,24 +122,32 @@ class HttpGo {
     }
   }
 
+
+  void get<T>(url, {data, options, cancelToken,onRequestSuccess<T> successListener,onRequestFail errorListener}) async {
+
+    try {
+      Response<T> response = await dio.get<T>(url,
+          queryParameters: data, options: options, cancelToken: cancelToken);
+      successListener(response);
+    } catch (e) {
+      print('get error---------$e');
+      errorListener(formatError(e));
+    }
+
+  }
+
 /*
 
   * 下载文件*/
 
-  downloadFile(urlPath, savePath, onReceiveProgres) async {
-    Response response;
+ void downloadFile(urlPath, savePath, onReceiveProgress,onRequestFail errorListener) async {
 
     try {
-      response = await Dio()
-          .download(urlPath, savePath, onReceiveProgress: onReceiveProgres);
+      Response response = await Dio()
+          .download(urlPath, savePath, onReceiveProgress: onReceiveProgress);
 
-      print('downloadFile success---------${response.data}');
-
-      return response.data;
     } catch (e) {
-      print('downloadFile error---------$e');
-
-      return formatError(e);
+      errorListener(formatError(e));
     }
   }
 
@@ -218,8 +191,8 @@ class HttpGo {
       return "【404】调用方法未找到";
     } else if (message.contains("500")) {
       return "【500】服务器发生异常";
-    } else if (message.contains("500")) {
-      return "【500】服务器发生异常";
+    } else if (message.contains("503")) {
+      return "【503】服务器发生异常";
     } else {
       return message;
     }

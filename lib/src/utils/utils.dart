@@ -1,29 +1,10 @@
-
-
-// import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
 
 
-class Utils {
+class BuildConfig{
+  static bool _inProduction = const bool.fromEnvironment("dart.vm.product");
 
-  
-
-  /// 调起二维码扫描页
-  // static Future<String> scan() async {
-  //   try {
-  //     return await BarcodeScanner.scan();
-  //   } catch (e) {
-  //     if (e is PlatformException){
-  //       if (e.code == BarcodeScanner.CameraAccessDenied) {
-  //         Toast.show("没有相机权限！");
-  //       }
-  //     }
-  //   }
-  //   return null;
-  // }
-
-
+  static bool get isDebug=> !_inProduction;
 }
 
 /// 默认dialog背景色为半透明黑色，这里修改源码改为透明

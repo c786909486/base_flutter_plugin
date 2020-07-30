@@ -1,10 +1,33 @@
 import 'package:flutter/cupertino.dart';
 
+import 'base_model_mvvm.dart';
+
 typedef EventPostMethodWithMsg(String msg);
 typedef EventPostMethod();
+typedef EventPostMethodWithData(dynamic data);
 
 
 abstract class BaseViewModel with ChangeNotifier {
+
+  List<BaseMvvmModel> _models = [];
+
+  final BuildContext _context;
+
+  bool mounted = false;
+
+  BaseViewModel(this._context){
+    mounted = true;
+  }
+
+  get context => _context;
+
+  void addModel(BaseMvvmModel model){
+    _models.add(model);
+  }
+
+  void addModels(List<BaseMvvmModel> models){
+    _models.addAll(models);
+  }
 
   ///toast事件
   EventPostMethodWithMsg _toastEvent;
@@ -24,6 +47,7 @@ abstract class BaseViewModel with ChangeNotifier {
   ///显示空页面
   EventPostMethod _showEmptyEvent;
 
+  ///显示正文内容
   EventPostMethod _showContent;
 
   ///结束刷新事件
@@ -31,6 +55,9 @@ abstract class BaseViewModel with ChangeNotifier {
 
   ///结束加载更多事件
   EventPostMethod _finishLoadMoreEvent;
+
+  ///关闭页面事件
+  EventPostMethodWithData _finishEvent;
 
   void addBaseEvent({
     EventPostMethodWithMsg toastEvent,
@@ -41,7 +68,9 @@ abstract class BaseViewModel with ChangeNotifier {
     EventPostMethod showEmptyEvent,
     EventPostMethod showContent,
     EventPostMethod finishRefreshEvent,
-    EventPostMethod finishLoadMoreEvent}) {
+    EventPostMethod finishLoadMoreEvent,
+    EventPostMethodWithData finishEvent
+  }) {
     this._toastEvent = toastEvent;
     this._showDialogEvent = showDialogEvent;
     this._hideDialogEvent = hideDialogEvent;
@@ -51,13 +80,14 @@ abstract class BaseViewModel with ChangeNotifier {
     this._finishRefreshEvent = finishRefreshEvent;
     this._finishLoadMoreEvent = finishLoadMoreEvent;
     this._showContent = showContent;
+    this._finishEvent = finishEvent;
   }
 
   void showToast(String msg) {
     _toastEvent(msg);
   }
 
-  void showDialog({String msg = "加载中。。。"}){
+  void showLoadingDialog({String msg = "加载中..."}){
     _showDialogEvent(msg);
   }
 
@@ -72,7 +102,6 @@ abstract class BaseViewModel with ChangeNotifier {
   void showErrorState(String error){
     _showErrorEvent(error);
   }
-
 
   void showEmptyState(){
     _showEmptyEvent();
@@ -89,4 +118,19 @@ abstract class BaseViewModel with ChangeNotifier {
   void showContent(){
     _showContent();
   }
+
+  void finish({dynamic data}){
+    _finishEvent(data);
+  }
+
+  ///销毁model
+  void onDispose(){
+    for(BaseMvvmModel model in _models){
+      model.onCleared();
+    }
+    mounted = false;
+  }
+
+  ///加载弹窗关闭时调用
+  void onDialogDismiss(){}
 }
