@@ -14,7 +14,13 @@ enum LoadingState{
   showLoading
 }
 
-abstract class BaseStatefulMvvmWidget extends StatefulWidget {}
+abstract class BaseStatefulMvvmWidget extends StatefulWidget {
+
+  final Map<String,dynamic> params;
+
+  const BaseStatefulMvvmWidget({this.params}):super();
+
+}
 
 abstract class BaseMvvmState<M extends BaseViewModel>
     extends State<BaseStatefulMvvmWidget> implements IBaseMvvmView {
@@ -198,4 +204,8 @@ abstract class BaseMvvmState<M extends BaseViewModel>
     ///销毁viewmodel
     viewModel.onDispose();
   }
+}
+class CommonViewModel extends BaseViewModel{
+  CommonViewModel(BuildContext context) : super(context);
+
 }

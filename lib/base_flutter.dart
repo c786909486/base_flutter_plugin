@@ -24,3 +24,4 @@ export "package:base_flutter/src/base_mvvm/base_view_mvvm.dart";
 
 
 
+

@@ -5,14 +5,9 @@ import 'package:flutter/material.dart';
 typedef OnRetryEvent();
 
 class LoadingViewPlugin {
+  static TextStyle _textStyle = TextStyle(fontSize: 18, color: Colors.black);
 
-  static TextStyle _textStyle = TextStyle(
-    fontSize: 18,color: Colors.black
-  ) ;
-
-  static TextStyle _retryStyle = TextStyle(
-    fontSize: 14,color: Colors.grey
-  );
+  static TextStyle _retryStyle = TextStyle(fontSize: 14, color: Colors.grey);
 
   BuildContext _context;
 
@@ -57,9 +52,7 @@ class LoadingViewPlugin {
       return _globeLoadingWidget;
     } else {
       return Center(
-        child: CircularProgressIndicator(
-
-        ),
+        child: CircularProgressIndicator(),
       );
     }
   }
@@ -100,10 +93,17 @@ class LoadingViewPlugin {
                   package: "base_flutter",
                   width: 80,
                 ),
-                Container(height: 20,),
-                Text(error,style: _textStyle),
-                Container(height: 10,),
-                Text("点击重试",style: _retryStyle,),
+                Container(
+                  height: 20,
+                ),
+                Text(error, style: _textStyle),
+                Container(
+                  height: 10,
+                ),
+                Text(
+                  "点击重试",
+                  style: _retryStyle,
+                ),
               ],
             ),
           ),
@@ -149,10 +149,20 @@ class LoadingViewPlugin {
                 width: 80,
                 color: Colors.grey,
               ),
-              Container(height: 20,),
-              Text("暂无数据",style: _textStyle,),
-              Container(height: 10,),
-              Text("点击重试",style: _retryStyle,),
+              Container(
+                height: 20,
+              ),
+              Text(
+                "暂无数据",
+                style: _textStyle,
+              ),
+              Container(
+                height: 10,
+              ),
+              Text(
+                "点击重试",
+                style: _retryStyle,
+              ),
             ],
           ),
         ),
