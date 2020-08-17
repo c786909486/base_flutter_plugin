@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:base_flutter/base_flutter.dart';
 import 'package:base_flutter/src/base_mvvm/base_view_model_mvvm.dart';
 import 'package:base_flutter/src/base_mvvm/base_view_mvvm.dart';
+import 'package:base_flutter/src/message/message_event.dart';
 import 'package:base_flutter/src/widget/loading_view_plugin.dart';
 import 'package:base_flutter/src/widget/progress_dialog.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_lifecycle_state/flutter_lifecycle_state.dart';
 import 'package:provider/provider.dart';
 
 
@@ -22,8 +26,8 @@ abstract class BaseStatefulMvvmWidget extends StatefulWidget {
 
 }
 
-abstract class BaseMvvmState<M extends BaseViewModel>
-    extends State<BaseStatefulMvvmWidget> implements IBaseMvvmView {
+abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmWidget>
+    extends StateWithLifecycle<W> implements IBaseMvvmView {
   M viewModel;
 
   LoadingViewPlugin _loadingViewPlugin;
@@ -34,11 +38,22 @@ abstract class BaseMvvmState<M extends BaseViewModel>
 
   String pageError = "";
 
+
+  StreamSubscription _subscription;
+
   @override
   void initState() {
-    _loadingViewPlugin = LoadingViewPlugin(context);
     super.initState();
 
+  }
+
+  @override
+  void onCreate() {
+    super.onCreate();
+    _loadingViewPlugin = LoadingViewPlugin(context);
+    _subscription = eventBus.on<MessageEvent>().listen((event) {
+      onMessageEvent(event);
+    });
   }
 
   void addLoadingWidget({Widget loadingWidget, Widget errorWidget, Widget emptyWidget}){
@@ -46,43 +61,61 @@ abstract class BaseMvvmState<M extends BaseViewModel>
   }
 
 
+  void onMessageEvent(MessageEvent event){
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
-
     return ChangeNotifierProvider<M>(
-      create: (_) => createViewModel(),
+      create: (_) {
+        viewModel = createViewModel();
+        Future.delayed(Duration(milliseconds: 10),(){
+          onViewModelCreated();
+        });
+        return viewModel ;
+      },
       child:Consumer<M>(builder: (_, provider, __) {
         viewModel = provider;
-        viewModel.addBaseEvent(toastEvent: (msg) {
-          showToast(msg);
-        },showDialogEvent: (msg){
-          showLoadingDialog(msg);
-        },hideDialogEvent: (){
-          hideDialog();
-        },showLoadingEvent: (){
-          showLoading();
-        },showErrorEvent: (msg){
-          showErrorPage(msg);
-        },showEmptyEvent: (){
-          showEmpty();
-        },finishRefreshEvent: (){
-          finishRefresh();
-        },finishLoadMoreEvent: (){
-          finishLoadMore();
-        },finishEvent: (data){
-          Navigator.of(context).pop(data);
-        },showContent: (){
-          showContent();
-        });
-        return buildRootView(createLoadingView());
+        _addBaseCallback();
+
+        return buildRootView(context,createLoadingView());
       },),
     );
   }
 
+  void _addBaseCallback(){
+    viewModel.addBaseEvent(toastEvent: (msg) {
+      showToast(msg);
+    },showDialogEvent: (msg){
+      showLoadingDialog(msg);
+    },hideDialogEvent: (){
+      hideDialog();
+    },showLoadingEvent: (){
+      showLoading();
+    },showErrorEvent: (msg){
+      showErrorPage(msg);
+    },showEmptyEvent: (){
+      showEmpty();
+    },finishRefreshEvent: (){
+      finishRefresh();
+    },finishLoadMoreEvent: (){
+      finishLoadMore();
+    },finishEvent: (data){
+      Navigator.of(context).pop(data);
+    },showContent: (){
+      showContent();
+    });
+  }
+
   M createViewModel();
 
+
+  void onViewModelCreated();
+
   ///创建根布局
-  Widget buildRootView(Widget loadingContentWidget);
+  Widget buildRootView(BuildContext context,Widget loadingContentWidget);
 
   Widget createLoadingView(){
     if(_loadingState == LoadingState.showLoading){
@@ -201,8 +234,14 @@ abstract class BaseMvvmState<M extends BaseViewModel>
   @override
   void dispose() {
     super.dispose();
+  }
+
+  @override
+  void onDestroy() {
+    super.onDestroy();
     ///销毁viewmodel
     viewModel.onDispose();
+    _subscription.cancel();
   }
 }
 class CommonViewModel extends BaseViewModel{

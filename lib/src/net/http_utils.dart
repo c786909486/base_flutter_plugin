@@ -5,12 +5,13 @@ import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 
 
 typedef onRequestSuccess<T> = Function(Response<T> response);
 typedef onRequestFail = Function(String error);
+typedef onGetResponseData<T> = Function(T response);
+
 
 class HttpGo {
   static final StringGET = "get";
@@ -121,6 +122,18 @@ class HttpGo {
        errorListener(formatError(e));
     }
   }
+
+//  void post2(url, {data, options, cancelToken,onRequestSuccess<Map<String,dynamic>> successListener,onRequestFail errorListener}) async {
+//    try {
+//      Response<Map<String,dynamic>> response = await dio.post<Map<String,dynamic>>(url,
+//          data: data, options: options, cancelToken: cancelToken);
+//
+//      successListener(response);
+//    } catch (e) {
+//      print('post error---------${e.toString()}');
+//      errorListener(formatError(e));
+//    }
+//  }
 
 
   void get<T>(url, {data, options, cancelToken,onRequestSuccess<T> successListener,onRequestFail errorListener}) async {

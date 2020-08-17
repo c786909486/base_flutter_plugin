@@ -17,6 +17,11 @@ abstract class BaseViewModel with ChangeNotifier {
 
   BaseViewModel(this._context){
     mounted = true;
+    init();
+  }
+
+  void init(){
+
   }
 
   get context => _context;
