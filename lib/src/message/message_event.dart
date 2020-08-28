@@ -2,12 +2,12 @@ import 'package:event_bus/event_bus.dart';
 
 EventBus eventBus = new EventBus();
 
-class MessageEvent{
+class SendMessageEvent{
    int msgCode;
 
    dynamic obj;
 
-   MessageEvent(this.msgCode);
+   SendMessageEvent(this.msgCode);
 
    void postMessage(){
      eventBus.fire(this);

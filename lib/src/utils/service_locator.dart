@@ -6,13 +6,13 @@ NavigateService.getInstance();
 
 class NavigateService {
 
-  static NavigateService instance;
+  static NavigateService _instance;
 
   static NavigateService getInstance(){
-    if(instance ==null){
-      instance = NavigateService();
+    if(_instance ==null){
+      _instance = NavigateService();
     }
-    return instance;
+    return _instance;
   }
 
   final GlobalKey<NavigatorState> key = GlobalKey();

@@ -22,7 +22,7 @@ abstract class BaseStatefulMvvmWidget extends StatefulWidget {
 
   final Map<String,dynamic> params;
 
-  const BaseStatefulMvvmWidget({this.params}):super();
+  const BaseStatefulMvvmWidget({Key key,this.params}):super(key:key);
 
 }
 
@@ -51,8 +51,8 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   void onCreate() {
     super.onCreate();
     _loadingViewPlugin = LoadingViewPlugin(context);
-    _subscription = eventBus.on<MessageEvent>().listen((event) {
-      onMessageEvent(event);
+    _subscription = eventBus.on<SendMessageEvent>().listen((event) {
+      receiveMessage(event);
     });
   }
 
@@ -61,17 +61,25 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   }
 
 
-  void onMessageEvent(MessageEvent event){
-
+  void receiveMessage(SendMessageEvent event){
+    if(viewModel!=null){
+      viewModel.receiveMessage(event);
+    }
   }
+
+
 
 
   @override
   Widget build(BuildContext context) {
+    return initProvider() ;
+  }
+
+  Widget initProvider(){
     return ChangeNotifierProvider<M>(
       create: (_) {
         viewModel = createViewModel();
-        Future.delayed(Duration(milliseconds: 10),(){
+        Future.delayed(Duration(milliseconds: 1),(){
           onViewModelCreated();
         });
         return viewModel ;
@@ -106,6 +114,8 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
       Navigator.of(context).pop(data);
     },showContent: (){
       showContent();
+    },sendMessageEvent: (event){
+      eventBus.fire(event);
     });
   }
 
@@ -228,6 +238,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   }
 
   void onCloseDialog(){
+    _isShowDialog = false;
     viewModel.onDialogDismiss();
   }
 
@@ -242,6 +253,10 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
     ///销毁viewmodel
     viewModel.onDispose();
     _subscription.cancel();
+  }
+
+  void finish({dynamic result}){
+    Navigator.pop(context,result);
   }
 }
 class CommonViewModel extends BaseViewModel{

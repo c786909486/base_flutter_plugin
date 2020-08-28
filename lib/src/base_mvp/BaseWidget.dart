@@ -115,7 +115,7 @@ abstract class BaseState< T extends BaseWidget> extends State<T> implements IBas
   void hideDialog() {
     if(mounted&&_isShowDialog){
       _isShowDialog = false;
-      NavigateService.instance.pop();
+      NavigateService.getInstance().pop();
     }
   }
 

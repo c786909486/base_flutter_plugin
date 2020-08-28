@@ -19,21 +19,31 @@ extension StringExt on String{
     }
     return double.tryParse(this) != null;
   }
+
+  ///判断是否为null或空值
+  bool isNullOrEmpty(){
+    if(this==null||this.isEmpty){
+      return true;
+    }else{
+      return false;
+    }
+  }
 }
 
 ///double适配屏幕尺寸
 extension DoubleExt on double{
-  double fitWidth() {
-    return ScreenUtil.getInstance().setWidth(this);
+  num fitWidth() {
+    return ScreenUtil.getInstance().setWidth(this.toDouble());
   }
 
-  double fitHeight() {
-    return ScreenUtil.getInstance().setHeight(this);
+  num fitHeight() {
+    return ScreenUtil.getInstance().setHeight(this.toDouble());
   }
 
-  double fitSp(){
-    return ScreenUtil.getInstance().setSp(this);
+  num fitSp(){
+    return ScreenUtil.getInstance().setSp(this.toDouble());
   }
+
 
 
 }
@@ -125,4 +135,25 @@ extension WidgetExt on Widget{
         onFocusChange:onFocusChange,
         autofocus:autofocus);
   }
+
+
+  ///转圆角
+  Widget toRound({BorderRadius borderRadius = BorderRadius.zero,CustomClipper<RRect> clipper, Clip clipBehavior = Clip.antiAlias}){
+    return ClipRRect(
+      borderRadius: borderRadius,clipBehavior: clipBehavior,
+      clipper: clipper,
+      child: this,
+    );
+  }
+
+  Widget setLocation({double left,double right,double top,double bottom}){
+    return Positioned(
+      left: left,
+      right: right,
+      top: top,
+      bottom: bottom,
+      child: this,
+    );
+  }
+
 }

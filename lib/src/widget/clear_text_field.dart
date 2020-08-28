@@ -39,6 +39,7 @@ class ITextField extends StatefulWidget {
   final bool needDelete;
   final EdgeInsets contentPadding;
   final String labelText;
+  final TextAlign textAlign;
   String inputText;
 
   ITextField(
@@ -48,7 +49,7 @@ class ITextField extends StatefulWidget {
       this.maxLength,
       this.hintText,
       this.hintStyle,
-      this.fieldCallBack,
+      @required this.fieldCallBack,
       this.deleteIcon,
       this.inputBorder,
       this.textStyle,
@@ -61,6 +62,7 @@ class ITextField extends StatefulWidget {
       this.contentPadding,
       this.inputText = "",
         this.labelText,
+        this.textAlign = TextAlign.start,
       this.needDelete = true})
       : assert(maxLines == null || maxLines > 0),
         assert(maxLength == null || maxLength > 0),
@@ -135,6 +137,7 @@ class _ITextFieldState extends State<ITextField> {
       onSubmitted: widget.onSubmitted,
       controller: _controller,
       textInputAction: widget.textInputAction,
+      textAlign: widget.textAlign,
       decoration: InputDecoration(
         labelText: widget.labelText,
         hintStyle: widget.hintStyle,
@@ -190,6 +193,7 @@ class _ITextFieldState extends State<ITextField> {
       autofocus: widget.autofocus,
       focusNode: widget.focusNode,
       onSubmitted: widget.onSubmitted,
+      textAlign: widget.textAlign,
       controller: _controller,
       textInputAction: widget.textInputAction,
       decoration: InputDecoration(

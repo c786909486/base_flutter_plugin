@@ -8,23 +8,23 @@ abstract class BaseRouteUtils {
   Widget createRoute(String name, {dynamic params});
 
   intentTo(String name, {params, RouteSettings settings, bool maintainState = true, bool fullscreenDialog = false}) {
-    return NavigateService.instance.navigator.push( MaterialPageRoute(builder: (context){
+    return NavigateService.getInstance().navigator.push( MaterialPageRoute(builder: (context){
       return createRoute(name,params: params);
     },settings: settings,maintainState: maintainState,fullscreenDialog: fullscreenDialog));
   }
 
   pushReplacement(String name, {params, RouteSettings settings, result}) {
-    return NavigateService.instance.navigator.pushReplacement(MaterialPageRoute(builder: (context){
+    return NavigateService.getInstance().navigator.pushReplacement(MaterialPageRoute(builder: (context){
       return createRoute(name,params: params);
     }),result: result);
   }
 
   pop({result}) {
-    return NavigateService.instance.navigator.pop(result);
+    return NavigateService.getInstance().navigator.pop(result);
   }
 
   pushAndRemoveUntil(String name,{params}){
-    return NavigateService.instance.navigator.pushAndRemoveUntil(new MaterialPageRoute(
+    return NavigateService.getInstance().navigator.pushAndRemoveUntil(new MaterialPageRoute(
       builder: (BuildContext context) {
         return createRoute(name,params: params);
       },

@@ -1,3 +1,4 @@
+import 'package:base_flutter/src/message/message_event.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'base_model_mvvm.dart';
@@ -64,6 +65,8 @@ abstract class BaseViewModel with ChangeNotifier {
   ///关闭页面事件
   EventPostMethodWithData _finishEvent;
 
+  EventPostMethodWithData _sendMessageEvent;
+
   void addBaseEvent({
     EventPostMethodWithMsg toastEvent,
     EventPostMethodWithMsg showDialogEvent,
@@ -74,7 +77,8 @@ abstract class BaseViewModel with ChangeNotifier {
     EventPostMethod showContent,
     EventPostMethod finishRefreshEvent,
     EventPostMethod finishLoadMoreEvent,
-    EventPostMethodWithData finishEvent
+    EventPostMethodWithData finishEvent,
+    EventPostMethodWithData sendMessageEvent,
   }) {
     this._toastEvent = toastEvent;
     this._showDialogEvent = showDialogEvent;
@@ -86,6 +90,7 @@ abstract class BaseViewModel with ChangeNotifier {
     this._finishLoadMoreEvent = finishLoadMoreEvent;
     this._showContent = showContent;
     this._finishEvent = finishEvent;
+    this._sendMessageEvent = sendMessageEvent;
   }
 
   void showToast(String msg) {
@@ -128,6 +133,11 @@ abstract class BaseViewModel with ChangeNotifier {
     _finishEvent(data);
   }
 
+  void sendMessage(SendMessageEvent event){
+    _sendMessageEvent(event);
+  }
+
+
   ///销毁model
   void onDispose(){
     for(BaseMvvmModel model in _models){
@@ -138,4 +148,8 @@ abstract class BaseViewModel with ChangeNotifier {
 
   ///加载弹窗关闭时调用
   void onDialogDismiss(){}
+
+  void receiveMessage(SendMessageEvent event){
+
+  }
 }
