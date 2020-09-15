@@ -19,13 +19,12 @@ export "package:base_flutter/src/base_mvvm/base_view_model_mvvm.dart";
 export "package:base_flutter/src/base_mvvm/base_view_mvvm.dart";
 export 'package:base_flutter/src/utils/screen_healper.dart';
 export 'package:base_flutter/src/utils/ext_utils.dart';
-export 'package:base_flutter/src/permission/permission_request.dart';
-export 'package:permission_handler/permission_handler.dart';
 export 'package:base_flutter/src/widget/clear_text_field.dart';
 export 'package:base_flutter/src/message/message_event.dart';
 export 'package:base_flutter/src/widget/picker/data_picker_view.dart';
 export 'package:base_flutter/src/widget/picker/choose_item_model.dart';
 export 'package:base_flutter/src/widget/picker/choose_item_page.dart';
+export 'package:base_flutter/src/widget/expand_able_text.dart';
 
 export 'package:pull_to_refresh/pull_to_refresh.dart';
 export 'package:pull_to_refresh/src/smart_refresher.dart';

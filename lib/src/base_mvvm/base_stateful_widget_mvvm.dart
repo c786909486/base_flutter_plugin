@@ -95,27 +95,49 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
 
   void _addBaseCallback(){
     viewModel.addBaseEvent(toastEvent: (msg) {
-      showToast(msg);
+      if(mounted){
+        showToast(msg);
+      }
     },showDialogEvent: (msg){
-      showLoadingDialog(msg);
+      if(mounted){
+        showLoadingDialog(msg);
+      }
     },hideDialogEvent: (){
-      hideDialog();
+      if(mounted){
+        hideDialog();
+      }
     },showLoadingEvent: (){
-      showLoading();
+      if(mounted){
+        showLoading();
+      }
     },showErrorEvent: (msg){
-      showErrorPage(msg);
+      if(mounted){
+        showErrorPage(msg);
+      }
     },showEmptyEvent: (){
-      showEmpty();
+     if(mounted){
+       showEmpty();
+     }
     },finishRefreshEvent: (){
-      finishRefresh();
+      if(mounted){
+        finishRefresh();
+      }
     },finishLoadMoreEvent: (){
-      finishLoadMore();
+      if(mounted){
+        finishLoadMore();
+      }
     },finishEvent: (data){
-      Navigator.of(context).pop(data);
+     if(mounted){
+       Navigator.of(context).pop(data);
+     }
     },showContent: (){
-      showContent();
+     if(mounted){
+       showContent();
+     }
     },sendMessageEvent: (event){
-      eventBus.fire(event);
+      if(mounted){
+        eventBus.fire(event);
+      }
     });
   }
 

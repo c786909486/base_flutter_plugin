@@ -7,11 +7,9 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:path_provider/path_provider.dart';
 
-
 typedef onRequestSuccess<T> = Function(Response<T> response);
 typedef onRequestFail = Function(String error);
 typedef onGetResponseData<T> = Function(T response);
-
 
 class HttpGo {
   static final StringGET = "get";
@@ -30,7 +28,7 @@ class HttpGo {
 
   BaseOptions options;
 
-  Map<String,dynamic> heads = new Map();
+  Map<String, dynamic> heads = new Map();
 
   static HttpGogetInstance({String baseUrl}) {
     if (instance == null) {
@@ -63,21 +61,19 @@ class HttpGo {
       //请求的Content-Type，默认值是[ContentType.json]. 也可以用ContentType.parse("application/x-www-form-urlencoded")
 
 //      contentType: ContentType.parse("application/x-www-form-urlencoded"),
+//       contentType: Headers.formUrlEncodedContentType,
       contentType: Headers.formUrlEncodedContentType,
 //      contentType: ContentType.json,
       //表示期望以那种格式(方式)接受响应数据。接受三种类型 `json`, `stream`, `plain`, `bytes`. 默认值是`json`,
 
       responseType: ResponseType.plain,
-
     );
 
     dio = Dio(options);
 
-
 //    dio.interceptors.add(CookieManager(CookieJar()));
     setCookie();
     //添加拦截器
-
   }
 
   void addInterceptor(InterceptorsWrapper wrapper) {
@@ -97,13 +93,19 @@ class HttpGo {
 
   * get请求*/
 
-
-  void setProxy(String host, int port) {
+  void setProxy(String host, int port, bool ignoreCer) {
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         (client) {
       client.findProxy = (url) {
         return "PROXY ${host}:${port.toString()}";
       };
+
+      if (ignoreCer) {
+        client.badCertificateCallback =
+            (X509Certificate cert, String host, int port) {
+          return true;
+        };
+      }
     };
   }
 
@@ -111,7 +113,12 @@ class HttpGo {
 
   * post请求*/
 
- void post<T>(url, {data, options, cancelToken,onRequestSuccess<T> successListener,onRequestFail errorListener}) async {
+  void post<T>(url,
+      {data,
+      options,
+      cancelToken,
+      onRequestSuccess<T> successListener,
+      onRequestFail errorListener}) async {
     try {
       Response<T> response = await dio.post<T>(url,
           data: data, options: options, cancelToken: cancelToken);
@@ -119,7 +126,7 @@ class HttpGo {
       successListener(response);
     } catch (e) {
       print('post error---------${e.toString()}');
-       errorListener(formatError(e));
+      errorListener(formatError(e));
     }
   }
 
@@ -135,9 +142,12 @@ class HttpGo {
 //    }
 //  }
 
-
-  void get<T>(url, {data, options, cancelToken,onRequestSuccess<T> successListener,onRequestFail errorListener}) async {
-
+  void get<T>(url,
+      {data,
+      options,
+      cancelToken,
+      onRequestSuccess<T> successListener,
+      onRequestFail errorListener}) async {
     try {
       Response<T> response = await dio.get<T>(url,
           queryParameters: data, options: options, cancelToken: cancelToken);
@@ -146,19 +156,17 @@ class HttpGo {
       print('get error---------$e');
       errorListener(formatError(e));
     }
-
   }
 
 /*
 
   * 下载文件*/
 
- void downloadFile(urlPath, savePath, onReceiveProgress,onRequestFail errorListener) async {
-
+  void downloadFile(
+      urlPath, savePath, onReceiveProgress, onRequestFail errorListener) async {
     try {
       Response response = await Dio()
           .download(urlPath, savePath, onReceiveProgress: onReceiveProgress);
-
     } catch (e) {
       errorListener(formatError(e));
     }
@@ -188,7 +196,7 @@ class HttpGo {
       } else if (e.type == DioErrorType.CANCEL) {
 // When the request is cancelled, dio will throw a error with this type.
         return "";
-      } else if(e.type == DioErrorType.DEFAULT){
+      } else if (e.type == DioErrorType.DEFAULT) {
         return e.message;
       } else {
 //DEFAULT Default error type, Some other Error. In this case, you can read the DioError.error if it is not null.
@@ -231,8 +239,8 @@ Map<String, dynamic> RequestParams(Map<String, Object> value) {
 //  return "json=${json.encode(value)}";
 }
 
-Map<String, dynamic> RequestParamsWithKey(String key,Map<String, Object> value) {
+Map<String, dynamic> RequestParamsWithKey(
+    String key, Map<String, Object> value) {
   return {key: json.encode(value)};
 //  return "json=${json.encode(value)}";
 }
-

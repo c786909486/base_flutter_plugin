@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:base_flutter/base_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,6 +28,12 @@ extension StringExt on String{
     }else{
       return false;
     }
+  }
+}
+
+extension MapExt on Map{
+  Map<String,dynamic> toJsonMap(){
+    return RequestParams(this);
   }
 }
 
@@ -157,3 +164,4 @@ extension WidgetExt on Widget{
   }
 
 }
+
