@@ -36,9 +36,8 @@ class DataPickerView {
 
 
 
-  DataPickerView({Key key,
-    this.context,
-    this.first,
+  DataPickerView(this.context,
+      this.first,{Key key,
     List<List> second,
     List<List<List>> third,
     this.onSubmitListener,
