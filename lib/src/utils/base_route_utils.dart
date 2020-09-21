@@ -13,6 +13,12 @@ abstract class BaseRouteUtils {
     },settings: settings,maintainState: maintainState,fullscreenDialog: fullscreenDialog));
   }
 
+  push(Widget page,{params, RouteSettings settings, bool maintainState = true, bool fullscreenDialog = false}){
+    return NavigateService.getInstance().navigator.push( MaterialPageRoute(builder: (context){
+      return page;
+    },settings: settings,maintainState: maintainState,fullscreenDialog: fullscreenDialog));
+  }
+
   pushReplacement(String name, {params, RouteSettings settings, result}) {
     return NavigateService.getInstance().navigator.pushReplacement(MaterialPageRoute(builder: (context){
       return createRoute(name,params: params);
