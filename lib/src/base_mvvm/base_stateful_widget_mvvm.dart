@@ -62,7 +62,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
 
 
   void receiveMessage(SendMessageEvent event){
-    if(viewModel!=null){
+    if(mounted&&viewModel!=null){
       viewModel.receiveMessage(event);
     }
   }

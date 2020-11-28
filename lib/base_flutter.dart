@@ -48,10 +48,12 @@ export 'package:base_flutter/src/widget/timePicker/datetime_util.dart';
 export 'package:base_flutter/src/widget/timePicker/date_model.dart';
 export 'package:base_flutter/src/widget/timePicker/flutter_datetime_picker.dart';
 export 'package:base_flutter/src/widget/timePicker/i18n_model.dart';
+export 'package:base_flutter/src/widget/progress_dialog.dart';
 
 export 'package:path_provider/path_provider.dart';
 export 'package:path_provider_linux/path_provider_linux.dart';
 export 'package:path_provider_macos/path_provider_macos.dart';
+export 'package:provider/provider.dart';
 
 
 

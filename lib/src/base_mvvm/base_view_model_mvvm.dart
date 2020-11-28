@@ -94,11 +94,15 @@ abstract class BaseViewModel with ChangeNotifier {
   }
 
   void showToast(String msg) {
-    _toastEvent(msg);
+    if(mounted){
+      _toastEvent(msg);
+    }
   }
 
   void showLoadingDialog({String msg = "加载中..."}){
-    _showDialogEvent(msg);
+    if(mounted){
+      _showDialogEvent(msg);
+    }
   }
 
   void hideDialog(){
@@ -140,10 +144,11 @@ abstract class BaseViewModel with ChangeNotifier {
 
   ///销毁model
   void onDispose(){
+    mounted = false;
     for(BaseMvvmModel model in _models){
       model.onCleared();
     }
-    mounted = false;
+    
   }
 
   ///加载弹窗关闭时调用

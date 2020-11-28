@@ -22,8 +22,8 @@ dependencies:
   dio_cookie_manager: ^1.0.0
   # 本地路径管理
   path_provider: ^1.6.5
-  # aes加密库
-  cipher2: ^0.3.5
+#  # aes加密库
+#  cipher2: ^0.3.5
   #状态管理
   provider: ^4.0.1
   #权限获取
