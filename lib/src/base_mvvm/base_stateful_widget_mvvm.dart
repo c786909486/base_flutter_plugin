@@ -41,6 +41,8 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
 
   StreamSubscription _subscription;
 
+  LoadingState get currentState => _loadingState;
+
   @override
   void initState() {
     super.initState();
