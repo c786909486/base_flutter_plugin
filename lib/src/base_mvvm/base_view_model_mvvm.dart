@@ -151,6 +151,18 @@ abstract class BaseViewModel with ChangeNotifier {
     
   }
 
+  void onCreated(){
+
+  }
+
+  void onResume(){
+
+  }
+
+  void onPause(){
+
+  }
+
   ///加载弹窗关闭时调用
   void onDialogDismiss(){}
 
