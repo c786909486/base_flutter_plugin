@@ -117,10 +117,16 @@ extension WidgetExt on Widget{
     FocusNode focusNode,
     bool canRequestFocus = true,
     ValueChanged<bool> onFocusChange,
-    bool autofocus = false,}) {
+    bool autofocus = true,}) {
+    FocusNode defaultNode = new FocusNode();
     return InkWell(
         child: this,
-        onTap: onTap,
+        onTap: (){
+          onTap();
+          if(focusNode==null){
+            defaultNode.requestFocus();
+          }
+        },
         onDoubleTap:onDoubleTap,
         onLongPress:onLongPress,
         onTapDown:onTapDown,
@@ -137,7 +143,7 @@ extension WidgetExt on Widget{
         customBorder:customBorder,
         enableFeedback:enableFeedback,
         excludeFromSemantics:excludeFromSemantics,
-        focusNode:focusNode,
+        focusNode:focusNode??defaultNode,
         canRequestFocus:canRequestFocus,
         onFocusChange:onFocusChange,
         autofocus:autofocus);
