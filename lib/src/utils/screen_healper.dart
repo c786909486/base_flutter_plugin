@@ -9,19 +9,19 @@ class ScreenHelper{
     _needFitScreen = open;
   }
 
-  static void initHelper(BuildContext context,double width,double height,{bool allowFontScaling = true}){
+  static void initHelper(BoxConstraints constraints,double width,double height,{bool allowFontScaling = true}){
     if(_needFitScreen){
-      ScreenUtil.instance = ScreenUtil(width: width,height: height,allowFontScaling: allowFontScaling)..init(context);
+      ScreenUtil.init(constraints,designSize: Size(width, height),allowFontScaling: allowFontScaling);
     }
   }
 
   static double screenWidth(){
-    return ScreenUtil.getInstance().width;
+    return ScreenUtil().screenWidth;
   }
 
 
   static double screenHeight(){
-    return ScreenUtil.getInstance().height;
+    return ScreenUtil().screenHeight;
   }
 
   static ScreenUtil getScreenUtils(){

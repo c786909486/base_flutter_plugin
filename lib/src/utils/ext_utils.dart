@@ -39,16 +39,16 @@ extension MapExt on Map{
 
 ///double适配屏幕尺寸
 extension DoubleExt on double{
-  num fitWidth() {
-    return ScreenUtil.getInstance().setWidth(this.toDouble());
+  double fitWidth() {
+    return ScreenUtil().setWidth(this.toDouble());
   }
 
-  num fitHeight() {
-    return ScreenUtil.getInstance().setHeight(this.toDouble());
+  double fitHeight() {
+    return ScreenUtil().setHeight(this.toDouble());
   }
 
-  num fitSp(){
-    return ScreenUtil.getInstance().setSp(this.toDouble());
+  double fitSp(){
+    return ScreenUtil().setSp(this.toDouble());
   }
 
 

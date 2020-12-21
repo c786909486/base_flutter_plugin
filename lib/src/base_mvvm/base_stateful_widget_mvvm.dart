@@ -34,14 +34,13 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
 
   bool _isShowDialog = false;
 
-  LoadingState _loadingState = LoadingState.showContent;
 
   String pageError = "";
 
 
   StreamSubscription _subscription;
 
-  LoadingState get currentState => _loadingState;
+  LoadingState get currentState => viewModel.loadingState;
 
   @override
   void initState() {
@@ -154,11 +153,11 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   Widget buildRootView(BuildContext context,Widget loadingContentWidget);
 
   Widget createLoadingView(){
-    if(_loadingState == LoadingState.showLoading){
+    if(viewModel.loadingState == LoadingState.showLoading){
       return _loadingViewPlugin.getLoadingWidget();
-    }else if(_loadingState == LoadingState.showEmpty){
+    }else if(viewModel.loadingState == LoadingState.showEmpty){
       return _loadingViewPlugin.getEmptyWidget(() => onRetryClick());
-    }else if(_loadingState == LoadingState.showError){
+    }else if(viewModel.loadingState == LoadingState.showError){
       return _loadingViewPlugin.getErrorWidget(pageError, () => onRetryClick());
     }else {
       return buildLoadingContentView();
@@ -197,7 +196,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   void showEmpty() {
     if(mounted){
       setState(() {
-        _loadingState = LoadingState.showEmpty;
+        viewModel.loadingState = LoadingState.showEmpty;
       });
     }
   }
@@ -208,7 +207,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
     if(mounted){
       setState(() {
         pageError = error;
-        _loadingState = LoadingState.showError;
+        viewModel.loadingState = LoadingState.showError;
       });
     }
   }
@@ -218,7 +217,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   void showLoading() {
     if(mounted){
       setState(() {
-        _loadingState = LoadingState.showLoading;
+        viewModel.loadingState = LoadingState.showLoading;
       });
     }
   }
@@ -227,7 +226,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   void showContent(){
     if(mounted){
       setState(() {
-        _loadingState = LoadingState.showContent;
+        viewModel.loadingState = LoadingState.showContent;
       });
     }
   }
@@ -238,7 +237,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
       try{
         showTransparentDialog(
             context: context,
-            barrierDismissible: false,
+            barrierDismissible: true,
             builder:(context) {
               _isShowDialog = true;
               return WillPopScope(
@@ -247,7 +246,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
                   onCloseDialog();
                   return Future.value(true);
                 },
-                child:  ProgressDialog(hintText: msg),
+                child: ProgressDialog(hintText: msg),
               );
             }
         );

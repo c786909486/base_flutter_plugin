@@ -1,6 +1,7 @@
 import 'package:base_flutter/src/message/message_event.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../base_flutter.dart';
 import 'base_model_mvvm.dart';
 
 typedef EventPostMethodWithMsg(String msg);
@@ -26,6 +27,8 @@ abstract class BaseViewModel with ChangeNotifier {
   }
 
   get context => _context;
+
+
 
   void addModel(BaseMvvmModel model){
     _models.add(model);
@@ -66,6 +69,9 @@ abstract class BaseViewModel with ChangeNotifier {
   EventPostMethodWithData _finishEvent;
 
   EventPostMethodWithData _sendMessageEvent;
+
+  LoadingState loadingState = LoadingState.showContent;
+
 
   void addBaseEvent({
     EventPostMethodWithMsg toastEvent,
@@ -169,4 +175,6 @@ abstract class BaseViewModel with ChangeNotifier {
   void receiveMessage(SendMessageEvent event){
 
   }
+
+
 }

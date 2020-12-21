@@ -189,7 +189,7 @@ class _MyPickerWidget extends State<MyPicker>{
                   style: widget.cancelStyle == null
                       ? TextStyle(
                       color: Colors.grey,
-                      fontSize: ScreenUtil.getInstance().setSp(32))
+                      fontSize: ScreenUtil().setSp(32))
                       : widget.cancelStyle,
                 ),
                 onPressed: () {
@@ -214,7 +214,7 @@ class _MyPickerWidget extends State<MyPicker>{
                       color: Theme
                           .of(context)
                           .primaryColor,
-                      fontSize: ScreenUtil.getInstance().setSp(32))
+                      fontSize: ScreenUtil().setSp(32))
                       : widget.submitStyle,
                 ),
                 onPressed: () {
@@ -242,7 +242,7 @@ class _MyPickerWidget extends State<MyPicker>{
                           style: widget.centerStyle == null
                               ? TextStyle(
                               fontSize:
-                              ScreenUtil.getInstance().setSp(34))
+                              ScreenUtil().setSp(34))
                               : widget.centerStyle,
                         ),
                       );
@@ -274,7 +274,7 @@ class _MyPickerWidget extends State<MyPicker>{
                           item.name,
                           style: widget.centerStyle == null
                               ? TextStyle(
-                              fontSize: ScreenUtil.getInstance()
+                              fontSize: ScreenUtil()
                                   .setSp(34))
                               : widget.centerStyle,
                         ),
@@ -306,7 +306,7 @@ class _MyPickerWidget extends State<MyPicker>{
                           item.name,
                           style: widget.centerStyle == null
                               ? TextStyle(
-                              fontSize: ScreenUtil.getInstance()
+                              fontSize: ScreenUtil()
                                   .setSp(34))
                               : widget.centerStyle,
                         ),
@@ -340,4 +340,21 @@ class IPickerData {
 
   @override
   int get hashCode => name.hashCode;
+}
+
+class PickerDataWithIdModel implements IPickerData{
+  String pickName;
+  String pickId;
+
+
+  PickerDataWithIdModel({this.pickName, this.pickId});
+
+  @override
+  String get name=> pickName ;
+
+  @override
+  set name(String _name) {
+
+  }
+
 }

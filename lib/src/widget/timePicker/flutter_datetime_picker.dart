@@ -188,7 +188,7 @@ class _DatePickerRoute<T> extends PopupRoute<T> {
         pickerModel: pickerModel,
       ),
     );
-    ThemeData inheritTheme = Theme.of(context, shadowThemeOnly: true);
+    ThemeData inheritTheme = Theme.of(context);
     if (inheritTheme != null) {
       bottomSheet = new Theme(data: inheritTheme, child: bottomSheet);
     }

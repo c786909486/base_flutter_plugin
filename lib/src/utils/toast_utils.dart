@@ -6,7 +6,7 @@ class ToastUtils{
     Fluttertoast.showToast(
         msg: msg,
         toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIos: 1,
+        timeInSecForIosWeb: 1,
         fontSize: 16.0
     );
   }
