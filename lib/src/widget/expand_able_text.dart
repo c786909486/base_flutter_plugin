@@ -7,22 +7,28 @@ class ExpandableText extends StatefulWidget {
   final bool expand;
   final Color expandColor;
 
-  const ExpandableText({Key key, this.text, this.maxLines, this.style, this.expand,this.expandColor}) : super(key: key);
+  const ExpandableText(
+      {Key key,
+      this.text,
+      this.maxLines,
+      this.style,
+      this.expand = false,
+      this.expandColor})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _ExpandableTextState(text, maxLines, style, expand,expandColor);
+    return _ExpandableTextState(expand);
   }
-
 }
 
 class _ExpandableTextState extends State<ExpandableText> {
-  final String text;
-  final int maxLines;
-  final TextStyle style;
+  // final String text;
+  // final int maxLines;
+  // final TextStyle style;
   bool expand;
-  final Color expandColor;
-  _ExpandableTextState(this.text, this.maxLines, this.style, this.expand,this.expandColor) {
+  // final Color expandColor;
+  _ExpandableTextState( this.expand) {
     if (expand == null) {
       expand = false;
     }
@@ -31,21 +37,21 @@ class _ExpandableTextState extends State<ExpandableText> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, size) {
-      final span = TextSpan(text: text ?? '', style: style);
+      final span = TextSpan(text: widget.text ?? '', style: widget.style);
       final tp = TextPainter(
-          text: span, maxLines: maxLines, textDirection: TextDirection.ltr);
+          text: span, maxLines: widget.maxLines, textDirection: TextDirection.ltr);
       tp.layout(maxWidth: size.maxWidth);
 
       if (tp.didExceedMaxLines) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            expand ?
-            Text(text ?? '', style: style) :
-            Text(text ?? '', maxLines: maxLines,
-                overflow: TextOverflow.ellipsis,
-                style: style),
-
+            expand
+                ? Text(widget.text ?? '', style: widget.style)
+                : Text(widget.text ?? '',
+                    maxLines: widget.maxLines,
+                    overflow: TextOverflow.ellipsis,
+                    style: widget.style),
             GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
@@ -55,15 +61,16 @@ class _ExpandableTextState extends State<ExpandableText> {
               },
               child: Container(
                 padding: EdgeInsets.only(top: 6),
-                child: Text(expand ? '收起' : '全文', style: TextStyle(
-                    fontSize: style != null ? style.fontSize : null,
-                    color: expandColor??Colors.blue)),
+                child: Text(widget.expand ? '收起' : '全文',
+                    style: TextStyle(
+                        fontSize: widget.style != null ? widget.style.fontSize : null,
+                        color: widget.expandColor ?? Colors.blue)),
               ),
             ),
           ],
         );
       } else {
-        return Text(text ?? '', style: style);
+        return Text(widget.text ?? '', style: widget.style);
       }
     });
   }
