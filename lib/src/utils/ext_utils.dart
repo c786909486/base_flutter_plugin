@@ -29,6 +29,18 @@ extension StringExt on String{
       return false;
     }
   }
+
+  bool trimIsNullOrEmpty(){
+    if(this==null||this.isEmpty){
+      return true;
+    }else{
+      if(this.trim().isEmpty){
+        return true;
+      }else{
+        return false;
+      }
+    }
+  }
 }
 
 extension MapExt on Map{
@@ -157,6 +169,17 @@ extension WidgetExt on Widget{
       clipper: clipper,
       child: this,
     );
+  }
+
+  Widget toCircle({double borderWidth = 0,Color borderColor = Colors.transparent}){
+    return ClipOval(
+      child: this,
+    ).addToContainer(padding: EdgeInsets.all(borderWidth),
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+      color: borderColor,
+      shape: BoxShape.circle
+    ));
   }
 
   Widget setLocation({double left,double right,double top,double bottom}){
