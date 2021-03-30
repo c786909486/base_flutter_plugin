@@ -85,7 +85,7 @@ class HttpGo {
     // 获取文档目录的路径
     Directory appDocDir = await getApplicationDocumentsDirectory();
     String dir = appDocDir.path + "/.cookies/";
-    var cookieJar = PersistCookieJar(dir: dir);
+    var cookieJar = PersistCookieJar(storage: FileStorage(dir));
     dio.interceptors.add(CookieManager(cookieJar));
   }
 
@@ -178,25 +178,25 @@ class HttpGo {
 
   String formatError(e) {
     if (e is DioError) {
-      if (e.type == DioErrorType.CONNECT_TIMEOUT) {
+      if (e.type == DioErrorType.connectTimeout) {
 // It occurs when url is opened timeout.
 
         return "连接超时";
-      } else if (e.type == DioErrorType.SEND_TIMEOUT) {
+      } else if (e.type == DioErrorType.sendTimeout) {
 // It occurs when url is sent timeout.
 
         return "请求超时";
-      } else if (e.type == DioErrorType.RECEIVE_TIMEOUT) {
+      } else if (e.type == DioErrorType.receiveTimeout) {
 //It occurs when receiving timeout
 
         return "响应超时";
-      } else if (e.type == DioErrorType.RESPONSE) {
+      } else if (e.type == DioErrorType.response) {
 // When the server response, but with a incorrect status, such as 404, 503...
         return checkError(e.message);
-      } else if (e.type == DioErrorType.CANCEL) {
+      } else if (e.type == DioErrorType.cancel) {
 // When the request is cancelled, dio will throw a error with this type.
         return "";
-      } else if (e.type == DioErrorType.DEFAULT) {
+      } else if (e.type == DioErrorType.other) {
         return e.message;
       } else {
 //DEFAULT Default error type, Some other Error. In this case, you can read the DioError.error if it is not null.

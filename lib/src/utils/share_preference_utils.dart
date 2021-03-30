@@ -1,7 +1,10 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+
+Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 Future saveValue(String key, Object value) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+  SharedPreferences prefs = await _prefs;
+
   if (value is String) {
     await prefs.setString(key, value);
   } else if (value is int) {
@@ -16,32 +19,37 @@ Future saveValue(String key, Object value) async {
 }
 
 Future<String> getString(String key) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+  SharedPreferences prefs = await _prefs;
+
   return prefs.getString(key);
 }
 
 Future<int> getInt(String key) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+  SharedPreferences prefs = await _prefs;
+
   return prefs.getInt(key);
 }
 
 Future<double> getDouble(String key) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+  SharedPreferences prefs = await _prefs;
+
   return prefs.getDouble(key);
 }
 
 Future<bool> getBoolean(String key) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+  SharedPreferences prefs = await _prefs;
   return prefs.getBool(key);
 }
 
 Future remove(String key) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+  SharedPreferences prefs = await _prefs;
+
   prefs.remove(key);
 }
 
 Future removeAll() async{
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+  SharedPreferences prefs = await _prefs;
+
   prefs.clear();
 }
 
