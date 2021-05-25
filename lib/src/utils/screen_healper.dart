@@ -3,15 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ScreenHelper{
 
-  static bool _needFitScreen = false;
+  static bool _needFitScreen = true;
 
   static void openFit(bool open){
     _needFitScreen = open;
   }
 
-  static void initHelper(BoxConstraints constraints,Orientation orientation,double width,double height,{bool allowFontScaling = true}){
+  static void initHelper(BoxConstraints constraints,{Orientation orientation = Orientation.portrait,double width = 360,double height = 690,bool allowFontScaling = false}){
     if(_needFitScreen){
-      ScreenUtil.init(constraints,orientation: orientation,designSize: Size(width, height),allowFontScaling: allowFontScaling);
+    ScreenUtil.init(constraints,orientation: orientation,designSize: Size(width, height));
     }
   }
 

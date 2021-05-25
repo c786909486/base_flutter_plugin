@@ -2,19 +2,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-Future saveValue(String key, Object value) async {
+Future<bool> saveValue(String key, Object value) async {
   SharedPreferences prefs = await _prefs;
 
   if (value is String) {
-    await prefs.setString(key, value);
+   return await prefs.setString(key, value);
   } else if (value is int) {
-    await prefs.setInt(key, value);
+    return await prefs.setInt(key, value);
   } else if (value is bool) {
-    await prefs.setBool(key, value);
+    return await prefs.setBool(key, value);
   } else if (value is double) {
-    await prefs.setDouble(key, value);
+    return  await prefs.setDouble(key, value);
   } else {
-    await prefs.setStringList(key, value);
+    return await prefs.setStringList(key, value as List<String>);
   }
 }
 
@@ -41,13 +41,13 @@ Future<bool> getBoolean(String key) async {
   return prefs.getBool(key);
 }
 
-Future remove(String key) async {
+Future removeValue(String key) async {
   SharedPreferences prefs = await _prefs;
 
   prefs.remove(key);
 }
 
-Future removeAll() async{
+Future removeAllValue() async{
   SharedPreferences prefs = await _prefs;
 
   prefs.clear();

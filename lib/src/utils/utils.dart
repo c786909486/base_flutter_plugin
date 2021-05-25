@@ -12,7 +12,7 @@ String getImagePath(String name,{String format = "png"}){
 }
 
 /// 默认dialog背景色为半透明黑色，这里修改源码改为透明
-Future<T> showTransparentDialog<T>({
+Future showTransparentDialog<T>({
   @required BuildContext context,
   bool barrierDismissible = true,
   WidgetBuilder builder,
@@ -51,7 +51,7 @@ Widget _buildMaterialDialogTransitions(BuildContext context, Animation<double> a
   );
 }
 
-Future<T> showElasticDialog<T>({
+Future showElasticDialog({
   @required BuildContext context,
   bool barrierDismissible = true,
   WidgetBuilder builder,

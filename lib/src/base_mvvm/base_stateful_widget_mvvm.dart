@@ -259,7 +259,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
 
   @override
   void showToast(String msg) {
-    ToastUtils.shotToast(msg);
+    ToastUtils.shotToast(msg,context: context,alignment: Alignment.center);
   }
 
   void onCloseDialog(){
@@ -275,7 +275,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   @override
   void onDestroy() {
     ///销毁viewmodel
-    viewModel?.onDispose();
+    viewModel.onDispose();
     _subscription.cancel();
     super.onDestroy();
 
@@ -283,14 +283,14 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
 
   @override
   void onResume() {
-    viewModel?.onResume();
+    viewModel.onResume();
     super.onResume();
 
   }
 
   @override
   void onPause() {
-    viewModel?.onPause();
+    viewModel.onPause();
     super.onPause();
   }
 

@@ -3,7 +3,7 @@ import 'package:base_flutter/base_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-abstract class BaseRouteUtils {
+ abstract class BaseRouteUtils {
 
   Widget createRoute(String name, {dynamic params});
 

@@ -4,7 +4,6 @@ import 'package:base_flutter/src/utils/utils.dart';
 import 'package:base_flutter/src/widget/progress_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'BasePresenter.dart';
 import 'IBaseView.dart';
 
@@ -101,13 +100,7 @@ abstract class BaseState< T extends BaseWidget> extends State<T> implements IBas
 
   @override
   void showToast(String msg) {
-    Fluttertoast.showToast(
-        msg: msg,
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIosWeb: 1,
-        fontSize: 16.0,
-      gravity: ToastGravity.CENTER
-    );
+    ToastUtils.shotToast(msg,context: context);
   }
 
 

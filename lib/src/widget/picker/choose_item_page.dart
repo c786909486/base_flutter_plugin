@@ -1,4 +1,5 @@
 import 'package:base_flutter/base_flutter.dart';
+import 'package:base_flutter/src/widget/icon_title_tap_widget.dart';
 import 'package:base_flutter/src/widget/picker/choose_item_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -94,28 +95,41 @@ class _ChooseItemState<T extends ChooseItemModel>
       body: ListView.separated(
           itemBuilder: (context, index) {
             var item = widget.itemData[index];
-            return Stack(
-              alignment: Alignment.centerLeft,
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                widget.itemBuilder(context, index),
-                Checkbox(
-                    value: item.checked,
-                    onChanged: (isChecked) {
-                      setState(() {
-                        item.checked = isChecked;
-                      });
-                    }).setLocation(right: 0)
+                Stack(
+                  alignment: Alignment.centerLeft,
+                  children: [
+                    widget.itemBuilder(context, index),
+                    Checkbox(
+                        value: item.checked,
+                        onChanged: (isChecked) {
+                          setState(() {
+                            item.checked = isChecked;
+                          });
+                        }).setLocation(right: 0),
+                  ],
+                ).addToContainer(width: double.infinity).onTap(() {
+                  if (widget.wholeClick) {
+                    setState(() {
+                      item.checked = !item.checked;
+                    });
+                  }
+                }),
+                (item.checked && item.needInput)
+                    ? Row(
+                        children: [
+                          createNormalInput(item.otherValue ?? "", (Str) {
+                            item.otherValue = Str;
+                          },textAlign: TextAlign.start)
+                        ],
+                      ).addToContainer(alignment: Alignment.topLeft,
+                        margin: EdgeInsets.only(right: 20), width: double.infinity)
+                    : Container()
               ],
-            )
-                .addToContainer(
-                    padding: widget.padding, color: widget.itemBgColor)
-                .onTap(() {
-              if (widget.wholeClick) {
-                setState(() {
-                  item.checked = !item.checked;
-                });
-              }
-            });
+            ).addToContainer(
+                padding: widget.padding, color: widget.itemBgColor);
           },
           separatorBuilder: (context, index) {
             return Divider(

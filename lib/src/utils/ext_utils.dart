@@ -43,7 +43,7 @@ extension StringExt on String{
   }
 }
 
-extension MapExt on Map{
+extension MapExt on Map<String,dynamic>{
   Map<String,dynamic> toJsonMap(){
     return RequestParams(this);
   }
@@ -63,9 +63,35 @@ extension DoubleExt on double{
     return ScreenUtil().setSp(this.toDouble());
   }
 
+  double fw() {
+    return ScreenUtil().setWidth(this.toDouble());
+  }
+
+  double fh() {
+    return ScreenUtil().setHeight(this.toDouble());
+  }
+
+  double fs(){
+    return ScreenUtil().setSp(this.toDouble());
+  }
 
 
 }
+
+extension IntExt on int{
+  double fw() {
+    return ScreenUtil().setWidth(this);
+  }
+
+  double fh() {
+    return ScreenUtil().setHeight(this);
+  }
+
+  double fs(){
+    return ScreenUtil().setSp(this);
+  }
+}
+
 
 ///widget拓展方法
 extension WidgetExt on Widget{

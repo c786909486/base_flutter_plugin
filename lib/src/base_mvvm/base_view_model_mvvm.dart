@@ -29,7 +29,6 @@ abstract class BaseViewModel with ChangeNotifier {
   get context => _context;
 
 
-
   void addModel(BaseMvvmModel model){
     _models.add(model);
   }

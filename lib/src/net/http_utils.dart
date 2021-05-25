@@ -30,7 +30,7 @@ class HttpGo {
 
   Map<String, dynamic> heads = new Map();
 
-  static HttpGogetInstance({String baseUrl}) {
+  static HttpGogetInstance({String baseUrl = ""}) {
     if (instance == null) {
       instance = HttpGo(baseUrl: baseUrl);
     }
@@ -42,13 +42,13 @@ class HttpGo {
     dio.options = options;
   }
 
-  HttpGo({baseUrl}) {
+  HttpGo({String baseUrl = ""}) {
 //BaseOptions、Options、RequestOptions 都可以配置参数，优先级别依次递增，且可以根据优先级别覆盖参数
     base_url = baseUrl;
     options = new BaseOptions(
 //请求基地址,可以包含子路径
 
-      baseUrl: baseUrl ?? base_url,
+      baseUrl: baseUrl??  base_url,
 
       //连接服务器超时时间，单位是毫秒.
 
@@ -234,7 +234,7 @@ String RequestParamsStr(Map<String, Object> value) {
   return "json=${json.encode(value)}";
 }
 
-Map<String, dynamic> RequestParams(Map<String, Object> value) {
+Map<String, dynamic> RequestParams(Map<String, dynamic> value) {
   return {"json": json.encode(value)};
 //  return "json=${json.encode(value)}";
 }
