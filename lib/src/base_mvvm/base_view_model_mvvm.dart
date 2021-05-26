@@ -39,52 +39,52 @@ abstract class BaseViewModel with ChangeNotifier {
   }
 
   ///toast事件
-  EventPostMethodWithMsg _toastEvent;
+  EventPostMethodWithMsg? _toastEvent;
 
   ///加载弹窗事件
-  EventPostMethodWithMsg _showDialogEvent;
+  EventPostMethodWithMsg? _showDialogEvent;
 
   ///关闭弹窗事件
-  EventPostMethod _hideDialogEvent;
+  EventPostMethod? _hideDialogEvent;
 
   ///显示加载页面
-  EventPostMethod _showLoadingEvent;
+  EventPostMethod? _showLoadingEvent;
 
   ///显示错误页面
-  EventPostMethodWithMsg _showErrorEvent;
+  EventPostMethodWithMsg? _showErrorEvent;
 
   ///显示空页面
-  EventPostMethod _showEmptyEvent;
+  EventPostMethod? _showEmptyEvent;
 
   ///显示正文内容
-  EventPostMethod _showContent;
+  EventPostMethod? _showContent;
 
   ///结束刷新事件
-  EventPostMethod _finishRefreshEvent;
+  EventPostMethod? _finishRefreshEvent;
 
   ///结束加载更多事件
-  EventPostMethod _finishLoadMoreEvent;
+  EventPostMethod? _finishLoadMoreEvent;
 
   ///关闭页面事件
-  EventPostMethodWithData _finishEvent;
+  EventPostMethodWithData? _finishEvent;
 
-  EventPostMethodWithData _sendMessageEvent;
+  EventPostMethodWithData? _sendMessageEvent;
 
   LoadingState loadingState = LoadingState.showContent;
 
 
   void addBaseEvent({
-    EventPostMethodWithMsg toastEvent,
-    EventPostMethodWithMsg showDialogEvent,
-    EventPostMethod hideDialogEvent,
-    EventPostMethod showLoadingEvent,
-    EventPostMethodWithMsg showErrorEvent,
-    EventPostMethod showEmptyEvent,
-    EventPostMethod showContent,
-    EventPostMethod finishRefreshEvent,
-    EventPostMethod finishLoadMoreEvent,
-    EventPostMethodWithData finishEvent,
-    EventPostMethodWithData sendMessageEvent,
+    EventPostMethodWithMsg? toastEvent,
+    EventPostMethodWithMsg? showDialogEvent,
+    EventPostMethod? hideDialogEvent,
+    EventPostMethod? showLoadingEvent,
+    EventPostMethodWithMsg? showErrorEvent,
+    EventPostMethod? showEmptyEvent,
+    EventPostMethod? showContent,
+    EventPostMethod? finishRefreshEvent,
+    EventPostMethod? finishLoadMoreEvent,
+    EventPostMethodWithData? finishEvent,
+    EventPostMethodWithData? sendMessageEvent,
   }) {
     this._toastEvent = toastEvent;
     this._showDialogEvent = showDialogEvent;
@@ -101,50 +101,50 @@ abstract class BaseViewModel with ChangeNotifier {
 
   void showToast(String msg) {
     if(mounted){
-      _toastEvent(msg);
+      _toastEvent!(msg);
     }
   }
 
   void showLoadingDialog({String msg = "加载中..."}){
     if(mounted){
-      _showDialogEvent(msg);
+      _showDialogEvent!(msg);
     }
   }
 
   void hideDialog(){
-    _hideDialogEvent();
+    _hideDialogEvent!();
   }
 
   void showLoadingState(){
-    _showLoadingEvent();
+    _showLoadingEvent!();
   }
 
   void showErrorState(String error){
-    _showErrorEvent(error);
+    _showErrorEvent!(error);
   }
 
   void showEmptyState(){
-    _showEmptyEvent();
+    _showEmptyEvent!();
   }
 
   void finishRefresh(){
-    _finishRefreshEvent();
+    _finishRefreshEvent!();
   }
 
   void finishLoadMore(){
-    _finishLoadMoreEvent();
+    _finishLoadMoreEvent!();
   }
 
   void showContent(){
-    _showContent();
+    _showContent!();
   }
 
   void finish({dynamic data}){
-    _finishEvent(data);
+    _finishEvent!(data);
   }
 
   void sendMessage(SendMessageEvent event){
-    _sendMessageEvent(event);
+    _sendMessageEvent!(event);
   }
 
 

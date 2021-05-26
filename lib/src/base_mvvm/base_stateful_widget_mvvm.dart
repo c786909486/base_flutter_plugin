@@ -7,7 +7,7 @@ import 'package:base_flutter/src/message/message_event.dart';
 import 'package:base_flutter/src/widget/loading_view_plugin.dart';
 import 'package:base_flutter/src/widget/progress_dialog.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_lifecycle_state/flutter_lifecycle_state.dart';
+import 'package:flutter_lifecycle/flutter_lifecycle.dart';
 import 'package:provider/provider.dart';
 
 
@@ -20,17 +20,17 @@ enum LoadingState{
 
 abstract class BaseStatefulMvvmWidget extends StatefulWidget {
 
-  final Map<String,dynamic> params;
+  final Map<String,dynamic>? params;
 
-  const BaseStatefulMvvmWidget({Key key,this.params}):super(key:key);
+  const BaseStatefulMvvmWidget({Key? key,this.params}):super(key:key);
 
 }
 
 abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmWidget>
     extends StateWithLifecycle<W> implements IBaseMvvmView {
-  M viewModel;
+  M? viewModel;
 
-  LoadingViewPlugin _loadingViewPlugin;
+  LoadingViewPlugin? _loadingViewPlugin;
 
   bool _isShowDialog = false;
 
@@ -38,9 +38,9 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   String pageError = "";
 
 
-  StreamSubscription _subscription;
+  StreamSubscription? _subscription;
 
-  LoadingState get currentState => viewModel.loadingState;
+  LoadingState get currentState => viewModel?.loadingState??LoadingState.showContent;
 
   @override
   void initState() {
@@ -57,14 +57,14 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
     });
   }
 
-  void addLoadingWidget({Widget loadingWidget, Widget errorWidget, Widget emptyWidget}){
-    _loadingViewPlugin.initWidget(loadingWidget: loadingWidget,errorWidget: errorWidget,emptyWidget: emptyWidget);
+  void addLoadingWidget({Widget? loadingWidget, Widget? errorWidget, Widget? emptyWidget}){
+    _loadingViewPlugin?.initWidget(loadingWidget: loadingWidget!,errorWidget: errorWidget!,emptyWidget: emptyWidget!);
   }
 
 
   void receiveMessage(SendMessageEvent event){
     if(mounted&&viewModel!=null){
-      viewModel.receiveMessage(event);
+      viewModel?.receiveMessage(event);
     }
   }
 
@@ -83,19 +83,19 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
         Future.delayed(Duration(milliseconds: 1),(){
           onViewModelCreated();
         });
-        return viewModel ;
+        return viewModel! ;
       },
       child:Consumer<M>(builder: (_, provider, __) {
         viewModel = provider;
         _addBaseCallback();
 
-        return buildRootView(context,createLoadingView());
+        return buildRootView(context,createLoadingView()??Container());
       },),
     );
   }
 
   void _addBaseCallback(){
-    viewModel.addBaseEvent(toastEvent: (msg) {
+    viewModel?.addBaseEvent(toastEvent: (msg) {
       if(mounted){
         showToast(msg);
       }
@@ -146,26 +146,26 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
 
 
   void onViewModelCreated(){
-    viewModel.onCreated();
+    viewModel?.onCreated();
   }
 
   ///创建根布局
   Widget buildRootView(BuildContext context,Widget loadingContentWidget);
 
-  Widget createLoadingView(){
-    if(viewModel.loadingState == LoadingState.showLoading){
-      return _loadingViewPlugin.getLoadingWidget();
-    }else if(viewModel.loadingState == LoadingState.showEmpty){
-      return _loadingViewPlugin.getEmptyWidget(() => onRetryClick());
-    }else if(viewModel.loadingState == LoadingState.showError){
-      return _loadingViewPlugin.getErrorWidget(pageError, () => onRetryClick());
+  Widget? createLoadingView(){
+    if(viewModel?.loadingState == LoadingState.showLoading){
+      return _loadingViewPlugin?.getLoadingWidget();
+    }else if(viewModel?.loadingState == LoadingState.showEmpty){
+      return _loadingViewPlugin?.getEmptyWidget(() => onRetryClick());
+    }else if(viewModel?.loadingState == LoadingState.showError){
+      return _loadingViewPlugin?.getErrorWidget(pageError, () => onRetryClick());
     }else {
       return buildLoadingContentView();
     }
   }
 
   ///创建内容布局
-  Widget buildLoadingContentView();
+  Widget? buildLoadingContentView();
 
   ///点击重试事件
   void onRetryClick();
@@ -196,7 +196,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   void showEmpty() {
     if(mounted){
       setState(() {
-        viewModel.loadingState = LoadingState.showEmpty;
+        viewModel?.loadingState = LoadingState.showEmpty;
       });
     }
   }
@@ -207,7 +207,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
     if(mounted){
       setState(() {
         pageError = error;
-        viewModel.loadingState = LoadingState.showError;
+        viewModel?.loadingState = LoadingState.showError;
       });
     }
   }
@@ -217,7 +217,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   void showLoading() {
     if(mounted){
       setState(() {
-        viewModel.loadingState = LoadingState.showLoading;
+        viewModel?.loadingState = LoadingState.showLoading;
       });
     }
   }
@@ -226,7 +226,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   void showContent(){
     if(mounted){
       setState(() {
-        viewModel.loadingState = LoadingState.showContent;
+        viewModel?.loadingState = LoadingState.showContent;
       });
     }
   }
@@ -259,12 +259,12 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
 
   @override
   void showToast(String msg) {
-    ToastUtils.shotToast(msg);
+    ToastUtils.shotToast(msg,context: context,alignment: Alignment.center);
   }
 
   void onCloseDialog(){
     _isShowDialog = false;
-    viewModel.onDialogDismiss();
+    viewModel?.onDialogDismiss();
   }
 
   @override
@@ -276,7 +276,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   void onDestroy() {
     ///销毁viewmodel
     viewModel?.onDispose();
-    _subscription.cancel();
+    _subscription?.cancel();
     super.onDestroy();
 
   }

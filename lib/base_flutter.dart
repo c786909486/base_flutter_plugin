@@ -1,11 +1,7 @@
 library base_flutter;
 
 import 'package:flutter/cupertino.dart';
-export 'package:base_flutter/src/base_mvp/IBasePresenter.dart';
-export 'package:base_flutter/src/base_mvp/IBaseView.dart';
-export 'package:base_flutter/src/base_mvp/BaseModel.dart';
-export 'package:base_flutter/src/base_mvp/BaseWidget.dart';
-export 'package:base_flutter/src/base_mvp/BasePresenter.dart';
+
 export 'package:base_flutter/src/utils/share_preference_utils.dart';
 export 'package:base_flutter/src/net/app_download_utils.dart';
 export 'package:base_flutter/src/net/http_utils.dart';
@@ -40,7 +36,7 @@ export 'package:pull_to_refresh/src/indicator/twolevel_indicator.dart';
 export 'package:pull_to_refresh/src/internals/refresh_localizations.dart';
 export 'package:dio/dio.dart';
 
-export 'package:flutter_lifecycle_state/flutter_lifecycle_state.dart';
+export 'package:flutter_lifecycle/flutter_lifecycle.dart';
 
 export 'package:base_flutter/src/widget/timePicker/date_format.dart';
 export 'package:base_flutter/src/widget/timePicker/datetime_picker_theme.dart';
@@ -57,6 +53,10 @@ export 'package:shared_preferences/shared_preferences.dart';
 export 'package:cached_network_image/cached_network_image.dart';
 // export 'package:path_provider_macos/path_provider_macos.dart';
 export 'package:provider/provider.dart';
+export 'package:base_flutter/src/widget/common_text.dart';
+export 'package:base_flutter/src/widget/common_widget.dart';
+export 'package:base_flutter/src/utils/go_util.dart';
+
 
 
 

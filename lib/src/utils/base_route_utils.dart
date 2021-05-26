@@ -5,23 +5,23 @@ import 'package:flutter/material.dart';
 
 abstract class BaseRouteUtils {
 
-  Widget createRoute(String name, {dynamic params});
+  Widget? createRoute(String name, {dynamic params});
 
-  intentTo(String name, {params, RouteSettings settings, bool maintainState = true, bool fullscreenDialog = false}) {
+  intentTo(String name, {params, RouteSettings? settings, bool maintainState = true, bool fullscreenDialog = false}) {
     return NavigateService.getInstance().navigator.push( MaterialPageRoute(builder: (context){
-      return createRoute(name,params: params);
+      return createRoute(name,params: params)!;
     },settings: settings,maintainState: maintainState,fullscreenDialog: fullscreenDialog));
   }
 
-  push(Widget page,{params, RouteSettings settings, bool maintainState = true, bool fullscreenDialog = false}){
+  push(Widget page,{params, RouteSettings? settings, bool maintainState = true, bool fullscreenDialog = false}){
     return NavigateService.getInstance().navigator.push( MaterialPageRoute(builder: (context){
       return page;
     },settings: settings,maintainState: maintainState,fullscreenDialog: fullscreenDialog));
   }
 
-  pushReplacement(String name, {params, RouteSettings settings, result}) {
+  pushReplacement(String name, {params, RouteSettings? settings, result}) {
     return NavigateService.getInstance().navigator.pushReplacement(MaterialPageRoute(builder: (context){
-      return createRoute(name,params: params);
+      return createRoute(name,params: params)!;
     }),result: result);
   }
 
@@ -32,7 +32,7 @@ abstract class BaseRouteUtils {
   pushAndRemoveUntil(String name,{params}){
     return NavigateService.getInstance().navigator.pushAndRemoveUntil(new MaterialPageRoute(
       builder: (BuildContext context) {
-        return createRoute(name,params: params);
+        return createRoute(name,params: params)!;
       },
     ), (route) => route == null);
   }
@@ -40,9 +40,9 @@ abstract class BaseRouteUtils {
 
 class CustomNavigatorObserver extends NavigatorObserver{
 
-  static CustomNavigatorObserver _instance;
+  static CustomNavigatorObserver? _instance;
 
-  static CustomNavigatorObserver getInstace(){
+  static CustomNavigatorObserver? getInstace(){
     if(_instance == null){
       _instance = CustomNavigatorObserver();
     }

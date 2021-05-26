@@ -1,20 +1,18 @@
-
-import 'package:base_flutter/src/base_mvp/BaseWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 /// 加载中的弹框
-class ProgressDialog extends BaseWidget{
+class ProgressDialog extends StatefulWidget{
 
   const ProgressDialog({
-    Key key,
+    Key? key,
     this.hintText
   }) : super(key: key);
 
-  final String hintText;
+  final String? hintText;
 
   @override
-  State<BaseWidget> createState() {
+  State<ProgressDialog> createState() {
 
     return ProgressDialogState();
   }
@@ -24,7 +22,7 @@ class ProgressDialog extends BaseWidget{
 
 }
 
-class ProgressDialogState extends BaseState<ProgressDialog>{
+class ProgressDialogState extends State<ProgressDialog>{
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -51,7 +49,7 @@ class ProgressDialogState extends BaseState<ProgressDialog>{
                 child: const CupertinoActivityIndicator(radius: 14.0),
               ),
               Container(height: 8,),
-              Text(widget.hintText, style: const TextStyle(color: Colors.white),)
+              Text(widget.hintText??"", style: const TextStyle(color: Colors.white),)
             ],
           ),
         ),

@@ -43,7 +43,7 @@ extension StringExt on String{
   }
 }
 
-extension MapExt on Map{
+extension MapExt on Map<String,dynamic>{
   Map<String,dynamic> toJsonMap(){
     return RequestParams(this);
   }
@@ -63,26 +63,51 @@ extension DoubleExt on double{
     return ScreenUtil().setSp(this.toDouble());
   }
 
+  double fw() {
+    return ScreenUtil().setWidth(this.toDouble());
+  }
 
+  double fh() {
+    return ScreenUtil().setHeight(this.toDouble());
+  }
+
+  double fs(){
+    return ScreenUtil().setSp(this.toDouble());
+  }
 
 }
+
+extension IntExt on int{
+  double fw() {
+    return ScreenUtil().setWidth(this);
+  }
+
+  double fh() {
+    return ScreenUtil().setHeight(this);
+  }
+
+  double fs(){
+    return ScreenUtil().setSp(this);
+  }
+}
+
 
 ///widget拓展方法
 extension WidgetExt on Widget{
 
   ///添加布局到Container
   Widget addToContainer({
-    Key key,
-    Alignment alignment,
-    EdgeInsetsGeometry padding,
-    Color color,
-    Decoration decoration,
-    Decoration foregroundDecoration,
-    double width,
-    double height,
-    BoxConstraints constraints,
-    EdgeInsetsGeometry margin,
-    Matrix4 transform,
+    Key? key,
+    Alignment? alignment,
+    EdgeInsetsGeometry? padding,
+    Color? color,
+    Decoration? decoration,
+    Decoration? foregroundDecoration,
+    double? width,
+    double? height,
+    BoxConstraints? constraints,
+    EdgeInsetsGeometry? margin,
+    Matrix4? transform,
     Clip clipBehavior = Clip.none,
   }) {
     return Container(
@@ -107,28 +132,28 @@ extension WidgetExt on Widget{
   }
 
   ///widget点击事件
-  Widget onTap(GestureTapCallback onTap,{Key key,
+  Widget onTap(GestureTapCallback onTap,{Key? key,
 
-    GestureTapCallback onDoubleTap,
-    GestureLongPressCallback onLongPress,
-    GestureTapDownCallback onTapDown,
-    GestureTapCancelCallback onTapCancel,
-    ValueChanged<bool> onHighlightChanged,
-    ValueChanged<bool> onHover,
-    Color focusColor,
-    Color hoverColor,
-    Color highlightColor = Colors.transparent,
-    Color splashColor,
-    InteractiveInkFeatureFactory splashFactory,
+    GestureTapCallback? onDoubleTap,
+    GestureLongPressCallback? onLongPress,
+    GestureTapDownCallback? onTapDown,
+    GestureTapCancelCallback? onTapCancel,
+    ValueChanged<bool>? onHighlightChanged,
+    ValueChanged<bool>? onHover,
+    Color? focusColor,
+    Color? hoverColor,
+    Color? highlightColor = Colors.transparent,
+    Color? splashColor,
+    InteractiveInkFeatureFactory? splashFactory,
     //radius=0 无波纹效果
     double radius=0,
-    BorderRadius borderRadius,
-    ShapeBorder customBorder,
+    BorderRadius? borderRadius,
+    ShapeBorder? customBorder,
     bool enableFeedback = true,
     bool excludeFromSemantics = false,
-    FocusNode focusNode,
+    FocusNode? focusNode,
     bool canRequestFocus = true,
-    ValueChanged<bool> onFocusChange,
+    ValueChanged<bool>? onFocusChange,
     bool autofocus = true,}) {
     FocusNode defaultNode = new FocusNode();
     return InkWell(
@@ -163,7 +188,7 @@ extension WidgetExt on Widget{
 
 
   ///转圆角
-  Widget toRound({BorderRadius borderRadius = BorderRadius.zero,CustomClipper<RRect> clipper, Clip clipBehavior = Clip.antiAlias}){
+  Widget toRound({BorderRadius borderRadius = BorderRadius.zero,CustomClipper<RRect>? clipper, Clip clipBehavior = Clip.antiAlias}){
     return ClipRRect(
       borderRadius: borderRadius,clipBehavior: clipBehavior,
       clipper: clipper,
@@ -182,7 +207,7 @@ extension WidgetExt on Widget{
     ));
   }
 
-  Widget setLocation({double left,double right,double top,double bottom}){
+  Widget setLocation({double? left,double? right,double? top,double? bottom}){
     return Positioned(
       left: left,
       right: right,

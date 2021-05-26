@@ -23,48 +23,47 @@ enum ITextInputType {
 class ITextField extends StatefulWidget {
   final ITextInputType keyboardType;
   final int maxLines;
-  final int maxLength;
+  final int? maxLength;
   final String hintText;
-  final TextStyle hintStyle;
+  final TextStyle? hintStyle;
   final ITextFieldCallBack fieldCallBack;
-  final Icon deleteIcon;
-  final InputBorder inputBorder;
-  final Widget prefixIcon;
-  final TextStyle textStyle;
-  final TextInputAction textInputAction;
-  final FormFieldValidator<String> validator;
-  final ValueChanged<String> onSubmitted;
-  final FocusNode focusNode;
+  final Icon? deleteIcon;
+  final InputBorder? inputBorder;
+  final Widget? prefixIcon;
+  final TextStyle? textStyle;
+  final TextInputAction? textInputAction;
+  final FormFieldValidator<String>? validator;
+  final ValueChanged<String>? onSubmitted;
+  final FocusNode? focusNode;
   final bool autofocus;
   final bool needDelete;
-  final EdgeInsets contentPadding;
-  final String labelText;
+  final EdgeInsets? contentPadding;
+  final String? labelText;
   final TextAlign textAlign;
   String inputText;
 
-  ITextField(
-      {Key key,
-      ITextInputType keyboardType: ITextInputType.text,
-      this.maxLines = 1,
-      this.maxLength,
-      this.hintText,
-      this.hintStyle,
-      @required this.fieldCallBack,
-      this.deleteIcon,
-      this.inputBorder,
-      this.textStyle,
-      this.prefixIcon,
-      this.validator,
-      this.textInputAction,
-      this.onSubmitted,
-      this.focusNode,
-      this.autofocus = true,
-      this.contentPadding,
-      this.inputText = "",
-        this.labelText,
-        this.textAlign = TextAlign.start,
-      this.needDelete = true})
-      : assert(maxLines == null || maxLines > 0),
+  ITextField({Key? key,
+    ITextInputType keyboardType: ITextInputType.text,
+    this.maxLines = 1,
+    this.maxLength,
+    this.hintText = "",
+    this.hintStyle,
+    required this.fieldCallBack,
+    this.deleteIcon,
+    this.inputBorder,
+    this.textStyle,
+    this.prefixIcon,
+    this.validator,
+    this.textInputAction,
+    this.onSubmitted,
+    this.focusNode,
+    this.autofocus = true,
+    this.contentPadding,
+    this.inputText = "",
+    this.labelText,
+    this.textAlign = TextAlign.start,
+    this.needDelete = true})
+      : assert(maxLines > 0),
         assert(maxLength == null || maxLength > 0),
         keyboardType = maxLines == 1 ? keyboardType : ITextInputType.multiline,
         super(key: key);
@@ -94,7 +93,7 @@ class _ITextFieldState extends State<ITextField> {
         return TextInputType.phone;
       case ITextInputType.numberAndDecimal:
         _isNumber = false;
-        return TextInputType.numberWithOptions(decimal: true,signed: true);
+        return TextInputType.numberWithOptions(decimal: true, signed: true);
       case ITextInputType.datetime:
         return TextInputType.datetime;
       case ITextInputType.emailAddress:
@@ -112,15 +111,15 @@ class _ITextFieldState extends State<ITextField> {
   }
 
   ///输入范围
-  List<TextInputFormatter> _getTextInputFormatter() {
+  List<TextInputFormatter>? _getTextInputFormatter() {
     return _isNumber
         ? <TextInputFormatter>[
-            WhitelistingTextInputFormatter.digitsOnly,
-          ]
-        : widget.keyboardType==ITextInputType.numberAndDecimal?
+      WhitelistingTextInputFormatter.digitsOnly,
+    ]
+        : widget.keyboardType == ITextInputType.numberAndDecimal ?
     <TextInputFormatter>[
       UsNumberTextInputFormatter(),
-    ]:null;
+    ] : null;
   }
 
   @override
@@ -131,7 +130,7 @@ class _ITextFieldState extends State<ITextField> {
             selection: new TextSelection.fromPosition(TextPosition(
                 affinity: TextAffinity.downstream,
                 offset: _inputText.length))));
-    TextField textField = widget.needDelete? TextField(
+    TextField textField = widget.needDelete ? TextField(
       autofocus: widget.autofocus,
       focusNode: widget.focusNode,
       onSubmitted: widget.onSubmitted,
@@ -144,7 +143,7 @@ class _ITextFieldState extends State<ITextField> {
         contentPadding: widget.contentPadding == null
             ? EdgeInsets.all(12)
             : widget.contentPadding,
-        counterStyle: TextStyle(color: Colors.white),
+        counterStyle: TextStyle(color: Colors.black),
         hintText: widget.hintText,
         border: widget.inputBorder != null
             ? widget.inputBorder
@@ -154,26 +153,25 @@ class _ITextFieldState extends State<ITextField> {
         prefixIcon: widget.prefixIcon,
         suffixIcon: widget.needDelete
             ? _hasdeleteIcon
-                ? new Container(
-                    width: 20.0,
-                    height: 20.0,
-                    child: new IconButton(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.all(0.0),
-                      iconSize: 18.0,
-                      icon: widget.deleteIcon != null
-                          ? widget.deleteIcon
-                          : Icon(Icons.cancel),
-                      onPressed: () {
-                        setState(() {
-                          _inputText = "";
-                          _hasdeleteIcon = (_inputText.isNotEmpty);
-                          widget.fieldCallBack(_inputText);
-                        });
-                      },
-                    ),
-                  )
-                : new Text("")
+            ? new Container(
+          width: 20.0,
+          height: 20.0,
+          child: new IconButton(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(0.0),
+            iconSize: 18.0,
+            icon: widget.deleteIcon ??
+                Icon(Icons.cancel),
+            onPressed: () {
+              setState(() {
+                _inputText = "";
+                _hasdeleteIcon = (_inputText.isNotEmpty);
+                widget.fieldCallBack(_inputText);
+              });
+            },
+          ),
+        )
+            : new Text("")
             : Text(""),
       ),
       onChanged: (str) {
@@ -189,7 +187,7 @@ class _ITextFieldState extends State<ITextField> {
       inputFormatters: _getTextInputFormatter(),
       style: widget.textStyle,
       obscureText: _isPassword,
-    ):TextField(
+    ) : TextField(
       autofocus: widget.autofocus,
       focusNode: widget.focusNode,
       onSubmitted: widget.onSubmitted,

@@ -22,15 +22,15 @@ class HttpGo {
 
   String base_url = "";
 
-  Dio dio;
+  late Dio dio;
 
-  static HttpGo instance;
+  static HttpGo? instance;
 
-  BaseOptions options;
+  late BaseOptions options;
 
   Map<String, dynamic> heads = new Map();
 
-  static HttpGogetInstance({String baseUrl}) {
+  static HttpGogetInstance({String baseUrl=""}) {
     if (instance == null) {
       instance = HttpGo(baseUrl: baseUrl);
     }
@@ -117,16 +117,16 @@ class HttpGo {
       {data,
       options,
       cancelToken,
-      onRequestSuccess<T> successListener,
-      onRequestFail errorListener}) async {
+      onRequestSuccess<T>? successListener,
+      onRequestFail? errorListener}) async {
     try {
       Response<T> response = await dio.post<T>(url,
           data: data, options: options, cancelToken: cancelToken);
 
-      successListener(response);
+      successListener!(response);
     } catch (e) {
       print('post error---------${e.toString()}');
-      errorListener(formatError(e));
+      errorListener!(formatError(e));
     }
   }
 
@@ -146,15 +146,15 @@ class HttpGo {
       {data,
       options,
       cancelToken,
-      onRequestSuccess<T> successListener,
-      onRequestFail errorListener}) async {
+      onRequestSuccess<T>? successListener,
+      onRequestFail? errorListener}) async {
     try {
       Response<T> response = await dio.get<T>(url,
           queryParameters: data, options: options, cancelToken: cancelToken);
-      successListener(response);
+      successListener!(response);
     } catch (e) {
       print('get error---------$e');
-      errorListener(formatError(e));
+      errorListener!(formatError(e));
     }
   }
 
@@ -234,7 +234,7 @@ String RequestParamsStr(Map<String, Object> value) {
   return "json=${json.encode(value)}";
 }
 
-Map<String, dynamic> RequestParams(Map<String, Object> value) {
+Map<String, dynamic> RequestParams(Map<String, dynamic> value) {
   return {"json": json.encode(value)};
 //  return "json=${json.encode(value)}";
 }

@@ -14,42 +14,42 @@ class LoadingViewPlugin {
   LoadingViewPlugin(this._context);
 
   ///全局加载布局
-  static Widget _globeLoadingWidget;
+   static  Widget? _globeLoadingWidget;
 
   ///全局错误布局
-  static Widget _globeErrorWidget;
+  static  Widget? _globeErrorWidget;
 
   ///全局空白布局
-  static Widget _globeEmptyWidget;
+  static  Widget? _globeEmptyWidget;
 
   ///页面中替换加载布局
-  Widget _loadingWidget;
+  Widget? _loadingWidget;
 
   ///页面中替换错误布局
-  Widget _errorWidget;
+  Widget? _errorWidget;
 
   ///页面中替换空白布局
-  Widget _emptyWidget;
+  Widget? _emptyWidget;
 
   void initWidget(
-      {Widget loadingWidget, Widget errorWidget, Widget emptyWidget}) {
-    _loadingWidget = loadingWidget;
-    _errorWidget = errorWidget;
-    _emptyWidget = emptyWidget;
+      {Widget? loadingWidget, Widget? errorWidget, Widget? emptyWidget}) {
+    _loadingWidget = loadingWidget??Container();
+    _errorWidget = errorWidget??Container();
+    _emptyWidget = emptyWidget??Container();
   }
 
   static void initGlobeLoading(
-      {Widget loadingWidget, Widget errorWidget, Widget emptyWidget}) {
-    _globeLoadingWidget = loadingWidget;
-    _globeEmptyWidget = emptyWidget;
-    _globeErrorWidget = errorWidget;
+      {Widget? loadingWidget, Widget? errorWidget, Widget? emptyWidget}) {
+    _globeLoadingWidget = loadingWidget??Container();
+    _globeEmptyWidget = emptyWidget??Container();
+    _globeErrorWidget = errorWidget??Container();
   }
 
   Widget getLoadingWidget() {
     if (_loadingWidget != null) {
-      return _loadingWidget;
+      return _loadingWidget??Container();
     } else if (_globeLoadingWidget != null) {
-      return _globeLoadingWidget;
+      return _globeLoadingWidget??Container();
     } else {
       return Center(
         child: CircularProgressIndicator(),

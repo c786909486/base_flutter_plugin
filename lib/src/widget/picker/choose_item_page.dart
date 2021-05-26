@@ -1,4 +1,5 @@
 import 'package:base_flutter/base_flutter.dart';
+import 'package:base_flutter/src/widget/icon_title_tap_widget.dart';
 import 'package:base_flutter/src/widget/picker/choose_item_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,30 +7,30 @@ import 'package:base_flutter/src/utils/ext_utils.dart';
 
 class ChooseItemPage<T extends ChooseItemModel> extends StatefulWidget {
   final List<T> itemData;
-  final ThemeData themeData;
-  final String title;
+  final ThemeData? themeData;
+  final String? title;
   final TextStyle titleStyle;
   final IndexedWidgetBuilder itemBuilder;
   final EdgeInsets padding;
-  final Color itemBgColor;
+  final Color? itemBgColor;
   final bool wholeClick;
 
   ChooseItemPage(this.itemData, this.itemBuilder,
       {this.themeData,
-      this.title = "请选择",
-      this.padding = const EdgeInsets.only(left: 16, top: 8, bottom: 8),
-      this.titleStyle = const TextStyle(color: Colors.black, fontSize: 17),
-      this.itemBgColor,
-      this.wholeClick = true});
+        this.title = "请选择",
+        this.padding = const EdgeInsets.only(left: 16, top: 8, bottom: 8),
+        this.titleStyle = const TextStyle(color: Colors.black, fontSize: 17),
+        this.itemBgColor,
+        this.wholeClick = true});
 
   @override
   State<StatefulWidget> createState() => _ChooseItemState<T>();
 
   static Future<List<T>> toChooseItemPage<T extends ChooseItemModel>({
-    @required List<T> itemData,
-    @required IndexedWidgetBuilder itemBuilder,
-    @required BuildContext context,
-    ThemeData themeData,
+    required List<T> itemData,
+    required IndexedWidgetBuilder itemBuilder,
+    required BuildContext context,
+    ThemeData? themeData,
     String title = "请选择",
     TextStyle titleStyle = const TextStyle(color: Colors.black, fontSize: 18),
     EdgeInsets padding = const EdgeInsets.only(left: 16, top: 8, bottom: 8),
@@ -38,15 +39,15 @@ class ChooseItemPage<T extends ChooseItemModel> extends StatefulWidget {
   }) async {
     List<T> result = await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => ChooseItemPage<T>(
-              itemData,
-              itemBuilder,
-              title: title,
-              themeData: themeData,
-              titleStyle: titleStyle,
-              padding: padding,
-              itemBgColor: itemBgColor,
-              wholeClick: wholeClick,
-            )));
+          itemData,
+          itemBuilder,
+          title: title,
+          themeData: themeData,
+          titleStyle: titleStyle,
+          padding: padding,
+          itemBgColor: itemBgColor,
+          wholeClick: wholeClick,
+        )));
     return result;
   }
 }
@@ -64,13 +65,13 @@ class _ChooseItemState<T extends ChooseItemModel>
           style: widget.titleStyle,
         ),
         iconTheme: widget.themeData != null
-            ? widget.themeData.iconTheme
+            ? widget.themeData?.iconTheme
             : Theme.of(context).iconTheme,
         actionsIconTheme: widget.themeData != null
-            ? widget.themeData.accentIconTheme
+            ? widget.themeData?.accentIconTheme
             : Theme.of(context).accentIconTheme,
         backgroundColor: widget.themeData != null
-            ? widget.themeData.primaryColor
+            ? widget.themeData?.primaryColor
             : Theme.of(context).primaryColor,
         actions: [
           IconButton(
@@ -94,28 +95,41 @@ class _ChooseItemState<T extends ChooseItemModel>
       body: ListView.separated(
           itemBuilder: (context, index) {
             var item = widget.itemData[index];
-            return Stack(
-              alignment: Alignment.centerLeft,
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                widget.itemBuilder(context, index),
-                Checkbox(
-                    value: item.checked,
-                    onChanged: (isChecked) {
-                      setState(() {
-                        item.checked = isChecked;
-                      });
-                    }).setLocation(right: 0)
+                Stack(
+                  alignment: Alignment.centerLeft,
+                  children: [
+                    widget.itemBuilder(context, index),
+                    Checkbox(
+                        value: item.checked,
+                        onChanged: (isChecked) {
+                          setState(() {
+                            item.checked = isChecked!;
+                          });
+                        }).setLocation(right: 0),
+                  ],
+                ).addToContainer(width: double.infinity).onTap(() {
+                  if (widget.wholeClick) {
+                    setState(() {
+                      item.checked = !item.checked;
+                    });
+                  }
+                }),
+                (item.checked && item.needInput)
+                    ? Row(
+                  children: [
+                    createNormalInput(item.otherValue ?? "", (Str) {
+                      item.otherValue = Str;
+                    },textAlign: TextAlign.start)
+                  ],
+                ).addToContainer(alignment: Alignment.topLeft,
+                    margin: EdgeInsets.only(right: 20), width: double.infinity)
+                    : Container()
               ],
-            )
-                .addToContainer(
-                    padding: widget.padding, color: widget.itemBgColor)
-                .onTap(() {
-              if (widget.wholeClick) {
-                setState(() {
-                  item.checked = !item.checked;
-                });
-              }
-            });
+            ).addToContainer(
+                padding: widget.padding, color: widget.itemBgColor);
           },
           separatorBuilder: (context, index) {
             return Divider(
