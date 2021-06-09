@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:dio/adapter.dart';
+
+// import 'package:dio/adapter_browser.dart';
 import 'package:dio/dio.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
 typedef onRequestSuccess<T> = Function(Response<T> response);
@@ -26,11 +28,11 @@ class HttpGo {
 
   static HttpGo? instance;
 
-  late BaseOptions options;
+  BaseOptions? options;
 
   Map<String, dynamic> heads = new Map();
 
-  static HttpGogetInstance({String baseUrl=""}) {
+  static HttpGogetInstance({String baseUrl = ""}) {
     if (instance == null) {
       instance = HttpGo(baseUrl: baseUrl);
     }
@@ -83,10 +85,15 @@ class HttpGo {
   ///设置cookie
   void setCookie() async {
     // 获取文档目录的路径
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    String dir = appDocDir.path + "/.cookies/";
-    var cookieJar = PersistCookieJar(storage: FileStorage(dir));
-    dio.interceptors.add(CookieManager(cookieJar));
+    if (kIsWeb) {
+      // var cookieJar = PersistCookieJar();
+      // dio.interceptors.add(CookieManager(cookieJar));
+    } else {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String dir = appDocDir.path + "/.cookies/";
+      var cookieJar = PersistCookieJar(storage: FileStorage(dir));
+      dio.interceptors.add(CookieManager(cookieJar));
+    }
   }
 
 /*
@@ -94,6 +101,9 @@ class HttpGo {
   * get请求*/
 
   void setProxy(String host, int port, bool ignoreCer) {
+    if (kIsWeb) {
+      return;
+    }
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         (client) {
       client.findProxy = (url) {

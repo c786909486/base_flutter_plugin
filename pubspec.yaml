@@ -13,18 +13,20 @@ dependencies:
   #toast
   flutter_styled_toast: ^2.0.0
   #本地存储
-  shared_preferences: ^2.0.3
+  shared_preferences: ^2.0.6
+  sp_util: ^2.0.3
   #屏幕适配
   flutter_screenutil: ^5.0.0-nullsafety.11
   # dio网络请求框架
-  dio: ^4.0.0-beta5
+  dio: ^4.0.0
   # dio cookie管理
-  dio_cookie_manager: ^2.0.0-beta1
+  dio_cookie_manager: ^2.0.0
 
-  cached_network_image: ^3.0.0-nullsafety
+  cached_network_image: ^3.1.0-alpha.1
+
 
   # 本地路径管理
-  path_provider: ^2.0.1
+  path_provider: ^2.0.2
 #  # aes加密库
 #  cipher2: ^0.3.5
   #状态管理
@@ -34,7 +36,7 @@ dependencies:
   #刷新框架
   pull_to_refresh: ^2.0.0
   #消息总线 eventBus
-  event_bus: ^1.1.1
+  event_bus: ^2.0.0
   #生命周期
   flutter_lifecycle:
     git:

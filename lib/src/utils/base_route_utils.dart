@@ -19,6 +19,12 @@ abstract class BaseRouteUtils {
     },settings: settings,maintainState: maintainState,fullscreenDialog: fullscreenDialog));
   }
 
+  pushAndPop(Widget page, {params, RouteSettings? settings, result}) {
+    return NavigateService.getInstance().navigator.pushReplacement(MaterialPageRoute(builder: (context){
+      return page;
+    }),result: result);
+  }
+
   pushReplacement(String name, {params, RouteSettings? settings, result}) {
     return NavigateService.getInstance().navigator.pushReplacement(MaterialPageRoute(builder: (context){
       return createRoute(name,params: params)!;

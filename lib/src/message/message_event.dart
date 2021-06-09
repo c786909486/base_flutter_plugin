@@ -7,7 +7,7 @@ class SendMessageEvent{
 
    dynamic obj;
 
-   SendMessageEvent(this.msgCode);
+   SendMessageEvent(this.msgCode,{this.obj});
 
    void postMessage(){
      eventBus.fire(this);

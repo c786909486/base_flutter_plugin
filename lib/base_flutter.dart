@@ -1,7 +1,4 @@
 library base_flutter;
-
-import 'package:flutter/cupertino.dart';
-
 export 'package:base_flutter/src/utils/share_preference_utils.dart';
 export 'package:base_flutter/src/net/app_download_utils.dart';
 export 'package:base_flutter/src/net/http_utils.dart';
@@ -56,6 +53,10 @@ export 'package:provider/provider.dart';
 export 'package:base_flutter/src/widget/common_text.dart';
 export 'package:base_flutter/src/widget/common_widget.dart';
 export 'package:base_flutter/src/utils/go_util.dart';
+export 'package:base_flutter/src/utils/cache_manage_utils.dart';
+export 'package:base_flutter/src/widget/image_loader_widget.dart';
+export 'package:base_flutter/src/widget/icon_title_tap_widget.dart';
+export 'package:sp_util/sp_util.dart';
 
 
 

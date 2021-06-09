@@ -165,14 +165,14 @@ class _DatePickerRoute<T> extends PopupRoute<T> {
   @override
   Color get barrierColor => Colors.black54;
 
-  late AnimationController _animationController;
+  AnimationController? _animationController;
 
   @override
   AnimationController createAnimationController() {
     assert(_animationController == null);
     _animationController =
         BottomSheet.createAnimationController(navigator!.overlay!);
-    return _animationController;
+    return _animationController!;
   }
 
   @override
@@ -182,8 +182,8 @@ class _DatePickerRoute<T> extends PopupRoute<T> {
       context: context,
       removeTop: true,
       child: _DatePickerComponent(
-        onChanged: onChanged!,
-        locale: this.locale!,
+        onChanged: onChanged,
+        locale: this.locale??LocaleType.zh,
         route: this,
         pickerModel: pickerModel!,
       ),

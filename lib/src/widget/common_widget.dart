@@ -102,7 +102,7 @@ Widget createNormalInput(
     // },
     decoration: InputDecoration(
       border: OutlineInputBorder(borderSide: BorderSide.none),
-      hintText: "请输入",
+      hintText: hintText,
       contentPadding: EdgeInsets.all(0),
       hintStyle: TextStyle(fontSize: 28.0.fs(), color: Color(0xFF646566)),
     ),
@@ -120,7 +120,7 @@ Widget createNormalInput(
 
     decoration: InputDecoration(
       border: OutlineInputBorder(borderSide: BorderSide.none),
-      hintText: "请输入",
+      hintText: hintText,
       contentPadding: EdgeInsets.all(0),
       hintStyle: TextStyle(fontSize: 28.0.fs(), color: Color(0xFF646566)),
     ),

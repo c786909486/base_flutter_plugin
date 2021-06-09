@@ -43,6 +43,46 @@ extension StringExt on String{
   }
 }
 
+extension StringExt2 on String?{
+
+  ///json字符串转map
+  Map<String,dynamic>? toMap(){
+    if(this.isNullOrEmpty()){
+      return null;
+    }
+    return jsonDecode(this!);
+  }
+
+  ///判断字符串是否是数字
+  bool isNumeric() {
+    if (this == null) {
+      return false;
+    }
+    return double.tryParse(this!) != null;
+  }
+
+  ///判断是否为null或空值
+  bool isNullOrEmpty(){
+    if(this==null||this!.isEmpty){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  bool trimIsNullOrEmpty(){
+    if(this==null||this!.isEmpty){
+      return true;
+    }else{
+      if(this!.trim().isEmpty){
+        return true;
+      }else{
+        return false;
+      }
+    }
+  }
+}
+
 extension MapExt on Map<String,dynamic>{
   Map<String,dynamic> toJsonMap(){
     return RequestParams(this);
@@ -140,29 +180,30 @@ extension WidgetExt on Widget{
     GestureTapCancelCallback? onTapCancel,
     ValueChanged<bool>? onHighlightChanged,
     ValueChanged<bool>? onHover,
+    MouseCursor? mouseCursor,
     Color? focusColor,
     Color? hoverColor,
-    Color? highlightColor = Colors.transparent,
+    Color? highlightColor,
+    MaterialStateProperty<Color?>? overlayColor,
     Color? splashColor,
     InteractiveInkFeatureFactory? splashFactory,
-    //radius=0 无波纹效果
-    double radius=0,
+    double? radius,
     BorderRadius? borderRadius,
     ShapeBorder? customBorder,
-    bool enableFeedback = true,
+    bool? enableFeedback = true,
     bool excludeFromSemantics = false,
     FocusNode? focusNode,
     bool canRequestFocus = true,
     ValueChanged<bool>? onFocusChange,
-    bool autofocus = true,}) {
+    bool autofocus = false,}) {
     FocusNode defaultNode = new FocusNode();
     return InkWell(
         child: this,
         onTap: (){
           onTap();
-          if(focusNode==null){
-            defaultNode.requestFocus();
-          }
+          // if(focusNode==null){
+          //   defaultNode.requestFocus();
+          // }
         },
         onDoubleTap:onDoubleTap,
         onLongPress:onLongPress,

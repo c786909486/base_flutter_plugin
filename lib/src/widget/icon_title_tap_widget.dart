@@ -3,14 +3,14 @@ import 'package:base_flutter/base_flutter.dart';
 import 'package:flutter/material.dart';
 
 class IconTitleWidget extends StatelessWidget {
-  final String? image;
+  final Widget? image;
   final Icon? icon;
   final String name;
   double height;
   final Color color;
   final TextStyle? textStyle;
   final bool showArrow;
-  final Widget contentWidget;
+  final Widget? contentWidget;
   final EdgeInsets? padding;
   final bool isRequired;
 
@@ -20,7 +20,7 @@ class IconTitleWidget extends StatelessWidget {
         this.height = 55,
         this.color = Colors.white,
         this.textStyle,
-        required this.contentWidget,
+        this.contentWidget,
         this.padding,
         this.showArrow = true,
         this.isRequired = false});
@@ -41,13 +41,9 @@ class IconTitleWidget extends StatelessWidget {
             : image != null
             ? Row(
           children: <Widget>[
-            Image.asset(
-              image??"",
-              width: 42.0.fitWidth(),
-              height: 42.0.fitWidth(),
-            ),
+            image!,
             Divider(
-              indent: 20.0.fitWidth(),
+              indent: 20.0,
             ),
           ],
         )
@@ -72,12 +68,13 @@ class IconTitleWidget extends StatelessWidget {
             ])).setWeight(1)
             : Text(
           name,
+          textAlign: TextAlign.start,
           style: textStyle != null
               ? textStyle
               : TextStyle(
               color: Colors.black, fontSize: 30.0.fitSp()),
         ).setWeight(1),
-        contentWidget == null ? Container() : contentWidget,
+        contentWidget ?? Container(),
         showArrow
             ? Icon(Icons.arrow_forward_ios_rounded)
             .addToContainer(margin: EdgeInsets.only(left: 20.0.fitWidth()))
@@ -88,7 +85,7 @@ class IconTitleWidget extends StatelessWidget {
         height: height,
         padding: padding != null
             ? padding
-            : EdgeInsets.symmetric(horizontal: 32.0.fitWidth()));
+            : EdgeInsets.symmetric(horizontal: 16));
   }
 }
 
@@ -123,6 +120,8 @@ class IconTitleTextWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return height > 0
         ? Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         image == null
             ? Container(
@@ -136,7 +135,7 @@ class IconTitleTextWidget extends StatelessWidget {
               height: 42.0.fitWidth(),
             ),
             Divider(
-              indent: 20.0.fitWidth(),
+              indent: 20.0,
             ),
           ],
         ),
@@ -147,15 +146,14 @@ class IconTitleTextWidget extends StatelessWidget {
                 text: "*",
                 style: TextStyle(
                     color: Colors.red,
-                    fontSize: textStyle != null
+                    fontSize: nameStyle != null
                         ? textStyle?.fontSize ?? 32.0.fitSp()
                         : 32.0.fitSp()),
                 children: [
                   TextSpan(
                     text: name,
-                    style: textStyle != null
-                        ? textStyle
-                        : TextStyle(
+                    style: nameStyle ??
+                         TextStyle(
                         color: Colors.black,
                         fontSize: 30.0.fitSp()),
                   )
@@ -196,7 +194,7 @@ class IconTitleTextWidget extends StatelessWidget {
         showArrow
             ? Icon(Icons.arrow_forward_ios_rounded)
             .addToContainer(
-            margin: EdgeInsets.only(left: 20.0.fitWidth()))
+            margin: EdgeInsets.only(left: 10))
             : Container()
       ],
     ).addToContainer(

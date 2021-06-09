@@ -46,6 +46,7 @@ class DataPickerView {
       Color titleBarColor = Colors.white,
       TextStyle? centerStyle,
       TextStyle? submitStyle,
+      TextStyle? cancelStyle,
       List<int> flexs = _weight,
       this.firstScrollController,
       this.secondScrollController,
@@ -62,6 +63,7 @@ class DataPickerView {
     this.cancelText = cancelText;
     this.submitText = submitText;
     this.submitStyle = submitStyle;
+    this.cancelStyle = cancelStyle;
     this.itemExtent = itemExtent;
     this.backgroundColor = backgroundColor;
     this.titleBarColor = titleBarColor;
@@ -86,6 +88,7 @@ class DataPickerView {
             titleBarColor: titleBarColor??Colors.white,
             centerStyle: centerStyle,
             submitStyle: submitStyle,
+            cancelStyle: cancelStyle,
             flexs: flexs,
             currentFirstData: currentFirstData,
             currentSecondData: currentSecondData,
@@ -135,6 +138,8 @@ class MyPicker extends StatefulWidget {
       Color titleBarColor = Colors.white,
       TextStyle? centerStyle,
       TextStyle? submitStyle,
+      TextStyle? cancelStyle,
+
       List<int> flexs = _weight,
       this.currentFirstData,
       this.currentSecondData,
@@ -144,10 +149,10 @@ class MyPicker extends StatefulWidget {
     this.third = third;
     this.height = height;
     this.title = title ?? Container();
-    this.cancelStyle = cancelStyle;
     this.cancelText = cancelText;
     this.submitText = submitText;
     this.submitStyle = submitStyle;
+    this.cancelStyle = cancelStyle;
     this.itemExtent = itemExtent;
     this.backgroundColor = backgroundColor;
     this.titleBarColor = titleBarColor;
@@ -260,21 +265,22 @@ class _MyPickerWidget extends State<MyPicker> {
                     itemExtent: widget.itemExtent!,
                   ),
                 ),
-                widget.second == null
+                widget.second == null||widget.second!.isEmpty
                     ? Container()
                     : Expanded(
                         flex: widget.flexs![1],
                         child: CupertinoPicker(
                           backgroundColor: widget.backgroundColor,
                           scrollController: defaultSecondController,
-                          children: widget.second![widget._firstSelection]
+                          children: widget.second==null||widget.second!.isEmpty?[]:
+                          widget.second![widget._firstSelection]
                               .map((item) {
                             return Center(
                               child: Text(
                                 item.name,
                                 style: widget.centerStyle == null
                                     ? TextStyle(
-                                        fontSize: ScreenUtil().setSp(34))
+                                    fontSize: ScreenUtil().setSp(34))
                                     : widget.centerStyle,
                               ),
                             );
@@ -290,22 +296,23 @@ class _MyPickerWidget extends State<MyPicker> {
                           itemExtent: widget.itemExtent!,
                         ),
                       ),
-                widget.third == null
+                widget.third == null||widget.third!.isEmpty
                     ? Container()
                     : Expanded(
                         flex: widget.flexs![2],
                         child: CupertinoPicker(
                           scrollController: defaultThirdController,
                           backgroundColor: widget.backgroundColor,
-                          children: widget.third![widget._firstSelection]
-                                  [widget._secondSelection]
+                          children: widget.third==null||widget.third!.isEmpty?[]:
+                          widget.third![widget._firstSelection]
+                          [widget._secondSelection]
                               .map((item) {
                             return Center(
                               child: Text(
                                 item.name,
                                 style: widget.centerStyle == null
                                     ? TextStyle(
-                                        fontSize: ScreenUtil().setSp(34))
+                                    fontSize: ScreenUtil().setSp(34))
                                     : widget.centerStyle,
                               ),
                             );
