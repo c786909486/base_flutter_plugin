@@ -41,6 +41,14 @@ extension StringExt on String{
       }
     }
   }
+
+  double? toDouble(){
+    return double.tryParse(this);
+  }
+
+  int? toInt(){
+    return int.tryParse(this);
+  }
 }
 
 extension StringExt2 on String?{

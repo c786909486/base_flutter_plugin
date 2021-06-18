@@ -1,5 +1,4 @@
 import 'package:base_flutter/base_flutter.dart';
-import 'package:base_flutter/src/widget/icon_title_tap_widget.dart';
 import 'package:base_flutter/src/widget/picker/choose_item_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
