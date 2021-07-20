@@ -44,6 +44,38 @@ class DatePicker {
                 locale: locale)));
   }
 
+  static void showMonthPicker(
+      BuildContext context, {
+        bool showTitleActions: true,
+        DateTime? minTime,
+        DateTime? maxTime,
+        String title = "",
+        TextStyle? titleStyle,
+        DateChangedCallback? onChanged,
+        DateChangedCallback? onConfirm,
+        locale: LocaleType.zh,
+        DateTime? currentTime,
+        DatePickerTheme? theme,
+      }) {
+    Navigator.push(
+        context,
+        new _DatePickerRoute(
+            showTitleActions: showTitleActions,
+            onChanged: onChanged,
+            onConfirm: onConfirm,
+            locale: locale,
+            theme: theme,
+            barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+            pickerModel: MonthPickerModel(
+                currentTime: currentTime,
+                maxTime: maxTime,
+                minTime: minTime,
+                locale: locale)));
+  }
+
+
+
   ///
   /// Display time picker bottom sheet.
   ///

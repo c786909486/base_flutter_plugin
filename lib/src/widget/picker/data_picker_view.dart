@@ -73,6 +73,29 @@ class DataPickerView {
   }
 
   void show() {
+    // Navigator.push(
+    //     context!,
+    //     new _DataPickerRoute(
+    //       first,
+    //       second: second ?? [],
+    //       third: third ?? [],
+    //       onSubmitListener: onSubmitListener!,
+    //       title: title,
+    //       cancelText: cancelText ?? "取消",
+    //       submitText: submitText ?? "确定",
+    //       backgroundColor: backgroundColor ?? Colors.white,
+    //       titleBarColor: titleBarColor ?? Colors.white,
+    //       centerStyle: centerStyle,
+    //       submitStyle: submitStyle,
+    //       cancelStyle: cancelStyle,
+    //       flexs: flexs,
+    //       barrierLable:
+    //           MaterialLocalizations.of(context!).modalBarrierDismissLabel,
+    //       currentFirstData: currentFirstData,
+    //       currentSecondData: currentSecondData,
+    //       currentThirdData: currentThirdData,
+    //       itemExtent: itemExtent,
+    //     ));
     showCupertinoModalPopup(
         context: context!,
         builder: (context) {
@@ -96,6 +119,133 @@ class DataPickerView {
             itemExtent: itemExtent,
           );
         });
+  }
+}
+
+class _DataPickerRoute<T> extends PopupRoute<T> {
+  final List<IPickerData> first;
+  List<List<IPickerData>>? second;
+  List<List<List<IPickerData>>>? third;
+  double? height;
+  Color? backgroundColor;
+  Color? titleBarColor;
+  late double itemExtent;
+  TextStyle? cancelStyle;
+  TextStyle? submitStyle;
+  Widget? title;
+  String? cancelText;
+  String? submitText;
+  late FixedExtentScrollController? firstScrollController;
+  late FixedExtentScrollController? secondScrollController;
+  late FixedExtentScrollController? thirdScrollController;
+  final OnSubmit<int>? onSubmitListener;
+  TextStyle? centerStyle;
+  late IPickerData? currentFirstData;
+  late IPickerData? currentSecondData;
+  late IPickerData? currentThirdData;
+  late int _firstSelection = 0;
+  late int _secondSelection = 0;
+  late int _thirdSelection = 0;
+  String? barrierLable;
+
+  static const List<int> _weight = [1, 1, 1];
+
+  late List<int> flexs;
+
+  _DataPickerRoute(this.first,
+      {List<List<IPickerData>>? second,
+      List<List<List<IPickerData>>>? third,
+      this.onSubmitListener,
+      Widget? title,
+      String cancelText = "取消",
+      String submitText = "确定",
+      Color backgroundColor = Colors.white,
+      Color titleBarColor = Colors.white,
+      TextStyle? centerStyle,
+      TextStyle? submitStyle,
+      TextStyle? cancelStyle,
+      List<int> flexs = _weight,
+      this.firstScrollController,
+      this.secondScrollController,
+      this.thirdScrollController,
+      this.currentFirstData,
+      this.currentSecondData,
+      this.currentThirdData,
+      this.barrierLable = "",
+      double itemExtent = 40}) {
+    this.second = second;
+    this.third = third;
+    this.height = height;
+    this.title = title ?? Container();
+    this.cancelStyle = cancelStyle;
+    this.cancelText = cancelText;
+    this.submitText = submitText;
+    this.submitStyle = submitStyle;
+    this.cancelStyle = cancelStyle;
+    this.itemExtent = itemExtent;
+    this.backgroundColor = backgroundColor;
+    this.titleBarColor = titleBarColor;
+    this.flexs = flexs;
+    this.centerStyle = centerStyle;
+    this.firstScrollController = firstScrollController;
+  }
+
+  AnimationController? _animationController;
+
+  @override
+  AnimationController createAnimationController() {
+    assert(_animationController == null);
+    _animationController =
+        BottomSheet.createAnimationController(navigator!.overlay!);
+    return _animationController!;
+  }
+
+
+
+  @override
+  Color? get barrierColor => Colors.black54;
+
+  @override
+  bool get barrierDismissible => true;
+
+  @override
+  String? get barrierLabel => barrierLable;
+
+  @override
+  Duration get transitionDuration => const Duration(milliseconds: 200);
+
+
+  @override
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
+    Widget bottomSheet = new MediaQuery.removePadding(
+      context: context,
+      removeTop: true,
+      child: MyPicker(
+        first: first,
+        second: second ?? [],
+        third: third ?? [],
+        onSubmitListener: onSubmitListener!,
+        title: title,
+        cancelText: cancelText ?? "取消",
+        submitText: submitText ?? "确定",
+        backgroundColor: backgroundColor ?? Colors.white,
+        titleBarColor: titleBarColor ?? Colors.white,
+        centerStyle: centerStyle,
+        submitStyle: submitStyle,
+        cancelStyle: cancelStyle,
+        flexs: flexs,
+        currentFirstData: currentFirstData,
+        currentSecondData: currentSecondData,
+        currentThirdData: currentThirdData,
+        itemExtent: itemExtent,
+      ),
+    );
+    ThemeData inheritTheme = Theme.of(context);
+    if (inheritTheme != null) {
+      bottomSheet = new Theme(data: inheritTheme, child: bottomSheet);
+    }
+    return bottomSheet;
   }
 }
 
@@ -139,7 +289,6 @@ class MyPicker extends StatefulWidget {
       TextStyle? centerStyle,
       TextStyle? submitStyle,
       TextStyle? cancelStyle,
-
       List<int> flexs = _weight,
       this.currentFirstData,
       this.currentSecondData,
@@ -199,8 +348,7 @@ class _MyPickerWidget extends State<MyPicker> {
                 child: Text(
                   widget.cancelText ?? "取消",
                   style: widget.cancelStyle == null
-                      ? TextStyle(
-                          color: Colors.grey, fontSize: ScreenUtil().setSp(32))
+                      ? TextStyle(color: Colors.grey, fontSize: 16)
                       : widget.cancelStyle,
                 ),
                 onPressed: () {
@@ -220,14 +368,13 @@ class _MyPickerWidget extends State<MyPicker> {
                   widget.submitText ?? "确定",
                   style: widget.submitStyle == null
                       ? TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: ScreenUtil().setSp(32))
+                          color: Theme.of(context).primaryColor, fontSize: 16)
                       : widget.submitStyle,
                 ),
                 onPressed: () {
+                  Navigator.of(context).pop();
                   widget.onSubmitListener!(widget._firstSelection,
                       widget._secondSelection, widget._thirdSelection);
-                  Navigator.of(context).pop();
                 },
               ),
             ],
@@ -246,7 +393,7 @@ class _MyPickerWidget extends State<MyPicker> {
                         child: Text(
                           item.name,
                           style: widget.centerStyle == null
-                              ? TextStyle(fontSize: ScreenUtil().setSp(34))
+                              ? TextStyle(fontSize: 17)
                               : widget.centerStyle,
                         ),
                       );
@@ -265,26 +412,27 @@ class _MyPickerWidget extends State<MyPicker> {
                     itemExtent: widget.itemExtent!,
                   ),
                 ),
-                widget.second == null||widget.second!.isEmpty
+                widget.second == null || widget.second!.isEmpty
                     ? Container()
                     : Expanded(
                         flex: widget.flexs![1],
                         child: CupertinoPicker(
                           backgroundColor: widget.backgroundColor,
                           scrollController: defaultSecondController,
-                          children: widget.second==null||widget.second!.isEmpty?[]:
-                          widget.second![widget._firstSelection]
-                              .map((item) {
-                            return Center(
-                              child: Text(
-                                item.name,
-                                style: widget.centerStyle == null
-                                    ? TextStyle(
-                                    fontSize: ScreenUtil().setSp(34))
-                                    : widget.centerStyle,
-                              ),
-                            );
-                          }).toList(),
+                          children:
+                              widget.second == null || widget.second!.isEmpty
+                                  ? []
+                                  : widget.second![widget._firstSelection]
+                                      .map((item) {
+                                      return Center(
+                                        child: Text(
+                                          item.name,
+                                          style: widget.centerStyle == null
+                                              ? TextStyle(fontSize: 17)
+                                              : widget.centerStyle,
+                                        ),
+                                      );
+                                    }).toList(),
                           onSelectedItemChanged: (index) {
                             widget._secondSelection = index;
                             setState(() {
@@ -296,27 +444,28 @@ class _MyPickerWidget extends State<MyPicker> {
                           itemExtent: widget.itemExtent!,
                         ),
                       ),
-                widget.third == null||widget.third!.isEmpty
+                widget.third == null || widget.third!.isEmpty
                     ? Container()
                     : Expanded(
                         flex: widget.flexs![2],
                         child: CupertinoPicker(
                           scrollController: defaultThirdController,
                           backgroundColor: widget.backgroundColor,
-                          children: widget.third==null||widget.third!.isEmpty?[]:
-                          widget.third![widget._firstSelection]
-                          [widget._secondSelection]
-                              .map((item) {
-                            return Center(
-                              child: Text(
-                                item.name,
-                                style: widget.centerStyle == null
-                                    ? TextStyle(
-                                    fontSize: ScreenUtil().setSp(34))
-                                    : widget.centerStyle,
-                              ),
-                            );
-                          }).toList(),
+                          children:
+                              widget.third == null || widget.third!.isEmpty
+                                  ? []
+                                  : widget.third![widget._firstSelection]
+                                          [widget._secondSelection]
+                                      .map((item) {
+                                      return Center(
+                                        child: Text(
+                                          item.name,
+                                          style: widget.centerStyle == null
+                                              ? TextStyle(fontSize: 17)
+                                              : widget.centerStyle,
+                                        ),
+                                      );
+                                    }).toList(),
                           onSelectedItemChanged: (index) {
                             widget._thirdSelection = index;
                           },

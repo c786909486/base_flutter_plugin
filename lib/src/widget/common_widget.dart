@@ -24,7 +24,7 @@ AppBar CommonAppBar(String title,
       title,
       style: TextStyle(
           color: textColor ?? Colors.black,
-          fontSize: fontSize ?? 17.0.fs(),
+          fontSize: fontSize ?? 17.0,
           fontWeight: fontWeight ?? FontWeight.bold,
           fontFamily: fontFamily),
     ),

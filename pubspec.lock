@@ -219,6 +219,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.17.0"
+  ionicons:
+    dependency: "direct main"
+    description:
+      name: ionicons
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.1.2"
   js:
     dependency: transitive
     description:

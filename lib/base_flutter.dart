@@ -12,11 +12,13 @@ export "package:base_flutter/src/base_mvvm/base_view_model_mvvm.dart";
 export "package:base_flutter/src/base_mvvm/base_view_mvvm.dart";
 export 'package:base_flutter/src/utils/screen_healper.dart';
 export 'package:base_flutter/src/utils/ext_utils.dart';
+export 'package:base_flutter/src/utils/log_utils.dart';
 export 'package:base_flutter/src/widget/clear_text_field.dart';
 export 'package:base_flutter/src/message/message_event.dart';
 export 'package:base_flutter/src/widget/picker/data_picker_view.dart';
 export 'package:base_flutter/src/widget/picker/choose_item_model.dart';
 export 'package:base_flutter/src/widget/picker/choose_item_page.dart';
+export 'package:base_flutter/src/widget/input/common_input.dart';
 export 'package:base_flutter/src/widget/expand_able_text.dart';
 
 export 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -31,6 +33,7 @@ export 'package:pull_to_refresh/src/indicator/material_indicator.dart';
 export 'package:pull_to_refresh/src/indicator/bezier_indicator.dart';
 export 'package:pull_to_refresh/src/indicator/twolevel_indicator.dart';
 export 'package:pull_to_refresh/src/internals/refresh_localizations.dart';
+
 export 'package:dio/dio.dart';
 
 export 'package:flutter_lifecycle/flutter_lifecycle.dart';
@@ -42,13 +45,12 @@ export 'package:base_flutter/src/widget/timePicker/date_model.dart';
 export 'package:base_flutter/src/widget/timePicker/flutter_datetime_picker.dart';
 export 'package:base_flutter/src/widget/timePicker/i18n_model.dart';
 export 'package:base_flutter/src/widget/progress_dialog.dart';
+export 'package:base_flutter/src/widget/dash_line.dart';
 
 export 'package:path_provider/path_provider.dart';
 export 'package:path_provider_linux/path_provider_linux.dart';
 export 'package:shared_preferences/shared_preferences.dart';
-// export 'package:permission_handler/permission_handler.dart';
 export 'package:cached_network_image/cached_network_image.dart';
-// export 'package:path_provider_macos/path_provider_macos.dart';
 export 'package:provider/provider.dart';
 export 'package:base_flutter/src/widget/common_text.dart';
 export 'package:base_flutter/src/widget/common_widget.dart';

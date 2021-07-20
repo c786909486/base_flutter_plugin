@@ -41,7 +41,7 @@ class HttpGo {
 
   void setOptions(BaseOptions options) {
     this.options = options;
-    dio.options = options;
+    dio.options = this.options!;
   }
 
   HttpGo({baseUrl}) {
@@ -140,17 +140,6 @@ class HttpGo {
     }
   }
 
-//  void post2(url, {data, options, cancelToken,onRequestSuccess<Map<String,dynamic>> successListener,onRequestFail errorListener}) async {
-//    try {
-//      Response<Map<String,dynamic>> response = await dio.post<Map<String,dynamic>>(url,
-//          data: data, options: options, cancelToken: cancelToken);
-//
-//      successListener(response);
-//    } catch (e) {
-//      print('post error---------${e.toString()}');
-//      errorListener(formatError(e));
-//    }
-//  }
 
   void get<T>(url,
       {data,

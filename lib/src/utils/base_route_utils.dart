@@ -19,6 +19,24 @@ abstract class BaseRouteUtils {
     },settings: settings,maintainState: maintainState,fullscreenDialog: fullscreenDialog));
   }
 
+  open(Widget page,{params,String? name}){
+    return NavigateService.getInstance().navigator.push( MaterialPageRoute(builder: (context){
+      return page;
+    },settings: RouteSettings(name: name,arguments: params)));
+  }
+
+  pushRemoveUntil(Widget page,){
+    return NavigateService.getInstance().navigator.pushAndRemoveUntil(new MaterialPageRoute(
+      builder: (BuildContext context) {
+        return page;
+      },
+    ), (route) => route == null);
+  }
+
+  pushName(String name,{params, }){
+    return NavigateService.getInstance().navigator.pushNamed(name,arguments: params);
+  }
+
   pushAndPop(Widget page, {params, RouteSettings? settings, result}) {
     return NavigateService.getInstance().navigator.pushReplacement(MaterialPageRoute(builder: (context){
       return page;

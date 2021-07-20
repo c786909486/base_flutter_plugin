@@ -198,7 +198,7 @@ extension WidgetExt on Widget{
     double? radius,
     BorderRadius? borderRadius,
     ShapeBorder? customBorder,
-    bool? enableFeedback = true,
+    bool? enableFeedback = false,
     bool excludeFromSemantics = false,
     FocusNode? focusNode,
     bool canRequestFocus = true,

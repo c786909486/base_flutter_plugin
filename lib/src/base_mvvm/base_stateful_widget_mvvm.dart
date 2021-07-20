@@ -22,7 +22,14 @@ abstract class BaseStatefulMvvmWidget extends StatefulWidget {
 
   final Map<String,dynamic>? params;
 
-  const BaseStatefulMvvmWidget({Key? key,this.params}):super(key:key);
+  BaseStatefulMvvmWidget({Key? key,this.params}):super(key:key){
+    _className = this.runtimeType.toString();
+  }
+
+  String _className = "";
+
+  String get className => _className;
+
 
 }
 
@@ -41,6 +48,8 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   StreamSubscription? _subscription;
 
   LoadingState get currentState => viewModel?.loadingState??LoadingState.showContent;
+
+  BuildContext? buildContext;
 
   @override
   void initState() {
@@ -71,8 +80,10 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
 
 
 
+
   @override
   Widget build(BuildContext context) {
+    buildContext = context;
     return initProvider() ;
   }
 

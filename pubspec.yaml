@@ -44,6 +44,8 @@ dependencies:
   #时选择器
   flutter_datetime_picker: ^1.2.5
 
+  ionicons: ^0.1.2
+
 
 
 dev_dependencies:
