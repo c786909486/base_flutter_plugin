@@ -44,6 +44,7 @@ class CommonInput extends StatefulWidget {
   bool showPassword = false;
   Widget? visiblePasswordWidget;
   Widget? hidePasswordWidget;
+  TextAlign textAlign;
   CommonInputType keyboardType;
 
   // TextType?  textType;
@@ -71,6 +72,7 @@ class CommonInput extends StatefulWidget {
     this.showPassword = false,
     this.visiblePasswordWidget,
     this.hidePasswordWidget,
+    this.textAlign = TextAlign.start,
   this.keyboardType = CommonInputType.text});
 
   @override
@@ -155,6 +157,7 @@ class _CommonInputWidget extends State<CommonInput> {
           controller: controller,
           obscureText: _isPassword,
           keyboardType: _keyborder,
+          textAlign: widget.textAlign,
           inputFormatters: _getTextInputFormatter(),
           style: TextStyle(
               fontSize: widget.textSize,
