@@ -98,7 +98,7 @@ class _CommonInputWidget extends State<CommonInput> {
     controller = TextEditingController.fromValue(
         TextEditingValue(
             text: text,
-            composing: TextRange.collapsed(0),
+            composing: TextRange.collapsed(text.isNotEmpty?0:-1),
             selection: TextSelection.fromPosition(TextPosition(offset: text.length,affinity: TextAffinity.downstream))));
   }
 
