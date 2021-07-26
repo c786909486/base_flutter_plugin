@@ -18,6 +18,7 @@ enum CommonInputType {
   password,
   passwordAndNumber,
 }
+
 class CommonInput extends StatefulWidget {
   String? text;
   String? hintText;
@@ -46,34 +47,39 @@ class CommonInput extends StatefulWidget {
   Widget? hidePasswordWidget;
   TextAlign textAlign;
   CommonInputType keyboardType;
+  bool autoFocus;
+  FocusNode? focusNode;
 
   // TextType?  textType;
 
-  CommonInput({this.text,
-    this.hintText,
-    this.helpText,
-    this.helpTextStyle,
-    this.errorText,
-    this.errorTextStyle,
-    this.errorBorder,
-    this.textSize = 15,
-    this.maxLines,
-    this.onSubmitted,
-    this.onChanged,
-    this.border,
-    this.hintColor,
-    this.textColor,
-    this.headWidget,
-    this.padding,
-    this.counter,
-    this.needClear = false,
-    this.filled = false,
-  this.isCollapsed = false,
-    this.showPassword = false,
-    this.visiblePasswordWidget,
-    this.hidePasswordWidget,
-    this.textAlign = TextAlign.start,
-  this.keyboardType = CommonInputType.text});
+  CommonInput(
+      {this.text,
+      this.hintText,
+      this.helpText,
+      this.helpTextStyle,
+      this.errorText,
+      this.errorTextStyle,
+      this.errorBorder,
+      this.textSize = 15,
+      this.maxLines,
+      this.onSubmitted,
+      this.onChanged,
+      this.border,
+      this.hintColor,
+      this.textColor,
+      this.headWidget,
+      this.padding,
+      this.counter,
+      this.needClear = false,
+      this.filled = false,
+      this.isCollapsed = false,
+      this.showPassword = false,
+      this.visiblePasswordWidget,
+      this.hidePasswordWidget,
+      this.textAlign = TextAlign.start,
+        this.autoFocus = false,
+        this.focusNode,
+      this.keyboardType = CommonInputType.text});
 
   @override
   State<StatefulWidget> createState() => _CommonInputWidget();
@@ -95,11 +101,11 @@ class _CommonInputWidget extends State<CommonInput> {
     showClear = text.isNotEmpty;
     _keyborder = _getTextInputType();
     super.initState();
-    controller = TextEditingController.fromValue(
-        TextEditingValue(
-            text: text,
-            composing: TextRange.collapsed(text.isNotEmpty?0:-1),
-            selection: TextSelection.fromPosition(TextPosition(offset: text.length,affinity: TextAffinity.downstream))));
+    controller = TextEditingController.fromValue(TextEditingValue(
+        text: text,
+        composing: TextRange.collapsed(text.isNotEmpty ? 0 : -1),
+        selection: TextSelection.fromPosition(TextPosition(
+            offset: text.length, affinity: TextAffinity.downstream))));
   }
 
   ///输入类型
@@ -138,23 +144,25 @@ class _CommonInputWidget extends State<CommonInput> {
   List<TextInputFormatter>? _getTextInputFormatter() {
     return _isNumber
         ? <TextInputFormatter>[
-      FilteringTextInputFormatter.digitsOnly,
-    ]
-        : widget.keyboardType == CommonInputType.numberAndDecimal ?
-    <TextInputFormatter>[
-      UsNumberTextInputFormatter(),
-    ] : null;
+            FilteringTextInputFormatter.digitsOnly,
+          ]
+        : widget.keyboardType == CommonInputType.numberAndDecimal
+            ? <TextInputFormatter>[
+                UsNumberTextInputFormatter(),
+              ]
+            : null;
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Stack(
       // crossAxisAlignment: CrossAxisAlignment.center,
       alignment: Alignment.center,
       children: [
         TextField(
           controller: controller,
+          autofocus: widget.autoFocus,
+          focusNode: widget.focusNode,
           obscureText: _isPassword,
           keyboardType: _keyborder,
           textAlign: widget.textAlign,
@@ -180,40 +188,42 @@ class _CommonInputWidget extends State<CommonInput> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ///显示密码
-                  widget.showPassword?(
-                  _isPassword?
-                      widget.hidePasswordWidget??Icon(Ionicons.eye):
-                      widget.visiblePasswordWidget??Icon(Ionicons.eye_off)
-                  ).onTap(() {
-                    setState(() {
-                      if(_isPassword){
-                        _isPassword = false;
-                      }else{
-                        _isPassword = true;
-                      }
-                    });
-                  }).addToContainer(margin: EdgeInsets.only(
-                    right: 8
-                  )):Container(width: 0,),
+                  widget.showPassword
+                      ? (_isPassword
+                              ? widget.hidePasswordWidget ?? Icon(Ionicons.eye)
+                              : widget.visiblePasswordWidget ??
+                                  Icon(Ionicons.eye_off))
+                          .onTap(() {
+                          setState(() {
+                            if (_isPassword) {
+                              _isPassword = false;
+                            } else {
+                              _isPassword = true;
+                            }
+                          });
+                        }).addToContainer(margin: EdgeInsets.only(right: 8))
+                      : Container(
+                          width: 0,
+                        ),
 
                   ///清除按钮
                   (widget.needClear && showClear)
                       ? (widget.clearWidget ??
-                      Icon(
-                        Ionicons.close_circle,
-                        size: 20,
-                      ))
-                      .onTap(() {
-                    setState(() {
-                      text = "";
-                      controller!.text = "";
-                      _offLength = 0;
-                      showClear = false;
-                    });
-                  })
+                              Icon(
+                                Ionicons.close_circle,
+                                size: 20,
+                              ))
+                          .onTap(() {
+                          setState(() {
+                            text = "";
+                            controller!.text = "";
+                            _offLength = 0;
+                            showClear = false;
+                          });
+                        })
                       : Container(
-                    width: 0,
-                  )
+                          width: 0,
+                        )
                 ],
               ),
               hintText: widget.hintText,
@@ -226,8 +236,8 @@ class _CommonInputWidget extends State<CommonInput> {
               widget.onChanged!(value);
             }
             setState(() {
-              _offLength = _offLength+(value.length-text.length);
-             text = value;
+              _offLength = _offLength + (value.length - text.length);
+              text = value;
               if (value.isNullOrEmpty()) {
                 showClear = false;
               } else {
@@ -236,7 +246,7 @@ class _CommonInputWidget extends State<CommonInput> {
             });
           },
           onSubmitted: (value) {
-            if(widget.onSubmitted!=null){
+            if (widget.onSubmitted != null) {
               widget.onSubmitted!(value);
             }
           },
