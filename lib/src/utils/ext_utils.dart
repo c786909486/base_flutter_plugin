@@ -51,6 +51,16 @@ extension StringExt on String{
   }
 }
 
+extension dynamicExt on dynamic{
+  String toNetError(){
+    if(this is Dio){
+      return formatError(this);
+    }else{
+      return this.toString();
+    }
+  }
+}
+
 extension StringExt2 on String?{
 
   ///json字符串转map

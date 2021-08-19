@@ -222,7 +222,7 @@ class HttpGo {
         return "未知错误";
       }
     } else {
-      return "未知错误";
+      return "网络请求失败，请检查网络";
     }
   }
 
@@ -237,6 +237,7 @@ class HttpGo {
       return message;
     }
   }
+
 
 /*
 
