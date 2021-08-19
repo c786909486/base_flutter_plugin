@@ -68,7 +68,7 @@ class HttpGo {
 //      contentType: ContentType.json,
       //表示期望以那种格式(方式)接受响应数据。接受三种类型 `json`, `stream`, `plain`, `bytes`. 默认值是`json`,
 
-      responseType: ResponseType.plain,
+      responseType: ResponseType.json,
     );
 
     dio = Dio(options);
@@ -135,11 +135,31 @@ class HttpGo {
 
       successListener!(response);
     } catch (e) {
-      print('post error---------${e.toString()}');
+      debugPrint('post error---------${e.toString()}');
       errorListener!(formatError(e));
     }
   }
 
+  Future<Map> postData(
+    url, {
+    data,
+    options,
+    cancelToken,
+  }) async {
+    var response = await dio.post<Map>(url,
+        data: data, options: options, cancelToken: cancelToken);
+    return Future.value(response.data);
+  }
+
+  Future<Map> getData(url,{
+    data,
+    options,
+    cancelToken,
+  }) async {
+    Response<Map> response = await dio.get<Map>(url,
+        queryParameters: data, options: options, cancelToken: cancelToken);
+    return Future.value(response.data);
+  }
 
   void get<T>(url,
       {data,
@@ -152,7 +172,7 @@ class HttpGo {
           queryParameters: data, options: options, cancelToken: cancelToken);
       successListener!(response);
     } catch (e) {
-      print('get error---------$e');
+      debugPrint('get error---------$e');
       errorListener!(formatError(e));
     }
   }
