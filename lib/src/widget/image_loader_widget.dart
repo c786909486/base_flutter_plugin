@@ -9,6 +9,7 @@ class ImageLoad extends StatelessWidget {
   final ImageFrameBuilder? frameBuilder;
   final ImageLoadingBuilder? loadingBuilder;
   final String? errorImage;
+  final String? placeholder;
   final double? width;
   final double? height;
   final Color? color;
@@ -45,6 +46,7 @@ class ImageLoad extends StatelessWidget {
     this.filterQuality = FilterQuality.low,
     this.isAntiAlias = false,
     this.scale = 1.0,
+        this.placeholder,
   });
 
   @override
@@ -53,7 +55,13 @@ class ImageLoad extends StatelessWidget {
         ? Image(
             image: CachedNetworkImageProvider(path, scale: scale),
             frameBuilder: frameBuilder,
-            loadingBuilder: loadingBuilder,
+            loadingBuilder: loadingBuilder!=null?loadingBuilder:placeholder.isNullOrEmpty()?null:(context,child,process){
+              if(process==null){
+                return child;
+              }else{
+                return Image.asset(placeholder??"",width: width,height: height,);
+              }
+            },
             errorBuilder: (
               context,
               error,
@@ -65,7 +73,7 @@ class ImageLoad extends StatelessWidget {
                       width: width,
                       height: height,
                     )
-                  : ImageLoad(
+                  : Image.asset(
                       errorImage!,
                       width: width,
                       height: height,
@@ -97,7 +105,7 @@ class ImageLoad extends StatelessWidget {
                     width: width,
                     height: height,
                   )
-                : ImageLoad(
+                : Image.asset(
                     errorImage!,
                     width: width,
                     height: height,

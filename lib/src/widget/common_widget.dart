@@ -11,13 +11,18 @@ AppBar CommonAppBar(String title,
       double elevation = 0.5,
       bool centerTitle = true,
       String? fontFamily,
+      Brightness? brightness,
       IconThemeData? iconTheme,
+      Color backgroundColor = Colors.white,
+      PreferredSizeWidget? bottom,
+      bool automaticallyImplyLeading = true,
       Key? key}) {
   return AppBar(
-    backgroundColor: Colors.white,
+    backgroundColor:backgroundColor,
     centerTitle: centerTitle,
     elevation: elevation,
-    automaticallyImplyLeading: true,
+    automaticallyImplyLeading: automaticallyImplyLeading,
+    brightness: brightness,
     iconTheme: iconTheme ?? IconThemeData(color: Colors.black),
     key: key,
     title: Text(
@@ -30,6 +35,7 @@ AppBar CommonAppBar(String title,
     ),
     actions: actions,
     leading: leading,
+    bottom: bottom,
   );
 }
 

@@ -59,6 +59,13 @@ export 'package:base_flutter/src/utils/cache_manage_utils.dart';
 export 'package:base_flutter/src/widget/image_loader_widget.dart';
 export 'package:base_flutter/src/widget/icon_title_tap_widget.dart';
 export 'package:sp_util/sp_util.dart';
+export 'package:ionicons/ionicons.dart';
+export 'package:permission_handler/permission_handler.dart';
+export 'package:base_flutter/src/widget/circle/circle_process_widget.dart';
+export 'package:base_flutter/src/utils/permission_utils.dart';
+export 'package:base_flutter/src/widget/click/click_listener.dart';
+export 'package:ionicons/ionicons.dart';
+export 'package:base_flutter/src/base_mvvm/base_list_view_model.dart';
 
 
 

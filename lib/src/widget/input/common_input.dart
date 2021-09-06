@@ -43,12 +43,15 @@ class CommonInput extends StatefulWidget {
   bool? filled;
   bool isCollapsed;
   bool showPassword = false;
+  bool? isDense;
   Widget? visiblePasswordWidget;
   Widget? hidePasswordWidget;
   TextAlign textAlign;
   CommonInputType keyboardType;
   bool autoFocus;
   FocusNode? focusNode;
+  final TextInputAction? textInputAction;
+
 
   // TextType?  textType;
 
@@ -79,6 +82,8 @@ class CommonInput extends StatefulWidget {
       this.textAlign = TextAlign.start,
         this.autoFocus = false,
         this.focusNode,
+        this.textInputAction,
+        this.isDense,
       this.keyboardType = CommonInputType.text});
 
   @override
@@ -167,6 +172,7 @@ class _CommonInputWidget extends State<CommonInput> {
           keyboardType: _keyborder,
           textAlign: widget.textAlign,
           inputFormatters: _getTextInputFormatter(),
+          textInputAction: widget.textInputAction,
           style: TextStyle(
               fontSize: widget.textSize,
               color: widget.textColor ?? Colors.black),
@@ -180,7 +186,10 @@ class _CommonInputWidget extends State<CommonInput> {
               filled: widget.filled,
               isCollapsed: widget.isCollapsed,
               counter: widget.counter,
-              prefix: widget.headWidget ??
+              isDense: widget.isDense,
+
+              prefixIconConstraints: BoxConstraints(maxWidth: 100),
+              prefixIcon:  widget.headWidget ??
                   Container(
                     width: 0,
                   ),
@@ -188,7 +197,7 @@ class _CommonInputWidget extends State<CommonInput> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ///显示密码
-                  widget.showPassword
+                  widget.showPassword&&!controller!.text.isEmpty
                       ? (_isPassword
                               ? widget.hidePasswordWidget ?? Icon(Ionicons.eye)
                               : widget.visiblePasswordWidget ??

@@ -32,7 +32,7 @@ dependencies:
   #状态管理
   provider: ^5.0.0
   #权限获取
-#  permission_handler: ^6.1.1
+  permission_handler: ^8.1.4+2
   #刷新框架
   pull_to_refresh: ^2.0.0
   #消息总线 eventBus

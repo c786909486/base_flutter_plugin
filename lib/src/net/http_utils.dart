@@ -8,6 +8,7 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:base_flutter/base_flutter.dart';
 
 typedef onRequestSuccess<T> = Function(Response<T> response);
 typedef onRequestFail = Function(String error);
@@ -26,17 +27,18 @@ class HttpGo {
 
   late Dio dio;
 
-  static HttpGo? instance;
+  static HttpGo? _instance;
+  static HttpGo get instance => _instance??HttpGogetInstance();
 
   BaseOptions? options;
 
   Map<String, dynamic> heads = new Map();
 
   static HttpGogetInstance({String baseUrl = ""}) {
-    if (instance == null) {
-      instance = HttpGo(baseUrl: baseUrl);
+    if (_instance == null) {
+      _instance = HttpGo(baseUrl: baseUrl);
     }
-    return instance;
+    return _instance;
   }
 
   void setOptions(BaseOptions options) {
@@ -146,9 +148,13 @@ class HttpGo {
     options,
     cancelToken,
   }) async {
-    var response = await dio.post<Map>(url,
+    var response = await dio.post(url,
         data: data, options: options, cancelToken: cancelToken);
-    return Future.value(response.data);
+    if(response.data is String){
+      return Future.value(response.data.toString().toMap());
+    }else{
+      return Future.value(response.data);
+    }
   }
 
   Future<Map> getData(url,{
@@ -156,9 +162,14 @@ class HttpGo {
     options,
     cancelToken,
   }) async {
-    Response<Map> response = await dio.get<Map>(url,
+    Response response = await dio.get(url,
         queryParameters: data, options: options, cancelToken: cancelToken);
-    return Future.value(response.data);
+    if(response.data is String){
+      return Future.value(response.data.toString().toMap());
+    }else{
+      return Future.value(response.data);
+    }
+
   }
 
   void get<T>(url,
@@ -195,7 +206,7 @@ class HttpGo {
 
   * error统一处理*/
 
-  String formatError(e) {
+  static String formatError(e) {
     if (e is DioError) {
       if (e.type == DioErrorType.connectTimeout) {
 // It occurs when url is opened timeout.
@@ -222,11 +233,11 @@ class HttpGo {
         return "未知错误";
       }
     } else {
-      return "网络请求失败，请检查网络";
+      return e.toString();
     }
   }
 
-  String checkError(String message) {
+  static String checkError(String message) {
     if (message.contains("404")) {
       return "【404】调用方法未找到";
     } else if (message.contains("500")) {

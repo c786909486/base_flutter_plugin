@@ -34,7 +34,7 @@ class IconTitleWidget extends StatelessWidget {
           children: <Widget>[
             icon??Container(),
             Divider(
-              indent: 20.0.fitWidth(),
+              indent: 10,
             ),
           ],
         )
@@ -43,7 +43,7 @@ class IconTitleWidget extends StatelessWidget {
           children: <Widget>[
             image!,
             Divider(
-              indent: 20.0,
+              indent: 10,
             ),
           ],
         )
@@ -54,8 +54,8 @@ class IconTitleWidget extends StatelessWidget {
             style: TextStyle(
                 color: Colors.red,
                 fontSize: textStyle != null
-                    ? textStyle?.fontSize ?? 30.0.fitSp()
-                    : 30.0.fitSp()),
+                    ? textStyle?.fontSize ?? 15
+                    : 15),
             children: [
               TextSpan(
                 text: name,
@@ -63,7 +63,7 @@ class IconTitleWidget extends StatelessWidget {
                     ? textStyle
                     : TextStyle(
                     color: Colors.black,
-                    fontSize: 30.0.fitSp()),
+                    fontSize: 15),
               )
             ])).setWeight(1)
             : Text(
@@ -72,12 +72,12 @@ class IconTitleWidget extends StatelessWidget {
           style: textStyle != null
               ? textStyle
               : TextStyle(
-              color: Colors.black, fontSize: 30.0.fitSp()),
+              color: Colors.black, fontSize: 15),
         ).setWeight(1),
         contentWidget ?? Container(),
         showArrow
             ? Icon(Icons.arrow_forward_ios_rounded)
-            .addToContainer(margin: EdgeInsets.only(left: 20.0.fitWidth()))
+            .addToContainer(margin: EdgeInsets.only(left: 10))
             : Container()
       ],
     ).addToContainer(
@@ -131,11 +131,11 @@ class IconTitleTextWidget extends StatelessWidget {
           children: <Widget>[
             Image.asset(
               image??"",
-              width: 42.0.fitWidth(),
-              height: 42.0.fitWidth(),
+              width: 21,
+              height: 21,
             ),
             Divider(
-              indent: 20.0,
+              indent: 10,
             ),
           ],
         ),
@@ -147,15 +147,15 @@ class IconTitleTextWidget extends StatelessWidget {
                 style: TextStyle(
                     color: Colors.red,
                     fontSize: nameStyle != null
-                        ? textStyle?.fontSize ?? 32.0.fitSp()
-                        : 32.0.fitSp()),
+                        ? textStyle?.fontSize ?? 16
+                        : 16),
                 children: [
                   TextSpan(
                     text: name,
                     style: nameStyle ??
                          TextStyle(
                         color: Colors.black,
-                        fontSize: 30.0.fitSp()),
+                        fontSize: 16),
                   )
                 ]),softWrap: true,):
             Text(
@@ -163,7 +163,7 @@ class IconTitleTextWidget extends StatelessWidget {
               style: nameStyle != null
                   ? nameStyle
                   : TextStyle(
-                  color: Colors.black, fontSize: 30.0.fitSp()),
+                  color: Colors.black, fontSize: 16),
               softWrap: true,
             )
           ],
@@ -179,7 +179,7 @@ class IconTitleTextWidget extends StatelessWidget {
           style: hintTextStyle ??
               TextStyle(
                   color: Colors.grey,
-                  fontSize: 28.0.fitSp()),
+                  fontSize: 14),
           softWrap: true,
         ).setWeight(1)
             : Text(
@@ -188,7 +188,7 @@ class IconTitleTextWidget extends StatelessWidget {
           style: textStyle ??
               TextStyle(
                   color: Colors.black,
-                  fontSize: 28.0.fitSp()),
+                  fontSize: 14),
           softWrap: true,
         ).setWeight(1),
         showArrow
@@ -202,7 +202,7 @@ class IconTitleTextWidget extends StatelessWidget {
         height: height,
         padding: padding != null
             ? padding
-            : EdgeInsets.symmetric(horizontal: 32.0.fitWidth()))
+            : EdgeInsets.symmetric(horizontal: 16))
         : Row(
       children: <Widget>[
         image == null
@@ -213,11 +213,11 @@ class IconTitleTextWidget extends StatelessWidget {
           children: <Widget>[
             Image.asset(
               image??"",
-              width: 42.0.fitWidth(),
-              height: 42.0.fitWidth(),
+              width: 21,
+              height: 21,
             ),
             Divider(
-              indent: 20.0.fitWidth(),
+              indent: 10,
             ),
           ],
         ),
@@ -229,8 +229,8 @@ class IconTitleTextWidget extends StatelessWidget {
                 style: TextStyle(
                     color: Colors.red,
                     fontSize: textStyle != null
-                        ? textStyle?.fontSize ?? 32.0.fitSp()
-                        : 32.0.fitSp()),
+                        ? textStyle?.fontSize ?? 16
+                        : 16),
                 children: [
                   TextSpan(
                     text: name,
@@ -238,7 +238,7 @@ class IconTitleTextWidget extends StatelessWidget {
                         ? textStyle
                         : TextStyle(
                         color: Colors.black,
-                        fontSize: 30.0.fitSp()),
+                        fontSize: 15),
                   )
                 ]),softWrap: true,):
             Text(
@@ -246,7 +246,7 @@ class IconTitleTextWidget extends StatelessWidget {
               style: nameStyle != null
                   ? nameStyle
                   : TextStyle(
-                  color: Colors.black, fontSize: 30.0.fitSp()),
+                  color: Colors.black, fontSize: 15),
               softWrap: true,
             )
           ],
@@ -262,7 +262,7 @@ class IconTitleTextWidget extends StatelessWidget {
           style: hintTextStyle ??
               TextStyle(
                   color: Colors.grey,
-                  fontSize: 28.0.fitSp()),
+                  fontSize: 14),
           softWrap: true,
         ).setWeight(1)
             : Text(
@@ -271,13 +271,13 @@ class IconTitleTextWidget extends StatelessWidget {
           style: textStyle ??
               TextStyle(
                   color: Colors.black,
-                  fontSize: 28.0.fitSp()),
+                  fontSize: 14),
           softWrap: true,
         ).setWeight(1),
         showArrow
             ? Icon(Icons.arrow_forward_ios_rounded)
             .addToContainer(
-            margin: EdgeInsets.only(left: 20.0.fitWidth()))
+            margin: EdgeInsets.only(left: 10))
             : Container()
       ],
     ).addToContainer(
@@ -285,6 +285,6 @@ class IconTitleTextWidget extends StatelessWidget {
         padding: padding != null
             ? padding
             : EdgeInsets.symmetric(
-            horizontal: 32.0.fitWidth(), vertical: 25.0.fitWidth()));
+            horizontal: 16, vertical:12));
   }
 }

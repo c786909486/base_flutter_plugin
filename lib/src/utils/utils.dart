@@ -7,8 +7,8 @@ class BuildConfig{
   static bool get isDebug=> !_inProduction;
 }
 
-String getImagePath(String name,{String format = "png"}){
-  return "images/$name.$format";
+String getImagePath(String name,{String format = "png",String parent = "images"}){
+  return "${parent}/$name.$format";
 }
 
 /// 默认dialog背景色为半透明黑色，这里修改源码改为透明

@@ -18,6 +18,7 @@ enum LoadingState{
   showLoading
 }
 
+@immutable
 abstract class BaseStatefulMvvmWidget extends StatefulWidget {
 
   final Map<String,dynamic>? params;
@@ -26,7 +27,8 @@ abstract class BaseStatefulMvvmWidget extends StatefulWidget {
     _className = this.runtimeType.toString();
   }
 
-  String _className = "";
+
+  var _className = "";
 
   String get className => _className;
 
@@ -35,7 +37,9 @@ abstract class BaseStatefulMvvmWidget extends StatefulWidget {
 
 abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmWidget>
     extends StateWithLifecycle<W> implements IBaseMvvmView {
-  M? viewModel;
+  M? vm;
+
+  M get viewModel => vm!;
 
   LoadingViewPlugin? _loadingViewPlugin;
 
@@ -47,7 +51,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
 
   StreamSubscription? _subscription;
 
-  LoadingState get currentState => viewModel?.loadingState??LoadingState.showContent;
+  LoadingState get currentState => vm?.loadingState??LoadingState.showContent;
 
   BuildContext? buildContext;
 
@@ -72,8 +76,8 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
 
 
   void receiveMessage(SendMessageEvent event){
-    if(mounted&&viewModel!=null){
-      viewModel?.receiveMessage(event);
+    if(mounted&&vm!=null){
+      vm?.receiveMessage(event);
     }
   }
 
@@ -90,14 +94,14 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   Widget initProvider(){
     return ChangeNotifierProvider<M>(
       create: (_) {
-        viewModel = createViewModel();
+        vm = createViewModel();
         Future.delayed(Duration(milliseconds: 1),(){
           onViewModelCreated();
         });
-        return viewModel! ;
+        return vm! ;
       },
       child:Consumer<M>(builder: (_, provider, __) {
-        viewModel = provider;
+        vm = provider;
         _addBaseCallback();
 
         return buildRootView(context,createLoadingView()??Container());
@@ -106,7 +110,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   }
 
   void _addBaseCallback(){
-    viewModel?.addBaseEvent(toastEvent: (msg) {
+    vm?.addBaseEvent(toastEvent: (msg) {
       if(mounted){
         showToast(msg);
       }
@@ -157,18 +161,18 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
 
 
   void onViewModelCreated(){
-    viewModel?.onCreated();
+    vm?.onCreated();
   }
 
   ///创建根布局
   Widget buildRootView(BuildContext context,Widget loadingContentWidget);
 
   Widget? createLoadingView(){
-    if(viewModel?.loadingState == LoadingState.showLoading){
+    if(vm?.loadingState == LoadingState.showLoading){
       return _loadingViewPlugin?.getLoadingWidget();
-    }else if(viewModel?.loadingState == LoadingState.showEmpty){
+    }else if(vm?.loadingState == LoadingState.showEmpty){
       return _loadingViewPlugin?.getEmptyWidget(() => onRetryClick());
-    }else if(viewModel?.loadingState == LoadingState.showError){
+    }else if(vm?.loadingState == LoadingState.showError){
       return _loadingViewPlugin?.getErrorWidget(pageError, () => onRetryClick());
     }else {
       return buildLoadingContentView();
@@ -207,7 +211,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   void showEmpty() {
     if(mounted){
       setState(() {
-        viewModel?.loadingState = LoadingState.showEmpty;
+        vm?.loadingState = LoadingState.showEmpty;
       });
     }
   }
@@ -218,7 +222,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
     if(mounted){
       setState(() {
         pageError = error;
-        viewModel?.loadingState = LoadingState.showError;
+        vm?.loadingState = LoadingState.showError;
       });
     }
   }
@@ -228,7 +232,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   void showLoading() {
     if(mounted){
       setState(() {
-        viewModel?.loadingState = LoadingState.showLoading;
+        vm?.loadingState = LoadingState.showLoading;
       });
     }
   }
@@ -237,7 +241,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   void showContent(){
     if(mounted){
       setState(() {
-        viewModel?.loadingState = LoadingState.showContent;
+        vm?.loadingState = LoadingState.showContent;
       });
     }
   }
@@ -275,7 +279,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
 
   void onCloseDialog(){
     _isShowDialog = false;
-    viewModel?.onDialogDismiss();
+    vm?.onDialogDismiss();
   }
 
   @override
@@ -286,7 +290,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   @override
   void onDestroy() {
     ///销毁viewmodel
-    viewModel?.onDispose();
+    vm?.onDispose();
     _subscription?.cancel();
     super.onDestroy();
 
@@ -294,14 +298,14 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
 
   @override
   void onResume() {
-    viewModel?.onResume();
+    vm?.onResume();
     super.onResume();
 
   }
 
   @override
   void onPause() {
-    viewModel?.onPause();
+    vm?.onPause();
     super.onPause();
   }
 
@@ -309,6 +313,11 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
     Navigator.pop(context,result);
   }
 }
+
+abstract class BaseMvvmListState<M extends BaseListViewModel,W extends BaseStatefulMvvmWidget> extends BaseMvvmState<M,W>{
+
+}
+
 class CommonViewModel extends BaseViewModel{
   CommonViewModel(BuildContext context) : super(context);
 

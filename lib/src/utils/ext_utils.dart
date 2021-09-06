@@ -5,6 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+extension DateExt on DateTime{
+  String toDateStr(List<String> format,{LocaleType locale = LocaleType.zh}){
+    return formatDate(this, format, locale);
+  }
+}
 
 extension StringExt on String{
 
@@ -19,6 +24,10 @@ extension StringExt on String{
       return false;
     }
     return double.tryParse(this) != null;
+  }
+
+  Pattern toReg(){
+    return RegExp(this);
   }
 
   ///判断是否为null或空值
@@ -53,11 +62,7 @@ extension StringExt on String{
 
 extension dynamicExt on dynamic{
   String toNetError(){
-    if(this is Dio){
-      return formatError(this);
-    }else{
-      return this.toString();
-    }
+    return HttpGo.formatError(this);
   }
 }
 
