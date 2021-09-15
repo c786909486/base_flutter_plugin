@@ -58,6 +58,10 @@ extension StringExt on String{
   int? toInt(){
     return int.tryParse(this);
   }
+
+  DateTime? toDate(){
+    return DateTime.tryParse(this);
+  }
 }
 
 extension dynamicExt on dynamic{

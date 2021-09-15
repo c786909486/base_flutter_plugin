@@ -28,6 +28,7 @@ class IconTitleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         icon != null
             ? Row(
@@ -54,8 +55,8 @@ class IconTitleWidget extends StatelessWidget {
             style: TextStyle(
                 color: Colors.red,
                 fontSize: textStyle != null
-                    ? textStyle?.fontSize ?? 15
-                    : 15),
+                    ? textStyle?.fontSize ?? 16
+                    : 16),
             children: [
               TextSpan(
                 text: name,
@@ -63,7 +64,7 @@ class IconTitleWidget extends StatelessWidget {
                     ? textStyle
                     : TextStyle(
                     color: Colors.black,
-                    fontSize: 15),
+                    fontSize: 16),
               )
             ])).setWeight(1)
             : Text(
@@ -72,7 +73,7 @@ class IconTitleWidget extends StatelessWidget {
           style: textStyle != null
               ? textStyle
               : TextStyle(
-              color: Colors.black, fontSize: 15),
+              color: Colors.black, fontSize: 16),
         ).setWeight(1),
         contentWidget ?? Container(),
         showArrow
@@ -179,7 +180,7 @@ class IconTitleTextWidget extends StatelessWidget {
           style: hintTextStyle ??
               TextStyle(
                   color: Colors.grey,
-                  fontSize: 14),
+                  fontSize: 16),
           softWrap: true,
         ).setWeight(1)
             : Text(
@@ -188,7 +189,7 @@ class IconTitleTextWidget extends StatelessWidget {
           style: textStyle ??
               TextStyle(
                   color: Colors.black,
-                  fontSize: 14),
+                  fontSize: 16),
           softWrap: true,
         ).setWeight(1),
         showArrow
@@ -238,7 +239,7 @@ class IconTitleTextWidget extends StatelessWidget {
                         ? textStyle
                         : TextStyle(
                         color: Colors.black,
-                        fontSize: 15),
+                        fontSize: 16),
                   )
                 ]),softWrap: true,):
             Text(
@@ -246,7 +247,7 @@ class IconTitleTextWidget extends StatelessWidget {
               style: nameStyle != null
                   ? nameStyle
                   : TextStyle(
-                  color: Colors.black, fontSize: 15),
+                  color: Colors.black, fontSize: 16),
               softWrap: true,
             )
           ],
@@ -262,7 +263,7 @@ class IconTitleTextWidget extends StatelessWidget {
           style: hintTextStyle ??
               TextStyle(
                   color: Colors.grey,
-                  fontSize: 14),
+                  fontSize: 16),
           softWrap: true,
         ).setWeight(1)
             : Text(
@@ -271,7 +272,7 @@ class IconTitleTextWidget extends StatelessWidget {
           style: textStyle ??
               TextStyle(
                   color: Colors.black,
-                  fontSize: 14),
+                  fontSize: 16),
           softWrap: true,
         ).setWeight(1),
         showArrow

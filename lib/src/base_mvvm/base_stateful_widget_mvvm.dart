@@ -58,6 +58,9 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   @override
   void initState() {
     super.initState();
+    if(BuildConfig.isDebug){
+      Log.d('currentPage', widget.className);
+    }
 
   }
 
@@ -316,6 +319,29 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
 
 abstract class BaseMvvmListState<M extends BaseListViewModel,W extends BaseStatefulMvvmWidget> extends BaseMvvmState<M,W>{
 
+  @override
+  Widget? buildLoadingContentView() {
+    return SmartRefresher(controller: viewModel.controller,
+    onRefresh: viewModel.requestRefresh,
+    onLoading: viewModel.requestLoadMore,
+    enablePullUp: canPullUp,
+    child: ListView.separated(itemBuilder: (context,index){
+      return createItemWidget(index);
+    }, separatorBuilder: (context,index){
+      return  separatorDivider;
+    }, itemCount: viewModel.listItems.length),);
+  }
+
+  bool get canPullUp => false;
+
+  Widget get separatorDivider => Container();
+
+  Widget createItemWidget( int index);
+
+  @override
+  void onRetryClick() {
+    viewModel.requestRefresh();
+  }
 }
 
 class CommonViewModel extends BaseViewModel{

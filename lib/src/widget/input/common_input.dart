@@ -55,36 +55,35 @@ class CommonInput extends StatefulWidget {
 
   // TextType?  textType;
 
-  CommonInput(
-      {this.text,
-      this.hintText,
-      this.helpText,
-      this.helpTextStyle,
-      this.errorText,
-      this.errorTextStyle,
-      this.errorBorder,
-      this.textSize = 15,
-      this.maxLines,
-      this.onSubmitted,
-      this.onChanged,
-      this.border,
-      this.hintColor,
-      this.textColor,
-      this.headWidget,
-      this.padding,
-      this.counter,
-      this.needClear = false,
-      this.filled = false,
-      this.isCollapsed = false,
-      this.showPassword = false,
-      this.visiblePasswordWidget,
-      this.hidePasswordWidget,
-      this.textAlign = TextAlign.start,
-        this.autoFocus = false,
-        this.focusNode,
-        this.textInputAction,
-        this.isDense,
-      this.keyboardType = CommonInputType.text});
+  CommonInput({this.text,
+    this.hintText,
+    this.helpText,
+    this.helpTextStyle,
+    this.errorText,
+    this.errorTextStyle,
+    this.errorBorder,
+    this.textSize = 15,
+    this.maxLines,
+    this.onSubmitted,
+    this.onChanged,
+    this.border,
+    this.hintColor,
+    this.textColor,
+    this.headWidget,
+    this.padding,
+    this.counter,
+    this.needClear = false,
+    this.filled = false,
+    this.isCollapsed = false,
+    this.showPassword = false,
+    this.visiblePasswordWidget,
+    this.hidePasswordWidget,
+    this.textAlign = TextAlign.start,
+    this.autoFocus = false,
+    this.focusNode,
+    this.textInputAction,
+    this.isDense,
+    this.keyboardType = CommonInputType.text});
 
   @override
   State<StatefulWidget> createState() => _CommonInputWidget();
@@ -149,13 +148,13 @@ class _CommonInputWidget extends State<CommonInput> {
   List<TextInputFormatter>? _getTextInputFormatter() {
     return _isNumber
         ? <TextInputFormatter>[
-            FilteringTextInputFormatter.digitsOnly,
-          ]
+      FilteringTextInputFormatter.digitsOnly,
+    ]
         : widget.keyboardType == CommonInputType.numberAndDecimal
-            ? <TextInputFormatter>[
-                UsNumberTextInputFormatter(),
-              ]
-            : null;
+        ? <TextInputFormatter>[
+      UsNumberTextInputFormatter(),
+    ]
+        : null;
   }
 
   @override
@@ -189,50 +188,51 @@ class _CommonInputWidget extends State<CommonInput> {
               isDense: widget.isDense,
 
               prefixIconConstraints: BoxConstraints(maxWidth: 100),
-              prefixIcon:  widget.headWidget ??
+              prefixIcon: widget.headWidget ??
                   Container(
                     width: 0,
                   ),
               suffix: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+
                   ///显示密码
-                  widget.showPassword&&!controller!.text.isEmpty
+                  widget.showPassword && !controller!.text.isEmpty
                       ? (_isPassword
-                              ? widget.hidePasswordWidget ?? Icon(Ionicons.eye)
-                              : widget.visiblePasswordWidget ??
-                                  Icon(Ionicons.eye_off))
-                          .onTap(() {
-                          setState(() {
-                            if (_isPassword) {
-                              _isPassword = false;
-                            } else {
-                              _isPassword = true;
-                            }
-                          });
-                        }).addToContainer(margin: EdgeInsets.only(right: 8))
+                      ? widget.hidePasswordWidget ?? Icon(Ionicons.eye)
+                      : widget.visiblePasswordWidget ??
+                      Icon(Ionicons.eye_off))
+                      .onTap(() {
+                    setState(() {
+                      if (_isPassword) {
+                        _isPassword = false;
+                      } else {
+                        _isPassword = true;
+                      }
+                    });
+                  }).addToContainer(margin: EdgeInsets.only(right: 8))
                       : Container(
-                          width: 0,
-                        ),
+                    width: 0,
+                  ),
 
                   ///清除按钮
                   (widget.needClear && showClear)
                       ? (widget.clearWidget ??
-                              Icon(
-                                Ionicons.close_circle,
-                                size: 20,
-                              ))
-                          .onTap(() {
-                          setState(() {
-                            text = "";
-                            controller!.text = "";
-                            _offLength = 0;
-                            showClear = false;
-                          });
-                        })
+                      Icon(
+                        Ionicons.close_circle,
+                        size: 20,
+                      ))
+                      .onTap(() {
+                    setState(() {
+                      text = "";
+                      controller!.text = "";
+                      _offLength = 0;
+                      showClear = false;
+                    });
+                  })
                       : Container(
-                          width: 0,
-                        )
+                    width: 0,
+                  )
                 ],
               ),
               hintText: widget.hintText,
@@ -247,6 +247,252 @@ class _CommonInputWidget extends State<CommonInput> {
             setState(() {
               _offLength = _offLength + (value.length - text.length);
               text = value;
+              if (value.isNullOrEmpty()) {
+                showClear = false;
+              } else {
+                showClear = true;
+              }
+            });
+          },
+          onSubmitted: (value) {
+            if (widget.onSubmitted != null) {
+              widget.onSubmitted!(value);
+            }
+          },
+          maxLines: widget.maxLines,
+        ),
+      ],
+    );
+  }
+}
+
+class EditTextInput extends StatefulWidget {
+  String text;
+  String? hintText;
+  String? helpText;
+  String? errorText;
+
+  TextStyle? helpTextStyle;
+  TextStyle? errorTextStyle;
+  InputBorder? errorBorder;
+  Widget? counter;
+  EdgeInsets? padding;
+  double textSize;
+  Color? textColor;
+  Color? hintColor;
+  InputBorder? border;
+  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onSubmitted;
+  int? maxLines;
+  Widget? headWidget;
+  bool needClear;
+  Widget? clearWidget;
+  bool? filled;
+  bool isCollapsed;
+  bool showPassword = false;
+  bool? isDense;
+  Widget? visiblePasswordWidget;
+  Widget? hidePasswordWidget;
+  TextAlign textAlign;
+  CommonInputType keyboardType;
+  bool autoFocus;
+  FocusNode? focusNode;
+  final TextInputAction? textInputAction;
+
+
+  // TextType?  textType;
+
+  EditTextInput({this.text="",
+    this.hintText,
+    this.helpText,
+    this.helpTextStyle,
+    this.errorText,
+    this.errorTextStyle,
+    this.errorBorder,
+    this.textSize = 15,
+    this.maxLines,
+    this.onSubmitted,
+    this.onChanged,
+    this.border,
+    this.hintColor,
+    this.textColor,
+    this.headWidget,
+    this.padding,
+    this.counter,
+    this.needClear = false,
+    this.filled = false,
+    this.isCollapsed = false,
+    this.showPassword = false,
+    this.visiblePasswordWidget,
+    this.hidePasswordWidget,
+    this.textAlign = TextAlign.start,
+    this.autoFocus = false,
+    this.focusNode,
+    this.textInputAction,
+    this.isDense,
+    this.keyboardType = CommonInputType.text});
+
+  @override
+  State<StatefulWidget> createState() => _EditTextInputWidget();
+}
+
+class _EditTextInputWidget extends State<EditTextInput> {
+  bool showClear = false;
+  bool _isNumber = false;
+  bool _isPassword = false;
+  int _offLength = 0;
+  TextEditingController? controller;
+  TextInputType _keyborder = TextInputType.text;
+
+  @override
+  void initState() {
+    // text = widget.text ?? "";
+    _offLength = widget.text.length;
+    showClear = widget.text.isNotEmpty;
+    _keyborder = _getTextInputType();
+    super.initState();
+    controller = TextEditingController.fromValue(TextEditingValue(
+        text: widget.text,
+        composing: TextRange.collapsed(widget.text.isNotEmpty ? 0 : -1),
+        selection: TextSelection.fromPosition(TextPosition(
+            offset: widget.text.length, affinity: TextAffinity.downstream))));
+  }
+
+  ///输入类型
+  TextInputType _getTextInputType() {
+    switch (widget.keyboardType) {
+      case CommonInputType.text:
+        return TextInputType.text;
+      case CommonInputType.multiline:
+        return TextInputType.multiline;
+      case CommonInputType.number:
+        _isNumber = true;
+        return TextInputType.number;
+      case CommonInputType.phone:
+        _isNumber = true;
+        return TextInputType.phone;
+      case CommonInputType.numberAndDecimal:
+        _isNumber = false;
+        return TextInputType.numberWithOptions(decimal: true, signed: true);
+      case CommonInputType.datetime:
+        return TextInputType.datetime;
+      case CommonInputType.emailAddress:
+        return TextInputType.emailAddress;
+      case CommonInputType.url:
+        return TextInputType.url;
+      case CommonInputType.password:
+        _isPassword = true;
+        return TextInputType.text;
+      case CommonInputType.passwordAndNumber:
+        _isPassword = true;
+        _isNumber = true;
+        return TextInputType.number;
+    }
+  }
+
+  ///输入范围
+  List<TextInputFormatter>? _getTextInputFormatter() {
+    return _isNumber
+        ? <TextInputFormatter>[
+      FilteringTextInputFormatter.digitsOnly,
+    ]
+        : widget.keyboardType == CommonInputType.numberAndDecimal
+        ? <TextInputFormatter>[
+      UsNumberTextInputFormatter(),
+    ]
+        : null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      // crossAxisAlignment: CrossAxisAlignment.center,
+      alignment: Alignment.center,
+      children: [
+        TextField(
+          controller: controller,
+          autofocus: widget.autoFocus,
+          focusNode: widget.focusNode,
+          obscureText: _isPassword,
+          keyboardType: _keyborder,
+          textAlign: widget.textAlign,
+          inputFormatters: _getTextInputFormatter(),
+          textInputAction: widget.textInputAction,
+          style: TextStyle(
+              fontSize: widget.textSize,
+              color: widget.textColor ?? Colors.black),
+          decoration: InputDecoration(
+              helperText: widget.helpText,
+              helperStyle: widget.helpTextStyle,
+              errorText: widget.errorText,
+              errorStyle: widget.errorTextStyle,
+              errorBorder: widget.errorBorder,
+              contentPadding: widget.padding,
+              filled: widget.filled,
+              isCollapsed: widget.isCollapsed,
+              counter: widget.counter,
+              isDense: widget.isDense,
+
+              prefixIconConstraints: BoxConstraints(maxWidth: 100),
+              prefixIcon: widget.headWidget ??
+                  Container(
+                    width: 0,
+                  ),
+              suffix: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+
+                  ///显示密码
+                  widget.showPassword && !controller!.text.isEmpty
+                      ? (_isPassword
+                      ? widget.hidePasswordWidget ?? Icon(Ionicons.eye)
+                      : widget.visiblePasswordWidget ??
+                      Icon(Ionicons.eye_off))
+                      .onTap(() {
+                    setState(() {
+                      if (_isPassword) {
+                        _isPassword = false;
+                      } else {
+                        _isPassword = true;
+                      }
+                    });
+                  }).addToContainer(margin: EdgeInsets.only(right: 8))
+                      : Container(
+                    width: 0,
+                  ),
+
+                  ///清除按钮
+                  (widget.needClear && showClear)
+                      ? (widget.clearWidget ??
+                      Icon(
+                        Ionicons.close_circle,
+                        size: 20,
+                      ))
+                      .onTap(() {
+                    setState(() {
+                      widget.text = "";
+                      controller!.text = "";
+                      _offLength = 0;
+                      showClear = false;
+                    });
+                  })
+                      : Container(
+                    width: 0,
+                  )
+                ],
+              ),
+              hintText: widget.hintText,
+              border: widget.border ?? UnderlineInputBorder(),
+              hintStyle: TextStyle(
+                  fontSize: widget.textSize,
+                  color: widget.hintColor ?? Colors.grey)),
+          onChanged: (value) {
+            if (widget.onChanged != null) {
+              widget.onChanged!(value);
+            }
+            setState(() {
+              _offLength = _offLength + (value.length - widget.text.length);
+              widget.text = value;
               if (value.isNullOrEmpty()) {
                 showClear = false;
               } else {

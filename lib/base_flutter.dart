@@ -66,6 +66,8 @@ export 'package:base_flutter/src/utils/permission_utils.dart';
 export 'package:base_flutter/src/widget/click/click_listener.dart';
 export 'package:ionicons/ionicons.dart';
 export 'package:base_flutter/src/base_mvvm/base_list_view_model.dart';
+export 'package:base_flutter/src/widget/popup_widget.dart';
+export 'package:base_flutter/src/widget/expand_item_widget.dart';
 
 
 
