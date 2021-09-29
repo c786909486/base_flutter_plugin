@@ -1,3 +1,4 @@
+import 'package:base_flutter/base_flutter.dart';
 import 'package:flutter/material.dart';
 import '../utils/ext_utils.dart';
 import 'clear_text_field.dart';
@@ -18,7 +19,7 @@ AppBar CommonAppBar(String title,
       bool automaticallyImplyLeading = true,
       Key? key}) {
   return AppBar(
-    backgroundColor:backgroundColor,
+    backgroundColor: backgroundColor,
     centerTitle: centerTitle,
     elevation: elevation,
     automaticallyImplyLeading: automaticallyImplyLeading,
@@ -78,8 +79,7 @@ Widget createInput(String text, ITextFieldCallBack fieldCallBack,
   // )
 }
 
-Widget createNormalInput(
-    String text,
+Widget createNormalInput(String text,
     ITextFieldCallBack fieldCallBack, {
       String hintText = "请输入",
       TextInputType keyboardType = TextInputType.text,
@@ -101,7 +101,7 @@ Widget createNormalInput(
     keyboardType: keyboardType,
     textInputAction: TextInputAction.next,
     onChanged: fieldCallBack,
-    textAlign: textAlign??TextAlign.right,
+    textAlign: textAlign ?? TextAlign.right,
     autofocus: false,
     // onSubmitted: (content) {
     //   node.unfocus();
@@ -121,7 +121,7 @@ Widget createNormalInput(
     keyboardType: keyboardType,
     textInputAction: TextInputAction.next,
     onChanged: fieldCallBack,
-    textAlign: textAlign??TextAlign.right,
+    textAlign: textAlign ?? TextAlign.right,
     autofocus: false,
 
     decoration: InputDecoration(
@@ -131,4 +131,42 @@ Widget createNormalInput(
       hintStyle: TextStyle(fontSize: 28.0.fs(), color: Color(0xFF646566)),
     ),
   ).setWeight(weight);
+}
+
+class CheckWithText extends StatelessWidget {
+
+  bool defaultSelected;
+  String title;
+  Function(bool value) onChanged;
+  MainAxisAlignment mainAxisAlignment;
+
+
+  CheckWithText(
+      {this.defaultSelected = false, required this.title, required this.onChanged, this.mainAxisAlignment = MainAxisAlignment
+          .start});
+
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return Row(
+        mainAxisAlignment: mainAxisAlignment,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Checkbox(value: defaultSelected, onChanged: (value) {
+            setState(() {
+              defaultSelected = value ?? false;
+            });
+            onChanged(defaultSelected);
+          },visualDensity: VisualDensity(horizontal: -2,vertical: -2),),
+          CommonText(title),Container(width: 16,)
+        ],
+      ).onTap(() {
+        setState(() {
+          defaultSelected = !defaultSelected;
+        });
+        onChanged(defaultSelected);
+      });
+    });
+  }
+
 }

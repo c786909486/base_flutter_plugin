@@ -5,16 +5,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-extension DateExt on DateTime{
-  String toDateStr(List<String> format,{LocaleType locale = LocaleType.zh}){
+extension DateExt on DateTime {
+  String toDateStr(List<String> format, {LocaleType locale = LocaleType.zh}) {
     return formatDate(this, format, locale);
+  }
+
+  DateTime get firstDay {
+    var first = DateTime(
+      this.year,
+      this.month,
+      1,
+    );
+    return first;
   }
 }
 
-extension StringExt on String{
-
+extension StringExt on String {
   ///json字符串转map
-  Map<String,dynamic> toMap(){
+  Map<String, dynamic> toMap() {
     return jsonDecode(this);
   }
 
@@ -26,55 +34,54 @@ extension StringExt on String{
     return double.tryParse(this) != null;
   }
 
-  Pattern toReg(){
+  Pattern toReg() {
     return RegExp(this);
   }
 
   ///判断是否为null或空值
-  bool isNullOrEmpty(){
-    if(this==null||this.isEmpty){
+  bool isNullOrEmpty() {
+    if (this == null || this.isEmpty) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
 
-  bool trimIsNullOrEmpty(){
-    if(this==null||this.isEmpty){
+  bool trimIsNullOrEmpty() {
+    if (this == null || this.isEmpty) {
       return true;
-    }else{
-      if(this.trim().isEmpty){
+    } else {
+      if (this.trim().isEmpty) {
         return true;
-      }else{
+      } else {
         return false;
       }
     }
   }
 
-  double? toDouble(){
+  double? toDouble() {
     return double.tryParse(this);
   }
 
-  int? toInt(){
+  int? toInt() {
     return int.tryParse(this);
   }
 
-  DateTime? toDate(){
+  DateTime? toDate() {
     return DateTime.tryParse(this);
   }
 }
 
-extension dynamicExt on dynamic{
-  String toNetError(){
+extension dynamicExt on dynamic {
+  String toNetError() {
     return HttpGo.formatError(this);
   }
 }
 
-extension StringExt2 on String?{
-
+extension StringExt2 on String? {
   ///json字符串转map
-  Map<String,dynamic>? toMap(){
-    if(this.isNullOrEmpty()){
+  Map<String, dynamic>? toMap() {
+    if (this.isNullOrEmpty()) {
       return null;
     }
     return jsonDecode(this!);
@@ -89,35 +96,35 @@ extension StringExt2 on String?{
   }
 
   ///判断是否为null或空值
-  bool isNullOrEmpty(){
-    if(this==null||this!.isEmpty){
+  bool isNullOrEmpty() {
+    if (this == null || this!.isEmpty) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
 
-  bool trimIsNullOrEmpty(){
-    if(this==null||this!.isEmpty){
+  bool trimIsNullOrEmpty() {
+    if (this == null || this!.isEmpty) {
       return true;
-    }else{
-      if(this!.trim().isEmpty){
+    } else {
+      if (this!.trim().isEmpty) {
         return true;
-      }else{
+      } else {
         return false;
       }
     }
   }
 }
 
-extension MapExt on Map<String,dynamic>{
-  Map<String,dynamic> toJsonMap(){
+extension MapExt on Map<String, dynamic> {
+  Map<String, dynamic> toJsonMap() {
     return RequestParams(this);
   }
 }
 
 ///double适配屏幕尺寸
-extension DoubleExt on double{
+extension DoubleExt on double {
   double fitWidth() {
     return ScreenUtil().setWidth(this.toDouble());
   }
@@ -126,7 +133,7 @@ extension DoubleExt on double{
     return ScreenUtil().setHeight(this.toDouble());
   }
 
-  double fitSp(){
+  double fitSp() {
     return ScreenUtil().setSp(this.toDouble());
   }
 
@@ -138,13 +145,14 @@ extension DoubleExt on double{
     return ScreenUtil().setHeight(this.toDouble());
   }
 
-  double fs(){
+  double fs() {
     return ScreenUtil().setSp(this.toDouble());
   }
 
+  Radius get radius => Radius.circular(this);
 }
 
-extension IntExt on int{
+extension IntExt on int {
   double fw() {
     return ScreenUtil().setWidth(this);
   }
@@ -153,15 +161,15 @@ extension IntExt on int{
     return ScreenUtil().setHeight(this);
   }
 
-  double fs(){
+  double fs() {
     return ScreenUtil().setSp(this);
   }
+
+  Radius get radius => Radius.circular(this.toDouble());
 }
 
-
 ///widget拓展方法
-extension WidgetExt on Widget{
-
+extension WidgetExt on Widget {
   ///添加布局到Container
   Widget addToContainer({
     Key? key,
@@ -194,13 +202,17 @@ extension WidgetExt on Widget{
   }
 
   ///设置Colunm和Row控件权重
-  Widget setWeight(int weight){
-    return Expanded(flex: weight,child: this,);
+  Widget setWeight(int weight) {
+    return Expanded(
+      flex: weight,
+      child: this,
+    );
   }
 
   ///widget点击事件
-  Widget onTap(GestureTapCallback onTap,{Key? key,
-
+  Widget onTap(
+    GestureTapCallback onTap, {
+    Key? key,
     GestureTapCallback? onDoubleTap,
     GestureLongPressCallback? onLongPress,
     GestureTapDownCallback? onTapDown,
@@ -222,60 +234,64 @@ extension WidgetExt on Widget{
     FocusNode? focusNode,
     bool canRequestFocus = true,
     ValueChanged<bool>? onFocusChange,
-    bool autofocus = false,}) {
+    bool autofocus = false,
+  }) {
     FocusNode defaultNode = new FocusNode();
     return InkWell(
         child: this,
-        onTap: (){
+        onTap: () {
           onTap();
           // if(focusNode==null){
           //   defaultNode.requestFocus();
           // }
         },
-        onDoubleTap:onDoubleTap,
-        onLongPress:onLongPress,
-        onTapDown:onTapDown,
-        onTapCancel:onTapCancel,
-        onHighlightChanged:onHighlightChanged,
-        onHover:onHover,
-        focusColor:focusColor,
-        hoverColor:hoverColor,
-        highlightColor:highlightColor,
-        splashColor:splashColor,
-        splashFactory:splashFactory,
-        radius:radius,
-        borderRadius:borderRadius,
-        customBorder:customBorder,
-        enableFeedback:enableFeedback,
-        excludeFromSemantics:excludeFromSemantics,
-        focusNode:focusNode??defaultNode,
-        canRequestFocus:canRequestFocus,
-        onFocusChange:onFocusChange,
-        autofocus:autofocus);
+        onDoubleTap: onDoubleTap,
+        onLongPress: onLongPress,
+        onTapDown: onTapDown,
+        onTapCancel: onTapCancel,
+        onHighlightChanged: onHighlightChanged,
+        onHover: onHover,
+        focusColor: focusColor,
+        hoverColor: hoverColor,
+        highlightColor: highlightColor,
+        splashColor: splashColor,
+        splashFactory: splashFactory,
+        radius: radius,
+        borderRadius: borderRadius,
+        customBorder: customBorder,
+        enableFeedback: enableFeedback,
+        excludeFromSemantics: excludeFromSemantics,
+        focusNode: focusNode ?? defaultNode,
+        canRequestFocus: canRequestFocus,
+        onFocusChange: onFocusChange,
+        autofocus: autofocus);
   }
 
-
   ///转圆角
-  Widget toRound({BorderRadius borderRadius = BorderRadius.zero,CustomClipper<RRect>? clipper, Clip clipBehavior = Clip.antiAlias}){
+  Widget toRound(
+      {BorderRadius borderRadius = BorderRadius.zero,
+      CustomClipper<RRect>? clipper,
+      Clip clipBehavior = Clip.antiAlias}) {
     return ClipRRect(
-      borderRadius: borderRadius,clipBehavior: clipBehavior,
+      borderRadius: borderRadius,
+      clipBehavior: clipBehavior,
       clipper: clipper,
       child: this,
     );
   }
 
-  Widget toCircle({double borderWidth = 0,Color borderColor = Colors.transparent}){
+  Widget toCircle(
+      {double borderWidth = 0, Color borderColor = Colors.transparent}) {
     return ClipOval(
       child: this,
-    ).addToContainer(padding: EdgeInsets.all(borderWidth),
-    alignment: Alignment.center,
-    decoration: BoxDecoration(
-      color: borderColor,
-      shape: BoxShape.circle
-    ));
+    ).addToContainer(
+        padding: EdgeInsets.all(borderWidth),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(color: borderColor, shape: BoxShape.circle));
   }
 
-  Widget setLocation({double? left,double? right,double? top,double? bottom}){
+  Widget setLocation(
+      {double? left, double? right, double? top, double? bottom}) {
     return Positioned(
       left: left,
       right: right,
@@ -284,6 +300,4 @@ extension WidgetExt on Widget{
       child: this,
     );
   }
-
 }
-

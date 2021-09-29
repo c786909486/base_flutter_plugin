@@ -25,6 +25,7 @@ class ImageLoad extends StatelessWidget {
   final bool excludeFromSemantics;
   final bool isAntiAlias;
   final double scale;
+  final bool isAsset;
 
   ImageLoad(
     this.path, {
@@ -47,6 +48,7 @@ class ImageLoad extends StatelessWidget {
     this.isAntiAlias = false,
     this.scale = 1.0,
         this.placeholder,
+        this.isAsset = false
   });
 
   @override
@@ -94,37 +96,67 @@ class ImageLoad extends StatelessWidget {
             filterQuality: filterQuality,
             isAntiAlias: isAntiAlias,
           )
-        : Image.file(new File(path), scale: scale, frameBuilder: frameBuilder,
-            errorBuilder: (
+        : isAsset?Image.asset(path,scale: scale, frameBuilder: frameBuilder,
+        errorBuilder: (
             context,
             error,
             stackTrace,
-          ) {
-            return errorImage.isNullOrEmpty()
-                ? Container(
-                    width: width,
-                    height: height,
-                  )
-                : Image.asset(
-                    errorImage!,
-                    width: width,
-                    height: height,
-                  );
-          },
-            semanticLabel: semanticLabel,
-            excludeFromSemantics: excludeFromSemantics,
+            ) {
+          return errorImage.isNullOrEmpty()
+              ? Container(
             width: width,
             height: height,
-            color: color,
-            colorBlendMode: colorBlendMode,
-            fit: fit,
-            alignment: alignment,
-            repeat: repeat,
-            centerSlice: centerSlice,
-            matchTextDirection: matchTextDirection,
-            gaplessPlayback: gaplessPlayback,
-            filterQuality: filterQuality,
-            isAntiAlias: isAntiAlias);
+          )
+              : Image.asset(
+            errorImage!,
+            width: width,
+            height: height,
+          );
+        },
+        semanticLabel: semanticLabel,
+        excludeFromSemantics: excludeFromSemantics,
+        width: width,
+        height: height,
+        color: color,
+        colorBlendMode: colorBlendMode,
+        fit: fit,
+        alignment: alignment,
+        repeat: repeat,
+        centerSlice: centerSlice,
+        matchTextDirection: matchTextDirection,
+        gaplessPlayback: gaplessPlayback,
+        filterQuality: filterQuality,
+        isAntiAlias: isAntiAlias):Image.file(new File(path), scale: scale, frameBuilder: frameBuilder,
+        errorBuilder: (
+            context,
+            error,
+            stackTrace,
+            ) {
+          return errorImage.isNullOrEmpty()
+              ? Container(
+            width: width,
+            height: height,
+          )
+              : Image.asset(
+            errorImage!,
+            width: width,
+            height: height,
+          );
+        },
+        semanticLabel: semanticLabel,
+        excludeFromSemantics: excludeFromSemantics,
+        width: width,
+        height: height,
+        color: color,
+        colorBlendMode: colorBlendMode,
+        fit: fit,
+        alignment: alignment,
+        repeat: repeat,
+        centerSlice: centerSlice,
+        matchTextDirection: matchTextDirection,
+        gaplessPlayback: gaplessPlayback,
+        filterQuality: filterQuality,
+        isAntiAlias: isAntiAlias);
   }
 }
 

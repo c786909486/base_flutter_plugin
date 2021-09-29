@@ -27,6 +27,17 @@ class ScreenHelper{
   static ScreenUtil getScreenUtils(){
     return ScreenHelper.getScreenUtils();
   }
+
+
+  static double width(BuildContext context){
+
+    return MediaQuery.of(context).size.width;
+  }
+
+  static double height(BuildContext context){
+
+    return MediaQuery.of(context).size.height;
+  }
 }
 
 

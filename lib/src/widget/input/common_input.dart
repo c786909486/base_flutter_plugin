@@ -351,11 +351,7 @@ class _EditTextInputWidget extends State<EditTextInput> {
     showClear = widget.text.isNotEmpty;
     _keyborder = _getTextInputType();
     super.initState();
-    controller = TextEditingController.fromValue(TextEditingValue(
-        text: widget.text,
-        composing: TextRange.collapsed(widget.text.isNotEmpty ? 0 : -1),
-        selection: TextSelection.fromPosition(TextPosition(
-            offset: widget.text.length, affinity: TextAffinity.downstream))));
+
   }
 
   ///输入类型
@@ -405,6 +401,11 @@ class _EditTextInputWidget extends State<EditTextInput> {
 
   @override
   Widget build(BuildContext context) {
+    controller = TextEditingController.fromValue(TextEditingValue(
+        text: widget.text,
+        composing: TextRange.collapsed(widget.text.isNotEmpty ? 0 : -1),
+        selection: TextSelection.fromPosition(TextPosition(
+            offset: widget.text.length, affinity: TextAffinity.downstream))));
     return Stack(
       // crossAxisAlignment: CrossAxisAlignment.center,
       alignment: Alignment.center,

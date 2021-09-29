@@ -1,4 +1,5 @@
 library base_flutter;
+
 export 'package:base_flutter/src/utils/share_preference_utils.dart';
 export 'package:base_flutter/src/net/app_download_utils.dart';
 export 'package:base_flutter/src/net/http_utils.dart';
@@ -54,6 +55,7 @@ export 'package:cached_network_image/cached_network_image.dart';
 export 'package:provider/provider.dart';
 export 'package:base_flutter/src/widget/common_text.dart';
 export 'package:base_flutter/src/widget/common_widget.dart';
+export 'package:base_flutter/src/widget/show_image_page.dart';
 export 'package:base_flutter/src/utils/go_util.dart';
 export 'package:base_flutter/src/utils/cache_manage_utils.dart';
 export 'package:base_flutter/src/widget/image_loader_widget.dart';
@@ -68,14 +70,6 @@ export 'package:ionicons/ionicons.dart';
 export 'package:base_flutter/src/base_mvvm/base_list_view_model.dart';
 export 'package:base_flutter/src/widget/popup_widget.dart';
 export 'package:base_flutter/src/widget/expand_item_widget.dart';
-
-
-
-
-
-
-
-
-
-
+export 'package:photo_view/photo_view.dart';
+export 'package:photo_view/photo_view_gallery.dart';
 

@@ -10,33 +10,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_lifecycle/flutter_lifecycle.dart';
 import 'package:provider/provider.dart';
 
-
-enum LoadingState{
-  showContent,
-  showError,
-  showEmpty,
-  showLoading
-}
+enum LoadingState { showContent, showError, showEmpty, showLoading }
 
 @immutable
 abstract class BaseStatefulMvvmWidget extends StatefulWidget {
+  final Map<String, dynamic>? params;
 
-  final Map<String,dynamic>? params;
-
-  BaseStatefulMvvmWidget({Key? key,this.params}):super(key:key){
+  BaseStatefulMvvmWidget({Key? key, this.params}) : super(key: key) {
     _className = this.runtimeType.toString();
   }
-
 
   var _className = "";
 
   String get className => _className;
-
-
 }
 
-abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmWidget>
-    extends StateWithLifecycle<W> implements IBaseMvvmView {
+abstract class BaseMvvmState<M extends BaseViewModel,
+        W extends BaseStatefulMvvmWidget> extends StateWithLifecycle<W>
+    implements IBaseMvvmView {
   M? vm;
 
   M get viewModel => vm!;
@@ -45,23 +36,20 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
 
   bool _isShowDialog = false;
 
-
   String pageError = "";
-
 
   StreamSubscription? _subscription;
 
-  LoadingState get currentState => vm?.loadingState??LoadingState.showContent;
+  LoadingState get currentState => vm?.loadingState ?? LoadingState.showContent;
 
   BuildContext? buildContext;
 
   @override
   void initState() {
     super.initState();
-    if(BuildConfig.isDebug){
+    if (BuildConfig.isDebug) {
       Log.d('currentPage', widget.className);
     }
-
   }
 
   @override
@@ -73,88 +61,89 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
     });
   }
 
-  void addLoadingWidget({Widget? loadingWidget, Widget? errorWidget, Widget? emptyWidget}){
-    _loadingViewPlugin?.initWidget(loadingWidget: loadingWidget!,errorWidget: errorWidget!,emptyWidget: emptyWidget!);
+  void addLoadingWidget(
+      {Widget? loadingWidget, Widget? errorWidget, Widget? emptyWidget}) {
+    _loadingViewPlugin?.initWidget(
+        loadingWidget: loadingWidget!,
+        errorWidget: errorWidget!,
+        emptyWidget: emptyWidget!);
   }
 
-
-  void receiveMessage(SendMessageEvent event){
-    if(mounted&&vm!=null){
+  void receiveMessage(SendMessageEvent event) {
+    if (mounted && vm != null) {
       vm?.receiveMessage(event);
     }
   }
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
     buildContext = context;
-    return initProvider() ;
+    return initProvider();
   }
 
-  Widget initProvider(){
+  Widget initProvider() {
     return ChangeNotifierProvider<M>(
       create: (_) {
         vm = createViewModel();
-        Future.delayed(Duration(milliseconds: 1),(){
+        Future.delayed(Duration(milliseconds: 1), () {
           onViewModelCreated();
         });
-        return vm! ;
+        return vm!;
       },
-      child:Consumer<M>(builder: (_, provider, __) {
-        vm = provider;
-        _addBaseCallback();
+      child: Consumer<M>(
+        builder: (_, provider, __) {
+          vm = provider;
+          _addBaseCallback();
 
-        return buildRootView(context,createLoadingView()??Container());
-      },),
+          return buildRootView(context, createLoadingView() ?? Container());
+        },
+      ),
     );
   }
 
-  void _addBaseCallback(){
+  void _addBaseCallback() {
     vm?.addBaseEvent(toastEvent: (msg) {
-      if(mounted){
+      if (mounted) {
         showToast(msg);
       }
-    },showDialogEvent: (msg){
-      if(mounted){
+    }, showDialogEvent: (msg) {
+      if (mounted) {
         showLoadingDialog(msg);
       }
-    },hideDialogEvent: (){
-      if(mounted){
+    }, hideDialogEvent: () {
+      if (mounted) {
         hideDialog();
       }
-    },showLoadingEvent: (){
-      if(mounted){
+    }, showLoadingEvent: () {
+      if (mounted) {
         showLoading();
       }
-    },showErrorEvent: (msg){
-      if(mounted){
+    }, showErrorEvent: (msg) {
+      if (mounted) {
         showErrorPage(msg);
       }
-    },showEmptyEvent: (){
-     if(mounted){
-       showEmpty();
-     }
-    },finishRefreshEvent: (){
-      if(mounted){
+    }, showEmptyEvent: () {
+      if (mounted) {
+        showEmpty();
+      }
+    }, finishRefreshEvent: () {
+      if (mounted) {
         finishRefresh();
       }
-    },finishLoadMoreEvent: (){
-      if(mounted){
+    }, finishLoadMoreEvent: () {
+      if (mounted) {
         finishLoadMore();
       }
-    },finishEvent: (data){
-     if(mounted){
-       Navigator.of(context).pop(data);
-     }
-    },showContent: (){
-     if(mounted){
-       showContent();
-     }
-    },sendMessageEvent: (event){
-      if(mounted){
+    }, finishEvent: (data) {
+      if (mounted) {
+        Navigator.of(context).pop(data);
+      }
+    }, showContent: () {
+      if (mounted) {
+        showContent();
+      }
+    }, sendMessageEvent: (event) {
+      if (mounted) {
         eventBus.fire(event);
       }
     });
@@ -162,22 +151,22 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
 
   M createViewModel();
 
-
-  void onViewModelCreated(){
+  void onViewModelCreated() {
     vm?.onCreated();
   }
 
   ///创建根布局
-  Widget buildRootView(BuildContext context,Widget loadingContentWidget);
+  Widget buildRootView(BuildContext context, Widget loadingContentWidget);
 
-  Widget? createLoadingView(){
-    if(vm?.loadingState == LoadingState.showLoading){
+  Widget? createLoadingView() {
+    if (vm?.loadingState == LoadingState.showLoading) {
       return _loadingViewPlugin?.getLoadingWidget();
-    }else if(vm?.loadingState == LoadingState.showEmpty){
+    } else if (vm?.loadingState == LoadingState.showEmpty) {
       return _loadingViewPlugin?.getEmptyWidget(() => onRetryClick());
-    }else if(vm?.loadingState == LoadingState.showError){
-      return _loadingViewPlugin?.getErrorWidget(pageError, () => onRetryClick());
-    }else {
+    } else if (vm?.loadingState == LoadingState.showError) {
+      return _loadingViewPlugin?.getErrorWidget(
+          pageError, () => onRetryClick());
+    } else {
       return buildLoadingContentView();
     }
   }
@@ -190,20 +179,16 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
 
   ///结算加载更多
   @override
-  void finishLoadMore() {
-
-  }
+  void finishLoadMore() {}
 
   ///结束刷新
   @override
-  void finishRefresh() {
-
-  }
+  void finishRefresh() {}
 
   ///关闭加载弹窗
   @override
   void hideDialog() {
-    if(mounted&&_isShowDialog){
+    if (mounted && _isShowDialog) {
       _isShowDialog = false;
       Navigator.of(context).pop();
     }
@@ -212,7 +197,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   ///显示空白布局
   @override
   void showEmpty() {
-    if(mounted){
+    if (mounted) {
       setState(() {
         vm?.loadingState = LoadingState.showEmpty;
       });
@@ -222,7 +207,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   ///显示错误布局
   @override
   void showErrorPage(String error) {
-    if(mounted){
+    if (mounted) {
       setState(() {
         pageError = error;
         vm?.loadingState = LoadingState.showError;
@@ -233,7 +218,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   ///显示加载页面
   @override
   void showLoading() {
-    if(mounted){
+    if (mounted) {
       setState(() {
         vm?.loadingState = LoadingState.showLoading;
       });
@@ -241,8 +226,8 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
   }
 
   @override
-  void showContent(){
-    if(mounted){
+  void showContent() {
+    if (mounted) {
       setState(() {
         vm?.loadingState = LoadingState.showContent;
       });
@@ -251,13 +236,13 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
 
   @override
   void showLoadingDialog(String msg) {
-    if(mounted&&!_isShowDialog){
+    if (mounted && !_isShowDialog) {
       _isShowDialog = true;
-      try{
+      try {
         showTransparentDialog(
             context: context,
             barrierDismissible: true,
-            builder:(context) {
+            builder: (context) {
               return WillPopScope(
                 onWillPop: () async {
                   // 拦截到返回键，证明dialog被手动关闭
@@ -266,9 +251,8 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
                 },
                 child: ProgressDialog(hintText: msg),
               );
-            }
-        );
-      }catch(e){
+            });
+      } catch (e) {
         /// 异常原因主要是页面没有build完成就调用Progress。
         print(e);
       }
@@ -277,10 +261,10 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
 
   @override
   void showToast(String msg) {
-    ToastUtils.shotToast(msg,context: context,alignment: Alignment.center);
+    ToastUtils.shotToast(msg, context: context, alignment: Alignment.center);
   }
 
-  void onCloseDialog(){
+  void onCloseDialog() {
     _isShowDialog = false;
     vm?.onDialogDismiss();
   }
@@ -296,14 +280,12 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
     vm?.onDispose();
     _subscription?.cancel();
     super.onDestroy();
-
   }
 
   @override
   void onResume() {
     vm?.onResume();
     super.onResume();
-
   }
 
   @override
@@ -312,31 +294,37 @@ abstract class BaseMvvmState<M extends BaseViewModel,W extends BaseStatefulMvvmW
     super.onPause();
   }
 
-  void finish({dynamic result}){
-    Navigator.pop(context,result);
+  void finish({dynamic result}) {
+    Navigator.pop(context, result);
   }
 }
 
-abstract class BaseMvvmListState<M extends BaseListViewModel,W extends BaseStatefulMvvmWidget> extends BaseMvvmState<M,W>{
-
+abstract class BaseMvvmListState<M extends BaseListViewModel,
+    W extends BaseStatefulMvvmWidget> extends BaseMvvmState<M, W> {
   @override
   Widget? buildLoadingContentView() {
-    return SmartRefresher(controller: viewModel.controller,
-    onRefresh: viewModel.requestRefresh,
-    onLoading: viewModel.requestLoadMore,
-    enablePullUp: canPullUp,
-    child: ListView.separated(itemBuilder: (context,index){
-      return createItemWidget(index);
-    }, separatorBuilder: (context,index){
-      return  separatorDivider;
-    }, itemCount: viewModel.listItems.length),);
+    return SmartRefresher(
+      controller: viewModel.controller,
+      onRefresh: viewModel.requestRefresh,
+      onLoading: viewModel.requestLoadMore,
+      enablePullDown: true,
+      enablePullUp: canPullUp,
+      child: ListView.separated(
+          itemBuilder: (context, index) {
+            return createItemWidget(index);
+          },
+          separatorBuilder: (context, index) {
+            return separatorDivider;
+          },
+          itemCount: viewModel.listItems.length),
+    );
   }
 
   bool get canPullUp => false;
 
   Widget get separatorDivider => Container();
 
-  Widget createItemWidget( int index);
+  Widget createItemWidget(int index);
 
   @override
   void onRetryClick() {
@@ -344,7 +332,29 @@ abstract class BaseMvvmListState<M extends BaseListViewModel,W extends BaseState
   }
 }
 
-class CommonViewModel extends BaseViewModel{
-  CommonViewModel(BuildContext context) : super(context);
+abstract class BaseMvvmRefreshState<M extends BaseListViewModel,
+    W extends BaseStatefulMvvmWidget> extends BaseMvvmState<M, W> {
+  @override
+  Widget? buildLoadingContentView() {
+    return SmartRefresher(
+        controller: viewModel.controller,
+        onRefresh: viewModel.requestRefresh,
+        onLoading: viewModel.requestLoadMore,
+        enablePullDown: true,
+        enablePullUp: canPullUp,
+        child: createScrollWidget());
+  }
 
+  bool get canPullUp => false;
+
+  Widget createScrollWidget();
+
+  @override
+  void onRetryClick() {
+    viewModel.requestRefresh();
+  }
+}
+
+class CommonViewModel extends BaseViewModel {
+  CommonViewModel(BuildContext context) : super(context);
 }
