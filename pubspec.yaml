@@ -15,24 +15,17 @@ dependencies:
   #本地存储
   shared_preferences: ^2.0.6
   sp_util: ^2.0.3
-  #屏幕适配
-  flutter_screenutil: ^5.0.0-nullsafety.11
-  # dio网络请求框架
-  dio: ^4.0.0
-  # dio cookie管理
-  dio_cookie_manager: ^2.0.0
 
-  cached_network_image: ^3.1.0-alpha.1
+
+#  cached_network_image: ^2.5.1
 
 
   # 本地路径管理
-  path_provider: ^2.0.2
-#  # aes加密库
-#  cipher2: ^0.3.5
+#  path_provider: ^2.0.2
+
   #状态管理
   provider: ^6.0.0
-  #权限获取
-  permission_handler: ^8.2.0
+
   #刷新框架
   pull_to_refresh: ^2.0.0
   #消息总线 eventBus
@@ -46,7 +39,6 @@ dependencies:
 
   ionicons: ^0.1.2
 
-  photo_view: ^0.12.0
 
 
 

@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:base_flutter/base_flutter.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 
 class ImageLoad extends StatelessWidget {
@@ -55,7 +54,7 @@ class ImageLoad extends StatelessWidget {
   Widget build(BuildContext context) {
     return path.startsWith("http") || path.startsWith("https")
         ? Image(
-            image: CachedNetworkImageProvider(path, scale: scale),
+            image: _cacheImageProvider==null?NetworkImage(path,scale: scale):_cacheImageProvider!(path,scale: scale),
             frameBuilder: frameBuilder,
             loadingBuilder: loadingBuilder!=null?loadingBuilder:placeholder.isNullOrEmpty()?null:(context,child,process){
               if(process==null){
@@ -158,7 +157,17 @@ class ImageLoad extends StatelessWidget {
         filterQuality: filterQuality,
         isAntiAlias: isAntiAlias);
   }
+
+
+  static ImageProviderBuilder? _cacheImageProvider;
+
+  static void initCacheProvider(ImageProviderBuilder cacheImageProvider){
+    _cacheImageProvider = cacheImageProvider;
+  }
+
 }
+
+typedef ImageProviderBuilder = ImageProvider Function(String url,{double scale});
 
 String formatImage(String name, {String format = ".png",String parentPath = "images"}) {
   return "${parentPath}/$name$format";
