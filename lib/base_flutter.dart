@@ -33,6 +33,7 @@ export 'package:base_flutter/src/widget/picker/choose_item_model.dart';
 export 'package:base_flutter/src/widget/picker/choose_item_page.dart';
 export 'package:base_flutter/src/widget/picker/data_picker_view.dart';
 export 'package:base_flutter/src/widget/popup_widget.dart';
+export 'package:base_flutter/src/utils/net_error_utils.dart';
 export 'package:base_flutter/src/widget/progress_dialog.dart';
 export 'package:base_flutter/src/widget/timePicker/date_format.dart';
 export 'package:base_flutter/src/widget/timePicker/date_model.dart';
@@ -58,4 +59,3 @@ export 'package:pull_to_refresh/src/internals/refresh_physics.dart';
 export 'package:pull_to_refresh/src/smart_refresher.dart';
 export 'package:shared_preferences/shared_preferences.dart';
 export 'package:sp_util/sp_util.dart';
-
