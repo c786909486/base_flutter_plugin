@@ -101,7 +101,7 @@ abstract class BaseListViewModel<T> extends BaseViewModel {
 
     try {
       var list = await requestListData();
-      controller.refreshCompleted();
+      onRefreshComplete();
       if (list.isNotEmpty) {
         page++;
         listItems = list;
@@ -111,7 +111,7 @@ abstract class BaseListViewModel<T> extends BaseViewModel {
         showEmptyState();
       }
     } catch (e) {
-      controller.refreshCompleted();
+      onRefreshComplete();
       showErrorState(e.toNetError());
       if (BuildConfig.isDebug&&mounted) {
         Log.d('requestError', e.toString(), current: StackTrace.current);
@@ -122,7 +122,7 @@ abstract class BaseListViewModel<T> extends BaseViewModel {
   Future<void> requestLoadMore() async {
     try {
       var list = await requestListData();
-      controller.loadComplete();
+      onLoadMoreComplete();
       if (list.isNotEmpty) {
         page++;
         listItems.addAll(list);
@@ -132,11 +132,19 @@ abstract class BaseListViewModel<T> extends BaseViewModel {
         showToast("暂无更多数据");
       }
     } catch (e) {
-      controller.loadComplete();
+      onLoadMoreComplete();
       showToast(e.toNetError());
       if (BuildConfig.isDebug&&mounted) {
         Log.d('requestError', e.toString(), current: StackTrace.current);
       }
     }
+  }
+
+  void onRefreshComplete(){
+    controller.refreshCompleted();
+  }
+
+  void onLoadMoreComplete(){
+    controller.loadComplete();
   }
 }
