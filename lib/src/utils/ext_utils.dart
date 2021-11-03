@@ -151,7 +151,7 @@ extension DoubleExt on double {
 
   Radius get radius => Radius.circular(this);
 
-  BorderRadius get borderRadius => BorderRadius.circular(this)
+  BorderRadius get borderRadius => BorderRadius.circular(this);
 }
 
 extension IntExt on int {
