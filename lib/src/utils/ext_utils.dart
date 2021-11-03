@@ -150,6 +150,8 @@ extension DoubleExt on double {
   }
 
   Radius get radius => Radius.circular(this);
+
+  BorderRadius get borderRadius => BorderRadius.circular(this)
 }
 
 extension IntExt on int {
@@ -166,6 +168,9 @@ extension IntExt on int {
   }
 
   Radius get radius => Radius.circular(this.toDouble());
+
+  BorderRadius get borderRadius => BorderRadius.circular(this.toDouble());
+
 }
 ///widget拓展方法
 extension WidgetExt on Widget {
