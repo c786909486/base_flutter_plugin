@@ -239,15 +239,20 @@ extension WidgetExt on Widget {
     bool canRequestFocus = true,
     ValueChanged<bool>? onFocusChange,
     bool autofocus = false,
+        BuildContext? context,
   }) {
     FocusNode defaultNode = new FocusNode();
     return InkWell(
         child: this,
         onTap: () {
+          if(context!=null){
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus &&
+                currentFocus.focusedChild != null) {
+              FocusManager.instance.primaryFocus!.unfocus(disposition: UnfocusDisposition.scope);
+            }
+          }
           onTap();
-          // if(focusNode==null){
-          //   defaultNode.requestFocus();
-          // }
         },
         onDoubleTap: onDoubleTap,
         onLongPress: onLongPress,
