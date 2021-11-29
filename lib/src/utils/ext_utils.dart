@@ -239,19 +239,17 @@ extension WidgetExt on Widget {
     bool canRequestFocus = true,
     ValueChanged<bool>? onFocusChange,
     bool autofocus = false,
-        BuildContext? context,
+        bool requestFocus = true
+
   }) {
     FocusNode defaultNode = new FocusNode();
     return InkWell(
         child: this,
         onTap: () {
-          if(context!=null){
-            FocusScopeNode currentFocus = FocusScope.of(context);
-            if (!currentFocus.hasPrimaryFocus &&
-                currentFocus.focusedChild != null) {
-              FocusManager.instance.primaryFocus!.unfocus(disposition: UnfocusDisposition.scope);
-            }
+          if(requestFocus){
+            (focusNode??defaultNode).requestFocus(FocusNode());
           }
+
           onTap();
         },
         onDoubleTap: onDoubleTap,
@@ -309,4 +307,8 @@ extension WidgetExt on Widget {
       child: this,
     );
   }
+}
+
+removeFocus(BuildContext context){
+  FocusScope.of(context).unfocus();
 }

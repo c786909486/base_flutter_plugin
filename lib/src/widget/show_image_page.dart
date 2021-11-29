@@ -16,6 +16,7 @@ class ShowImagePage extends StatelessWidget {
   Widget build(BuildContext context) {
     PageController controller = PageController(initialPage: position);
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
           Container(

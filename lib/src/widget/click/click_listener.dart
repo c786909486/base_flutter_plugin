@@ -1,11 +1,14 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+
 typedef OnEventListener = void Function(Map<String, dynamic>? event);
 
 void Function() onClick(Function func,
     [num delyTime = 1000,
     Map<String, dynamic>? event]) {
   num lastClickTime = 0;
+
 
   bool Function() isFastClick = () {
     var time = DateTime.now().millisecondsSinceEpoch;

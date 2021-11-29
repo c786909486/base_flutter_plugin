@@ -51,6 +51,13 @@ abstract class BaseListViewModel<T> extends BaseViewModel {
            if(click!=null){
              click(startDateStr);
            }
+         }else{
+           startDateTime = date;
+           startDateStr = startDateTime!.toDateStr(formats);
+           notifyListeners();
+           if(click!=null){
+             click(startDateStr);
+           }
          }
         });
   }
@@ -73,6 +80,13 @@ abstract class BaseListViewModel<T> extends BaseViewModel {
               showToast('结束时间不可早于开始时间');
               return;
             }
+            endDateTime = date;
+            endDateStr = endDateTime!.toDateStr(formats);
+            notifyListeners();
+            if(click!=null){
+              click(endDateStr);
+            }
+          }else{
             endDateTime = date;
             endDateStr = endDateTime!.toDateStr(formats);
             notifyListeners();
