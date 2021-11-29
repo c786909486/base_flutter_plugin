@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:base_flutter/base_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 extension DateExt on DateTime {
   String toDateStr(List<String> format, {LocaleType locale = LocaleType.zh}) {
@@ -116,29 +115,6 @@ extension StringExt2 on String? {
 
 ///double适配屏幕尺寸
 extension DoubleExt on double {
-  double fitWidth() {
-    return ScreenUtil().setWidth(this.toDouble());
-  }
-
-  double fitHeight() {
-    return ScreenUtil().setHeight(this.toDouble());
-  }
-
-  double fitSp() {
-    return ScreenUtil().setSp(this.toDouble());
-  }
-
-  double fw() {
-    return ScreenUtil().setWidth(this.toDouble());
-  }
-
-  double fh() {
-    return ScreenUtil().setHeight(this.toDouble());
-  }
-
-  double fs() {
-    return ScreenUtil().setSp(this.toDouble());
-  }
 
   Radius get radius => Radius.circular(this);
 
@@ -146,17 +122,6 @@ extension DoubleExt on double {
 }
 
 extension IntExt on int {
-  double fw() {
-    return ScreenUtil().setWidth(this);
-  }
-
-  double fh() {
-    return ScreenUtil().setHeight(this);
-  }
-
-  double fs() {
-    return ScreenUtil().setSp(this);
-  }
 
   Radius get radius => Radius.circular(this.toDouble());
 
