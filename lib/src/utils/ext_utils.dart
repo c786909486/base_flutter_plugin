@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:base_flutter/base_flutter.dart';
-import 'package:base_flutter/src/utils/net_error_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 extension DateExt on DateTime {
   String toDateStr(List<String> format, {LocaleType locale = LocaleType.zh}) {
@@ -72,11 +72,6 @@ extension StringExt on String {
   }
 }
 
-extension dynamicExt on dynamic {
-  String toNetError() {
-    return NetErrorUtils.getNetError(this);
-  }
-}
 
 extension StringExt2 on String? {
   ///json字符串转map
@@ -117,24 +112,57 @@ extension StringExt2 on String? {
   }
 }
 
-extension MapExt on Map<String, dynamic> {
-  // Map<String, dynamic> toJsonMap() {
-  //   return RequestParams(this);
-  // }
-}
+
 
 ///double适配屏幕尺寸
 extension DoubleExt on double {
+  double fitWidth() {
+    return ScreenUtil().setWidth(this.toDouble());
+  }
 
+  double fitHeight() {
+    return ScreenUtil().setHeight(this.toDouble());
+  }
+
+  double fitSp() {
+    return ScreenUtil().setSp(this.toDouble());
+  }
+
+  double fw() {
+    return ScreenUtil().setWidth(this.toDouble());
+  }
+
+  double fh() {
+    return ScreenUtil().setHeight(this.toDouble());
+  }
+
+  double fs() {
+    return ScreenUtil().setSp(this.toDouble());
+  }
 
   Radius get radius => Radius.circular(this);
+
+  BorderRadius get borderRadius => BorderRadius.circular(this);
 }
 
 extension IntExt on int {
+  double fw() {
+    return ScreenUtil().setWidth(this);
+  }
+
+  double fh() {
+    return ScreenUtil().setHeight(this);
+  }
+
+  double fs() {
+    return ScreenUtil().setSp(this);
+  }
 
   Radius get radius => Radius.circular(this.toDouble());
-}
 
+  BorderRadius get borderRadius => BorderRadius.circular(this.toDouble());
+
+}
 ///widget拓展方法
 extension WidgetExt on Widget {
   ///添加布局到Container
@@ -202,15 +230,18 @@ extension WidgetExt on Widget {
     bool canRequestFocus = true,
     ValueChanged<bool>? onFocusChange,
     bool autofocus = false,
+        bool requestFocus = true
+
   }) {
     FocusNode defaultNode = new FocusNode();
     return InkWell(
         child: this,
         onTap: () {
+          if(requestFocus){
+            (focusNode??defaultNode).requestFocus(FocusNode());
+          }
+
           onTap();
-          // if(focusNode==null){
-          //   defaultNode.requestFocus();
-          // }
         },
         onDoubleTap: onDoubleTap,
         onLongPress: onLongPress,
@@ -267,4 +298,8 @@ extension WidgetExt on Widget {
       child: this,
     );
   }
+}
+
+removeFocus(BuildContext context){
+  FocusScope.of(context).unfocus();
 }

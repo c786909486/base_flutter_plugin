@@ -310,6 +310,7 @@ abstract class BaseMvvmListState<M extends BaseListViewModel,
       enablePullDown: true,
       enablePullUp: canPullUp,
       child: ListView.separated(
+        padding: listPadding,
           itemBuilder: (context, index) {
             return createItemWidget(index);
           },
@@ -325,6 +326,8 @@ abstract class BaseMvvmListState<M extends BaseListViewModel,
   Widget get separatorDivider => Container();
 
   Widget createItemWidget(int index);
+
+  EdgeInsets get listPadding => EdgeInsets.zero;
 
   @override
   void onRetryClick() {
