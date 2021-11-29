@@ -163,6 +163,12 @@ extension IntExt on int {
   BorderRadius get borderRadius => BorderRadius.circular(this.toDouble());
 
 }
+
+extension dynamicExt on dynamic {
+  String toNetError() {
+    return NetErrorUtils.getNetError(this);
+  }
+}
 ///widget拓展方法
 extension WidgetExt on Widget {
   ///添加布局到Container
