@@ -9,9 +9,9 @@ class ScreenHelper{
     _needFitScreen = open;
   }
 
-  static void initHelper(BoxConstraints constraints,{Orientation orientation = Orientation.portrait,double width = 360,double height = 690,bool allowFontScaling = false}){
+  static void initHelper(BoxConstraints constraints,{BuildContext? context,Orientation orientation = Orientation.portrait,double width = 360,double height = 690,bool allowFontScaling = false}){
     if(_needFitScreen){
-      ScreenUtil.init(constraints,orientation: orientation,designSize: Size(width, height));
+      ScreenUtil.init(constraints,orientation: orientation,context: context,designSize: Size(width, height));
     }
   }
 
