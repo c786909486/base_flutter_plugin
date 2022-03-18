@@ -122,19 +122,16 @@ class _ITextFieldState extends State<ITextField> {
     ] : null;
   }
 
+
+  late TextEditingController controller;
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController _controller = new TextEditingController.fromValue(
-        TextEditingValue(
-            text: _inputText,
-            selection: new TextSelection.fromPosition(TextPosition(
-                affinity: TextAffinity.downstream,
-                offset: _inputText.length))));
     TextField textField = widget.needDelete ? TextField(
       autofocus: widget.autofocus,
       focusNode: widget.focusNode,
       onSubmitted: widget.onSubmitted,
-      controller: _controller,
+      controller: controller,
       textInputAction: widget.textInputAction,
       textAlign: widget.textAlign,
       decoration: InputDecoration(
@@ -165,6 +162,7 @@ class _ITextFieldState extends State<ITextField> {
             onPressed: () {
               setState(() {
                 _inputText = "";
+                controller.clear();
                 _hasdeleteIcon = (_inputText.isNotEmpty);
                 widget.fieldCallBack(_inputText);
               });
@@ -192,7 +190,7 @@ class _ITextFieldState extends State<ITextField> {
       focusNode: widget.focusNode,
       onSubmitted: widget.onSubmitted,
       textAlign: widget.textAlign,
-      controller: _controller,
+      controller: controller,
       textInputAction: widget.textInputAction,
       decoration: InputDecoration(
         labelText: widget.labelText,
@@ -235,5 +233,11 @@ class _ITextFieldState extends State<ITextField> {
     } else {
       _hasdeleteIcon = false;
     }
+    controller = new TextEditingController.fromValue(
+        TextEditingValue(
+            text: _inputText,
+            selection: new TextSelection.fromPosition(TextPosition(
+                affinity: TextAffinity.downstream,
+                offset: _inputText.length))));
   }
 }
