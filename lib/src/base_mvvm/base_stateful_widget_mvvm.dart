@@ -7,7 +7,7 @@ import 'package:base_flutter/src/message/message_event.dart';
 import 'package:base_flutter/src/widget/loading_view_plugin.dart';
 import 'package:base_flutter/src/widget/progress_dialog.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_lifecycle/flutter_lifecycle.dart';
+import 'package:flutterlifecyclehooks/flutterlifecyclehooks.dart';
 import 'package:provider/provider.dart';
 
 enum LoadingState { showContent, showError, showEmpty, showLoading }
@@ -26,7 +26,7 @@ abstract class BaseStatefulMvvmWidget extends StatefulWidget {
 }
 
 abstract class BaseMvvmState<M extends BaseViewModel,
-        W extends BaseStatefulMvvmWidget> extends StateWithLifecycle<W>
+        W extends BaseStatefulMvvmWidget> extends State<W> with LifecycleMixin
     implements IBaseMvvmView {
   M? vm;
 
@@ -51,11 +51,11 @@ abstract class BaseMvvmState<M extends BaseViewModel,
     if (BuildConfig.isDebug) {
       Log.d('currentPage', widget.className);
     }
+    onCreate();
   }
 
   @override
   void onCreate() {
-    super.onCreate();
     _loadingViewPlugin = LoadingViewPlugin(context);
     _subscription = eventBus.on<SendMessageEvent>().listen((event) {
       receiveMessage(event);
@@ -273,27 +273,26 @@ abstract class BaseMvvmState<M extends BaseViewModel,
 
   @override
   void dispose() {
+    onDestroy();
     super.dispose();
   }
 
-  @override
   void onDestroy() {
     ///销毁viewmodel
     vm?.onDispose();
     _subscription?.cancel();
-    super.onDestroy();
+
   }
 
   @override
   void onResume() {
     vm?.onResume();
-    super.onResume();
   }
 
   @override
   void onPause() {
     vm?.onPause();
-    super.onPause();
+
   }
 
   void finish({dynamic result}) {

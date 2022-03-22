@@ -41,7 +41,6 @@ export 'package:base_flutter/src/widget/timePicker/datetime_picker_theme.dart';
 export 'package:base_flutter/src/widget/timePicker/datetime_util.dart';
 export 'package:base_flutter/src/widget/timePicker/flutter_datetime_picker.dart';
 export 'package:base_flutter/src/widget/timePicker/i18n_model.dart';
-export 'package:flutter_lifecycle/flutter_lifecycle.dart';
 export 'package:ionicons/ionicons.dart';
 export 'package:path_provider_linux/path_provider_linux.dart';
 export 'package:provider/provider.dart';

@@ -32,9 +32,10 @@ dependencies:
   #消息总线 eventBus
   event_bus: ^2.0.0
   #生命周期
-  flutter_lifecycle:
-    git:
-      url: 'https://github.com/c786909486/flutter_lifecycle.git'
+#  flutter_lifecycle:
+#    git:
+#      url: 'https://github.com/c786909486/flutter_lifecycle.git'
+  flutterlifecyclehooks: ^2.0.0
   #时选择器
   flutter_datetime_picker: ^1.2.5
 
