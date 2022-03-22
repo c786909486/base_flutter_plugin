@@ -7,10 +7,15 @@ import 'package:photo_view/photo_view_gallery.dart';
 import '../../base_flutter.dart';
 
 class ShowImagePage extends StatelessWidget {
-  final List<String> galleryItems;
-  final int position;
+  List<String> galleryItems;
+  int position;
+  String image;
 
-  ShowImagePage(this.galleryItems, {this.position = 0});
+  ShowImagePage(this.galleryItems, {this.position = 0,this.image = ''}){
+    if(!image.isNullOrEmpty()){
+      position = galleryItems.indexOf(image);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,33 +26,33 @@ class ShowImagePage extends StatelessWidget {
         children: [
           Container(
               child: PhotoViewGallery.builder(
-            scrollPhysics: const BouncingScrollPhysics(),
-            builder: (BuildContext context, int index) {
-              var image = galleryItems[index];
-              return PhotoViewGalleryPageOptions(
-                imageProvider: getImageProvider(image),
-                initialScale: PhotoViewComputedScale.contained,
-                heroAttributes:
+                scrollPhysics: const BouncingScrollPhysics(),
+                builder: (BuildContext context, int index) {
+                  var image = galleryItems[index];
+                  return PhotoViewGalleryPageOptions(
+                    imageProvider: getImageProvider(image),
+                    initialScale: PhotoViewComputedScale.contained,
+                    heroAttributes:
                     PhotoViewHeroAttributes(tag: galleryItems[index]),
-              );
-            },
-            itemCount: galleryItems.length,
-            loadingBuilder: (context, event) => Center(
-              child: Container(
-                width: 20.0,
-                height: 20.0,
-                child: CircularProgressIndicator(
-                  value: event == null
-                      ? 0
-                      : event.cumulativeBytesLoaded /
+                  );
+                },
+                itemCount: galleryItems.length,
+                loadingBuilder: (context, event) => Center(
+                  child: Container(
+                    width: 20.0,
+                    height: 20.0,
+                    child: CircularProgressIndicator(
+                      value: event == null
+                          ? 0
+                          : event.cumulativeBytesLoaded /
                           (event.expectedTotalBytes ?? 1),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            pageController: controller,
-          )),
+                pageController: controller,
+              )),
           SafeArea(child: IconButton(
-            splashColor: Colors.white,
+              splashColor: Colors.white,
               onPressed: () {
                 Navigator.pop(context);
               },
