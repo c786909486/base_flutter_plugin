@@ -84,7 +84,7 @@ packages:
       name: dio
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.0.4"
+    version: "4.0.6"
   dio_cookie_manager:
     dependency: "direct main"
     description:
@@ -146,15 +146,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.5.1"
-  flutter_lifecycle:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "9fd7808f98593dc3ed0f2eb2ccfa2cc0ab8a46d0"
-      url: "https://github.com/c786909486/flutter_lifecycle.git"
-    source: git
-    version: "0.0.1"
   flutter_localizations:
     dependency: transitive
     description: flutter
@@ -177,6 +168,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutterlifecyclehooks:
+    dependency: "direct main"
+    description:
+      name: flutterlifecyclehooks
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.0"
   http:
     dependency: transitive
     description:

@@ -37,8 +37,6 @@ export 'package:pull_to_refresh/src/internals/refresh_localizations.dart';
 
 export 'package:dio/dio.dart';
 
-export 'package:flutter_lifecycle/flutter_lifecycle.dart';
-
 export 'package:base_flutter/src/widget/timePicker/date_format.dart';
 export 'package:base_flutter/src/widget/timePicker/datetime_picker_theme.dart';
 export 'package:base_flutter/src/widget/timePicker/datetime_util.dart';
