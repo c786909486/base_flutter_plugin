@@ -54,7 +54,7 @@ abstract class BaseViewModel with ChangeNotifier {
   EventPostMethodWithMsg? _showErrorEvent;
 
   ///显示空页面
-  EventPostMethod? _showEmptyEvent;
+  EventPostMethodWithMsg? _showEmptyEvent;
 
   ///显示正文内容
   EventPostMethod? _showContent;
@@ -79,7 +79,7 @@ abstract class BaseViewModel with ChangeNotifier {
     EventPostMethod? hideDialogEvent,
     EventPostMethod? showLoadingEvent,
     EventPostMethodWithMsg? showErrorEvent,
-    EventPostMethod? showEmptyEvent,
+    EventPostMethodWithMsg? showEmptyEvent,
     EventPostMethod? showContent,
     EventPostMethod? finishRefreshEvent,
     EventPostMethod? finishLoadMoreEvent,
@@ -123,8 +123,8 @@ abstract class BaseViewModel with ChangeNotifier {
     _showErrorEvent!(error);
   }
 
-  void showEmptyState(){
-    _showEmptyEvent!();
+  void showEmptyState({String msg = "暂无数据"}){
+    _showEmptyEvent!(msg);
   }
 
   void finishRefresh(){

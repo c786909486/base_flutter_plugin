@@ -37,6 +37,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,
   bool _isShowDialog = false;
 
   String pageError = "";
+  String emptyMsg = "";
 
   StreamSubscription? _subscription;
 
@@ -122,9 +123,9 @@ abstract class BaseMvvmState<M extends BaseViewModel,
       if (mounted) {
         showErrorPage(msg);
       }
-    }, showEmptyEvent: () {
+    }, showEmptyEvent: (msg) {
       if (mounted) {
-        showEmpty();
+        showEmpty(msg: msg);
       }
     }, finishRefreshEvent: () {
       if (mounted) {
@@ -196,9 +197,10 @@ abstract class BaseMvvmState<M extends BaseViewModel,
 
   ///显示空白布局
   @override
-  void showEmpty() {
+  void showEmpty({String msg = ""}) {
     if (mounted) {
       setState(() {
+        emptyMsg = msg;
         vm?.loadingState = LoadingState.showEmpty;
       });
     }
