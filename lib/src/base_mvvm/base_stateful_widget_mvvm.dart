@@ -51,11 +51,17 @@ abstract class BaseMvvmState<M extends BaseViewModel,
     if (BuildConfig.isDebug) {
       Log.d('currentPage', widget.className);
     }
-    onCreate();
   }
 
   @override
+  void onContextReady() {
+
+    onCreate();
+    super.onContextReady();
+  }
+
   void onCreate() {
+    BuildConfig.pageList.add(widget);
     _loadingViewPlugin = LoadingViewPlugin(context);
     _subscription = eventBus.on<SendMessageEvent>().listen((event) {
       receiveMessage(event);
@@ -280,6 +286,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,
   void onDestroy() {
     ///销毁viewmodel
     vm?.onDispose();
+    BuildConfig.pageList.remove(widget);
     _subscription?.cancel();
 
   }

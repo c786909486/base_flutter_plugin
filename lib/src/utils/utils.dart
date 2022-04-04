@@ -5,6 +5,8 @@ class BuildConfig {
   static bool _inProduction = const bool.fromEnvironment("dart.vm.product");
 
   static bool get isDebug => !_inProduction;
+
+  static List<Widget> pageList = [];
 }
 
 String getImagePath(String name,
