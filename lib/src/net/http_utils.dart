@@ -25,10 +25,11 @@ class HttpGo {
 
   String base_url = "";
 
-  late Dio dio;
+  Dio? dio;
 
   static HttpGo? _instance;
-  static HttpGo get instance => _instance??HttpGogetInstance();
+
+  static HttpGo get instance => _instance ?? HttpGogetInstance();
 
   BaseOptions? options;
 
@@ -43,7 +44,7 @@ class HttpGo {
 
   void setOptions(BaseOptions options) {
     this.options = options;
-    dio.options = this.options!;
+    dio?.options = this.options!;
   }
 
   HttpGo({baseUrl}) {
@@ -52,7 +53,7 @@ class HttpGo {
     options = new BaseOptions(
 //请求基地址,可以包含子路径
 
-      baseUrl: baseUrl ?? base_url,
+      baseUrl: base_url,
 
       //连接服务器超时时间，单位是毫秒.
 
@@ -72,16 +73,28 @@ class HttpGo {
 
       responseType: ResponseType.json,
     );
+   _initDio();
+    //添加拦截器
+    setCookie();
+  }
 
+  void _initDio(){
+
+    Interceptors? interceptors;
+    if(dio!=null){
+      interceptors =  dio!.interceptors;
+    }
     dio = Dio(options);
+    if(interceptors!=null){
+      dio!.interceptors.addAll(interceptors);
+    }
 
 //    dio.interceptors.add(CookieManager(CookieJar()));
-    setCookie();
-    //添加拦截器
+
   }
 
   void addInterceptor(InterceptorsWrapper wrapper) {
-    dio.interceptors.add(wrapper);
+    dio?.interceptors.add(wrapper);
   }
 
   ///设置cookie
@@ -94,7 +107,7 @@ class HttpGo {
       Directory appDocDir = await getApplicationDocumentsDirectory();
       String dir = appDocDir.path + "/.cookies/";
       var cookieJar = PersistCookieJar(storage: FileStorage(dir));
-      dio.interceptors.add(CookieManager(cookieJar));
+      dio?.interceptors.add(CookieManager(cookieJar));
     }
   }
 
@@ -106,10 +119,11 @@ class HttpGo {
     if (kIsWeb) {
       return;
     }
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+    _initDio();
+    (dio?.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         (client) {
       client.findProxy = (url) {
-        return "PROXY ${host}:${port.toString()}";
+        return host.isNotEmpty ? "PROXY ${host}:${port.toString()}" : "DIRECT";
       };
 
       if (ignoreCer) {
@@ -132,7 +146,7 @@ class HttpGo {
       onRequestSuccess<T>? successListener,
       onRequestFail? errorListener}) async {
     try {
-      Response<T> response = await dio.post<T>(url,
+      Response<T> response = await dio!.post<T>(url,
           data: data, options: options, cancelToken: cancelToken);
 
       successListener!(response);
@@ -143,33 +157,50 @@ class HttpGo {
   }
 
   Future<Map> postData(
+    String url, {
+    data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    try {
+      var response = await dio!.post(url,
+          data: data,
+          options: options,
+          cancelToken: cancelToken,
+          queryParameters: queryParameters,
+          onSendProgress: onSendProgress,
+          onReceiveProgress: onReceiveProgress);
+      if (response.data is String) {
+        return response.data.toString().toMap();
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+
+  Future<Map> getData(
     url, {
     data,
     options,
     cancelToken,
   }) async {
-    var response = await dio.post(url,
-        data: data, options: options, cancelToken: cancelToken);
-    if(response.data is String){
-      return Future.value(response.data.toString().toMap());
-    }else{
-      return Future.value(response.data);
+    try {
+      Response response = await dio!.get(url,
+          queryParameters: data, options: options, cancelToken: cancelToken);
+      if (response.data is String) {
+        return response.data.toString().toMap();
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw e;
     }
-  }
-
-  Future<Map> getData(url,{
-    data,
-    options,
-    cancelToken,
-  }) async {
-    Response response = await dio.get(url,
-        queryParameters: data, options: options, cancelToken: cancelToken);
-    if(response.data is String){
-      return Future.value(response.data.toString().toMap());
-    }else{
-      return Future.value(response.data);
-    }
-
   }
 
   void get<T>(url,
@@ -179,7 +210,7 @@ class HttpGo {
       onRequestSuccess<T>? successListener,
       onRequestFail? errorListener}) async {
     try {
-      Response<T> response = await dio.get<T>(url,
+      Response<T> response = await dio!.get<T>(url,
           queryParameters: data, options: options, cancelToken: cancelToken);
       successListener!(response);
     } catch (e) {
@@ -248,7 +279,6 @@ class HttpGo {
       return message;
     }
   }
-
 
 /*
 
