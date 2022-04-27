@@ -56,8 +56,13 @@ class AppDownloadState extends State<AppDownloadDialog>{
   void initState() {
     // TODO: implement initState
     super.initState();
+    download();
+
+  }
+
+  Future<void> download() async{
     try{
-      var data = Dio().download(widget.url, widget.path, onReceiveProgress: (progress,total){
+      var data = await Dio().download(widget.url, widget.path, onReceiveProgress: (progress,total){
         setState(() {
           process = progress/total;
         });
@@ -65,12 +70,11 @@ class AppDownloadState extends State<AppDownloadDialog>{
           Navigator.pop(context);
           widget.finishListener(widget.path);
         }
-      });
+      },);
     }catch(e){
       Navigator.pop(context);
       widget.errorlistener(e.toString());
     }
-
   }
 
 }
