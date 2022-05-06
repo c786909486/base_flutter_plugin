@@ -97,6 +97,7 @@ class IconTitleTextWidget extends StatelessWidget {
   final Color color;
   final TextStyle? nameStyle;
   final bool showArrow;
+  final Widget? arrow;
   final EdgeInsets? padding;
   final String text;
   final String hintText;
@@ -114,6 +115,7 @@ class IconTitleTextWidget extends StatelessWidget {
         this.padding,
         this.hintTextStyle,
         this.textStyle,
+        this.arrow,
         this.showArrow = true,
         this.isRequired = false});
 
@@ -193,7 +195,7 @@ class IconTitleTextWidget extends StatelessWidget {
           softWrap: true,
         ).setWeight(1),
         showArrow
-            ? Icon(Icons.arrow_forward_ios_rounded)
+            ? arrow?? Icon(Icons.arrow_forward_ios_rounded)
             .addToContainer(
             margin: EdgeInsets.only(left: 10))
             : Container()
@@ -276,7 +278,7 @@ class IconTitleTextWidget extends StatelessWidget {
           softWrap: true,
         ).setWeight(1),
         showArrow
-            ? Icon(Icons.arrow_forward_ios_rounded)
+            ? arrow ?? Icon(Icons.arrow_forward_ios_rounded)
             .addToContainer(
             margin: EdgeInsets.only(left: 10))
             : Container()
