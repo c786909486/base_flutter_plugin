@@ -90,6 +90,74 @@ class IconTitleWidget extends StatelessWidget {
   }
 }
 
+
+class IconListTitleWidget extends StatelessWidget {
+  final Widget? image;
+  final String name;
+  final Color color;
+  final TextStyle? textStyle;
+  final Widget? arrow;
+  final Widget? contentWidget;
+  final EdgeInsets? padding;
+  final bool isRequired;
+
+  IconListTitleWidget(this.name,
+      {this.image,
+        this.color = Colors.white,
+        this.textStyle,
+        this.contentWidget,
+        this.padding,
+        this.arrow,
+        this.isRequired = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        image != null
+            ? image!
+            : Container(),
+        isRequired
+            ? Text.rich(TextSpan(
+            text: "*",
+            style: TextStyle(
+                color: Colors.red,
+                fontSize: textStyle != null
+                    ? textStyle?.fontSize ?? 16
+                    : 16),
+            children: [
+              TextSpan(
+                text: name,
+                style: textStyle != null
+                    ? textStyle
+                    : TextStyle(
+                    color: Colors.black,
+                    fontSize: 16),
+              )
+            ]))
+            : Text(
+          name,
+          textAlign: TextAlign.start,
+          style: textStyle != null
+              ? textStyle
+              : TextStyle(
+              color: Colors.black, fontSize: 16),
+        ),
+        contentWidget ?? Container(),
+        arrow!=null
+            ? arrow!
+            : Container()
+      ],
+    ).addToContainer(
+        color: color,
+        padding: padding != null
+            ? padding
+            : EdgeInsets.symmetric(horizontal: 16,vertical: 14));
+  }
+}
+
+
 class IconTitleTextWidget extends StatelessWidget {
   final String? image;
   final String name;
