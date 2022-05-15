@@ -75,7 +75,7 @@ class HttpGo {
     );
    _initDio();
     //添加拦截器
-    setCookie();
+    // setCookie();
   }
 
   void _initDio(){

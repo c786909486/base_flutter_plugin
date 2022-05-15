@@ -134,31 +134,41 @@ Widget createNormalInput(String text,
 }
 
 class CheckWithText extends StatelessWidget {
-
   bool defaultSelected;
   String title;
   Function(bool value) onChanged;
   MainAxisAlignment mainAxisAlignment;
+  Color? checkedColor;
+  Color? fillColor;
 
-
-  CheckWithText(
-      {this.defaultSelected = false, required this.title, required this.onChanged, this.mainAxisAlignment = MainAxisAlignment
-          .start});
+  CheckWithText({this.defaultSelected = false,
+    required this.title,
+    required this.onChanged,
+    this.mainAxisAlignment = MainAxisAlignment.start,
+    this.checkedColor,
+    this.fillColor});
 
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(builder: (context, setState) {
       return Row(
         mainAxisAlignment: mainAxisAlignment,
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Checkbox(value: defaultSelected, onChanged: (value) {
-            setState(() {
-              defaultSelected = value ?? false;
-            });
-            onChanged(defaultSelected);
-          },visualDensity: VisualDensity(horizontal: -2,vertical: -2),),
-          CommonText(title),Container(width: 16,)
+          Checkbox(
+            fillColor: MaterialStateProperty.all(fillColor),
+            checkColor: checkedColor,
+            value: defaultSelected,
+            onChanged: (value) {
+              setState(() {
+                defaultSelected = value ?? false;
+              });
+              onChanged(defaultSelected);
+            },
+            visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+          ),
+          CommonText(title),
         ],
       ).onTap(() {
         setState(() {
@@ -168,5 +178,33 @@ class CheckWithText extends StatelessWidget {
       });
     });
   }
+}
 
+class RadioWithText<T> extends StatelessWidget {
+  T value;
+  T? groupValue;
+  ValueChanged<T?>? onChanged;
+  Widget text;
+  Color? activeColor;
+
+  RadioWithText({required this.value,
+    required this.groupValue,
+    required this.onChanged,
+    required this.text, this.activeColor});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Radio<T>(value: value,
+          groupValue: groupValue,
+          onChanged: onChanged,
+          activeColor: activeColor,visualDensity: VisualDensity(horizontal: -4, vertical: -4),),
+        text
+      ],
+    ).onTap(() {
+      onChanged!(value);
+    });
+  }
 }

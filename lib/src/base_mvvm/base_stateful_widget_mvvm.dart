@@ -315,7 +315,7 @@ abstract class BaseMvvmListState<M extends BaseListViewModel,
       controller: viewModel.controller,
       onRefresh: viewModel.requestRefresh,
       onLoading: viewModel.requestLoadMore,
-      enablePullDown: true,
+      enablePullDown: canPullDown,
       enablePullUp: canPullUp,
       child: ListView.separated(
         padding: listPadding,
@@ -330,6 +330,9 @@ abstract class BaseMvvmListState<M extends BaseListViewModel,
   }
 
   bool get canPullUp => false;
+  bool get canPullDown => true;
+
+
 
   Widget get separatorDivider => Container();
 
@@ -351,12 +354,13 @@ abstract class BaseMvvmRefreshState<M extends BaseListViewModel,
         controller: viewModel.controller,
         onRefresh: viewModel.requestRefresh,
         onLoading: viewModel.requestLoadMore,
-        enablePullDown: true,
+        enablePullDown: canPullDown,
         enablePullUp: canPullUp,
         child: createScrollWidget());
   }
 
   bool get canPullUp => false;
+  bool get canPullDown => true;
 
   Widget createScrollWidget();
 
