@@ -1,13 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/adapter.dart';
-
-// import 'package:dio/adapter_browser.dart';
-import 'package:dio/dio.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:base_flutter/base_flutter.dart';
 
 typedef onRequestSuccess<T> = Function(Response<T> response);
@@ -15,13 +11,6 @@ typedef onRequestFail = Function(String error);
 typedef onGetResponseData<T> = Function(T response);
 
 class HttpGo {
-  static final StringGET = "get";
-
-  static final StringPOST = "post";
-
-  static final StringDATA = "data";
-
-  static final StringCODE = "errorCode";
 
   String base_url = "";
 
@@ -73,19 +62,18 @@ class HttpGo {
 
       responseType: ResponseType.json,
     );
-   _initDio();
+    _initDio();
     //添加拦截器
     // setCookie();
   }
 
-  void _initDio(){
-
+  void _initDio() {
     Interceptors? interceptors;
-    if(dio!=null){
-      interceptors =  dio!.interceptors;
+    if (dio != null) {
+      interceptors = dio!.interceptors;
     }
     dio = Dio(options);
-    if(interceptors!=null){
+    if (interceptors != null) {
       dio!.interceptors.addAll(interceptors);
     }
 
@@ -137,14 +125,14 @@ class HttpGo {
 
 /*
 
-  * post请求*/
+* post请求*/
 
   void post<T>(url,
       {data,
-      options,
-      cancelToken,
-      onRequestSuccess<T>? successListener,
-      onRequestFail? errorListener}) async {
+        options,
+        cancelToken,
+        onRequestSuccess<T>? successListener,
+        onRequestFail? errorListener}) async {
     try {
       Response<T> response = await dio!.post<T>(url,
           data: data, options: options, cancelToken: cancelToken);
@@ -156,8 +144,48 @@ class HttpGo {
     }
   }
 
-  Future<Map> postData(
-    String url, {
+  Future<Map> request(String url, {
+    data,
+    Map<String, dynamic>? queryParameters,
+    String method = "get",
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    try{
+      var response = await dio!.request(url, data: data,
+          options: Options(
+              method: method,
+              receiveTimeout: options?.receiveTimeout,
+              sendTimeout: options?.sendTimeout,
+              extra: options?.extra,
+              headers: options?.headers,
+              responseType: options?.responseType,
+              contentType: options?.contentType,
+              validateStatus: options?.validateStatus,
+              receiveDataWhenStatusError: options?.receiveDataWhenStatusError,
+              followRedirects: options?.followRedirects,
+              maxRedirects: options?.maxRedirects,
+              requestEncoder: options?.requestEncoder,
+              responseDecoder: options?.responseDecoder,
+              listFormat: options?.listFormat
+          ),
+          queryParameters: queryParameters,
+          cancelToken: cancelToken,
+          onReceiveProgress: onReceiveProgress,
+          onSendProgress: onSendProgress);
+      if (response.data is String) {
+        return response.data.toString().toMap();
+      } else {
+        return response.data;
+      }
+    }catch (e) {
+      throw e;
+    }
+  }
+
+  Future<Map> postData(String url, {
     data,
     Map<String, dynamic>? queryParameters,
     Options? options,
@@ -184,8 +212,7 @@ class HttpGo {
   }
 
 
-  Future<Map> getData(
-    url, {
+  Future<Map> getData(url, {
     data,
     options,
     cancelToken,
@@ -205,10 +232,10 @@ class HttpGo {
 
   void get<T>(url,
       {data,
-      options,
-      cancelToken,
-      onRequestSuccess<T>? successListener,
-      onRequestFail? errorListener}) async {
+        options,
+        cancelToken,
+        onRequestSuccess<T>? successListener,
+        onRequestFail? errorListener}) async {
     try {
       Response<T> response = await dio!.get<T>(url,
           queryParameters: data, options: options, cancelToken: cancelToken);
@@ -223,8 +250,8 @@ class HttpGo {
 
   * 下载文件*/
 
-  void downloadFile(
-      urlPath, savePath, onReceiveProgress, onRequestFail errorListener) async {
+  void downloadFile(urlPath, savePath, onReceiveProgress,
+      onRequestFail errorListener) async {
     try {
       Response response = await Dio()
           .download(urlPath, savePath, onReceiveProgress: onReceiveProgress);
@@ -300,8 +327,8 @@ Map<String, dynamic> RequestParams(Map<String, dynamic> value) {
 //  return "json=${json.encode(value)}";
 }
 
-Map<String, dynamic> RequestParamsWithKey(
-    String key, Map<String, Object> value) {
+Map<String, dynamic> RequestParamsWithKey(String key,
+    Map<String, Object> value) {
   return {key: json.encode(value)};
 //  return "json=${json.encode(value)}";
 }
