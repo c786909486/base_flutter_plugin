@@ -230,6 +230,20 @@ class HttpGo {
     }
   }
 
+  Future<String> getDataString(url, {
+    data,
+    options,
+    cancelToken,
+  }) async {
+    try {
+      Response response = await dio!.get(url,
+          queryParameters: data, options: options, cancelToken: cancelToken);
+      return response.data.toString();
+    } catch (e) {
+      throw e;
+    }
+  }
+
   void get<T>(url,
       {data,
         options,
@@ -267,31 +281,28 @@ class HttpGo {
   static String formatError(e) {
     if (e is DioError) {
       if (e.type == DioErrorType.connectTimeout) {
-// It occurs when url is opened timeout.
-
         return "连接超时";
       } else if (e.type == DioErrorType.sendTimeout) {
-// It occurs when url is sent timeout.
-
         return "请求超时";
       } else if (e.type == DioErrorType.receiveTimeout) {
-//It occurs when receiving timeout
-
         return "响应超时";
       } else if (e.type == DioErrorType.response) {
-// When the server response, but with a incorrect status, such as 404, 503...
         return checkError(e.message);
       } else if (e.type == DioErrorType.cancel) {
-// When the request is cancelled, dio will throw a error with this type.
         return "";
       } else if (e.type == DioErrorType.other) {
         return e.message;
       } else {
-//DEFAULT Default error type, Some other Error. In this case, you can read the DioError.error if it is not null.
         return "未知错误";
       }
     } else {
-      return e.toString();
+      if(e is String){
+        return e;
+      }else if(e is HttpException){
+        return "网络连接失败，请检查网络";
+      }else {
+        return "网络连接失败，请检查网络";
+      }
     }
   }
 
