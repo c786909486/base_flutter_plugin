@@ -58,6 +58,8 @@ export 'package:base_flutter/src/utils/go_util.dart';
 export 'package:base_flutter/src/utils/cache_manage_utils.dart';
 export 'package:base_flutter/src/widget/image_loader_widget.dart';
 export 'package:base_flutter/src/widget/icon_title_tap_widget.dart';
+export 'package:base_flutter/src/widget/flat_button.dart';
+export 'package:base_flutter/src/widget/material_button.dart';
 export 'package:base_flutter/src/utils/net_error_utils.dart';
 export 'package:base_flutter/src/tools/net_proxy_set_page.dart';
 export 'package:sp_util/sp_util.dart';
