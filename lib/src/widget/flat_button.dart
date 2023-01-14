@@ -10,7 +10,7 @@ import 'package:flutter/widgets.dart';
 ///
 /// ### This class is deprecated, please use [TextButton] instead.
 ///
-/// FlatButton and RaisedButton have been replaced by
+/// FlatsButton and RaisedButton have been replaced by
 /// [TextButton] and [ElevatedButton] respectively.
 /// ButtonTheme has been replaced by [TextButtonTheme] and
 /// [ElevatedButtonTheme]. The original classes
@@ -18,11 +18,11 @@ import 'package:flutter/widgets.dart';
 /// There's a detailed migration guide for the new button and button
 /// theme classes in
 /// [flutter.dev/go/material-button-migration-guide](https://flutter.dev/go/material-button-migration-guide).
-class FlatButton extends MaterialButton {
+class FlatsButton extends MaterialButton {
   /// Create a simple text button.
   ///
   /// The [autofocus] and [clipBehavior] arguments must not be null.
-  const FlatButton({
+  const FlatsButton({
     Key? key,
     required VoidCallback? onPressed,
     VoidCallback? onLongPress,
@@ -85,7 +85,7 @@ class FlatButton extends MaterialButton {
   /// at the start, and 16 at the end, with an 8 pixel gap in between.
   ///
   /// The [icon], [label], and [clipBehavior] arguments must not be null.
-  factory FlatButton.icon({
+  factory FlatsButton.icon({
     Key? key,
     required VoidCallback? onPressed,
     VoidCallback? onLongPress,
@@ -111,7 +111,7 @@ class FlatButton extends MaterialButton {
     required Widget label,
     double? minWidth,
     double? height,
-  }) = _FlatButtonWithIcon;
+  }) = _FlatsButtonWithIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -150,12 +150,12 @@ class FlatButton extends MaterialButton {
   }
 }
 
-/// The type of FlatButtons created with [FlatButton.icon].
+/// The type of FlatsButtons created with [FlatsButton.icon].
 ///
-/// This class only exists to give FlatButtons created with [FlatButton.icon]
+/// This class only exists to give FlatsButtons created with [FlatsButton.icon]
 /// a distinct class for the sake of [ButtonTheme]. It can not be instantiated.
-class _FlatButtonWithIcon extends FlatButton with MaterialButtonWithIconMixin {
-  _FlatButtonWithIcon({
+class _FlatsButtonWithIcon extends FlatsButton with MaterialButtonWithIconMixin {
+  _FlatsButtonWithIcon({
     Key? key,
     required VoidCallback? onPressed,
     VoidCallback? onLongPress,

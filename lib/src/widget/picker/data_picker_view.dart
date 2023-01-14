@@ -344,7 +344,7 @@ class _MyPickerWidget extends State<MyPicker> {
         children: <Widget>[
           Row(
             children: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text(
                   widget.cancelText ?? "取消",
                   style: widget.cancelStyle == null
@@ -363,7 +363,7 @@ class _MyPickerWidget extends State<MyPicker> {
                         child: widget.title,
                       ),
               ),
-              FlatButton(
+              TextButton(
                 child: Text(
                   widget.submitText ?? "确定",
                   style: widget.submitStyle == null

@@ -168,7 +168,7 @@ class CheckWithText extends StatelessWidget {
             },
             visualDensity: VisualDensity(horizontal: -4, vertical: -4),
           ),
-          CommonText(title),
+          CommonText(title).addToContainer(constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-100)),
         ],
       ).onTap(() {
         setState(() {
