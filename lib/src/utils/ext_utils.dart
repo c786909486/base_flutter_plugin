@@ -139,6 +139,21 @@ extension IntExt on int {
 
 }
 
+extension ListExr on List<Widget> {
+  List<Widget> insertWidget(Widget widget) {
+    Iterator<Widget> iterator = this.iterator;
+    var items = <Widget>[];
+
+    if (!iterator.moveNext()) return [];
+    items.add(iterator.current);
+    while (iterator.moveNext()) {
+      items.add(widget);
+      items.add(iterator.current);
+    }
+    return items;
+  }
+}
+
 ///widget拓展方法
 extension WidgetExt on Widget {
   ///添加布局到Container

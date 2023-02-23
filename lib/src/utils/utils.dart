@@ -130,48 +130,53 @@ showBottomSelect(BuildContext context,
       context: context,
       isScrollControlled: true,
       builder: (context) {
-        var list = <Widget>[
-          CommonText(title)
-              .addToContainer(padding: EdgeInsets.symmetric(vertical: 10)),
-          Divider(
-            color: Colors.grey,
-            height: 1,
-          ),
-        ];
-        items.forEach((element) {
-          list.add(CommonText(element)
-              .addToContainer(padding: EdgeInsets.symmetric(vertical: 10))
-          .onTap(() {
-            Navigator.pop(context);
-            if(onSelect!=null){
-              onSelect(element);
-            }
-          }));
-          list.add(Divider(
-            color: Colors.grey,
-            height: 1,
-          ));
-        });
+        var contentList = items
+            .map((e) => CommonText(e, textAlign: TextAlign.center)
+            .addToContainer(
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.symmetric(vertical: 13))
+            .onTap(() {
+          Navigator.pop(context);
+          if (onSelect != null) {
+            onSelect(e);
+          }
+        }))
+            .toList()
+            .insertWidget(Divider(
+          color: Colors.grey,
+          height: 1,
+        ));
 
-        list.addAll([
-          Container(
-            height: 10,
-            color: Colors.grey[200],
-          ),
-          CommonText('取消', textColor: Theme.of(context).primaryColor)
-              .addToContainer(padding: EdgeInsets.symmetric(vertical: 10))
-              .onTap(() {
-            Navigator.pop(context);
-          })
-        ]);
-        return SafeArea(child:  Column(
-          mainAxisSize: MainAxisSize.min,
-          children: list,
-        )).addToContainer(
-            decoration: BoxDecoration(
-              color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topRight: 20.radius, topLeft: 20.radius)));
+        return SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Column(
+                  children: [
+                    CommonText(title, textAlign: TextAlign.center).addToContainer(
+                        padding: EdgeInsets.symmetric(vertical: 13),
+                        alignment: Alignment.center),
+                    Divider(
+                      color: Colors.grey,
+                      height: 1,
+                    ),
+                    ...contentList
+                  ],
+                ).addToContainer(decoration: BoxDecoration(color: Colors.white,borderRadius: 10.borderRadius),
+                    margin: EdgeInsets.symmetric(horizontal: 16)),
+                CommonText('取消', textColor: Colors.red)
+                    .addToContainer(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                    margin: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.white, borderRadius: 10.borderRadius))
+                    .onTap(() {
+                  Navigator.pop(context);
+                })
+              ],
+            ));
       });
 }
 
