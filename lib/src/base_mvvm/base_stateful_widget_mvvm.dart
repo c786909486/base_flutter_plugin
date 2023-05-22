@@ -69,7 +69,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,
   }
 
   void addLoadingWidget(
-      {Widget? loadingWidget, Widget? errorWidget, Widget? emptyWidget}) {
+      {LoadingViewBuilder? loadingWidget, LoadingViewBuilder? errorWidget, LoadingViewBuilder? emptyWidget}) {
     _loadingViewPlugin?.initWidget(
         loadingWidget: loadingWidget!,
         errorWidget: errorWidget!,
@@ -279,8 +279,13 @@ abstract class BaseMvvmState<M extends BaseViewModel,
 
   @override
   void dispose() {
+    _clearLoading();
     onDestroy();
     super.dispose();
+  }
+
+  void _clearLoading(){
+    _loadingViewPlugin?.release();
   }
 
   void onDestroy() {

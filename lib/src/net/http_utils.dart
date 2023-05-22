@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:dio/adapter.dart';
 import 'package:cookie_jar/cookie_jar.dart';
+import 'package:dio/io.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:base_flutter/base_flutter.dart';
@@ -46,11 +46,11 @@ class HttpGo {
 
       //连接服务器超时时间，单位是毫秒.
 
-      connectTimeout: 50000,
+      connectTimeout: Duration(milliseconds: 50000),
 
       //响应流上前后两次接受到数据的间隔，单位为毫秒。
 
-      receiveTimeout: 100000,
+      receiveTimeout: Duration(milliseconds: 100000),
 
       //请求的Content-Type，默认值是[ContentType.json]. 也可以用ContentType.parse("application/x-www-form-urlencoded")
 
@@ -108,7 +108,7 @@ class HttpGo {
       return;
     }
     _initDio();
-    (dio?.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+    (dio?.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
         (client) {
       client.findProxy = (url) {
         return host.isNotEmpty ? "PROXY ${host}:${port.toString()}" : "DIRECT";
@@ -280,18 +280,18 @@ class HttpGo {
 
   static String formatError(e) {
     if (e is DioError) {
-      if (e.type == DioErrorType.connectTimeout) {
+      if (e.type == DioErrorType.connectionTimeout) {
         return "连接超时";
       } else if (e.type == DioErrorType.sendTimeout) {
         return "请求超时";
       } else if (e.type == DioErrorType.receiveTimeout) {
         return "响应超时";
-      } else if (e.type == DioErrorType.response) {
-        return checkError(e.message);
+      } else if (e.type == DioErrorType.badResponse) {
+        return checkError(e.message??"");
       } else if (e.type == DioErrorType.cancel) {
         return "";
-      } else if (e.type == DioErrorType.other) {
-        return e.message;
+      } else if (e.type == DioErrorType.unknown) {
+        return e.message??"";
       } else {
         return "未知错误";
       }

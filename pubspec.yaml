@@ -13,41 +13,41 @@ dependencies:
   #toast
   ftoast: ^2.0.0
   #本地存储
-  shared_preferences: ^2.0.15
+  shared_preferences: ^2.1.0
   sp_util: ^2.0.3
   # dio网络请求框架
-  dio: ^4.0.6
+  dio: ^5.1.1
   # dio cookie管理
-  dio_cookie_manager: ^2.0.0
+  dio_cookie_manager: ^2.1.4
 
-  cached_network_image: ^3.2.0
+  cached_network_image: ^3.2.3
 
 
   # 本地路径管理
-  path_provider: ^2.0.10
+  path_provider: ^2.0.14
 #  # aes加密库
 #  cipher2: ^0.3.5
   #状态管理
-  provider: ^6.0.2
+  provider: ^6.0.5
   #权限获取
 #  permission_handler: 8.1.0
   #刷新框架
-  pull_to_refresh:
-    git: https://gitee.com/code1993/pull_to_refresh.git
-  #  pull_to_refresh: ^2.0.0
+#  pull_to_refresh:
+#    git: https://gitee.com/code1993/pull_to_refresh.git
+  pull_to_refresh: ^2.0.0
   #消息总线 eventBus
   event_bus: ^2.0.0
   #生命周期
 #  flutter_lifecycle:
 #    git:
 #      url: 'https://github.com/c786909486/flutter_lifecycle.git'
-  flutterlifecyclehooks: ^3.0.0
+  flutterlifecyclehooks: ^3.0.1
   #时选择器
   flutter_datetime_picker: ^1.5.1
 
-  ionicons: ^0.1.2
+  ionicons: ^0.2.2
 
-  photo_view: ^0.13.0
+  photo_view: ^0.14.0
 
 
 

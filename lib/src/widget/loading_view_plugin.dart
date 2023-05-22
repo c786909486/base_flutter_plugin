@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 typedef OnRetryEvent();
+typedef LoadingViewBuilder = Widget Function(String msg);
 
 class LoadingViewPlugin {
   static TextStyle _textStyle = TextStyle(fontSize: 18, color: Colors.black);
@@ -14,42 +15,42 @@ class LoadingViewPlugin {
   LoadingViewPlugin(this._context);
 
   ///全局加载布局
-   static  Widget? _globeLoadingWidget;
+  static  LoadingViewBuilder? _globeLoadingWidget;
 
   ///全局错误布局
-  static  Widget? _globeErrorWidget;
+  static  LoadingViewBuilder? _globeErrorWidget;
 
   ///全局空白布局
-  static  Widget? _globeEmptyWidget;
+  static  LoadingViewBuilder? _globeEmptyWidget;
 
   ///页面中替换加载布局
-  Widget? _loadingWidget;
+  LoadingViewBuilder? _loadingWidget;
 
   ///页面中替换错误布局
-  Widget? _errorWidget;
+  LoadingViewBuilder? _errorWidget;
 
   ///页面中替换空白布局
-  Widget? _emptyWidget;
+  LoadingViewBuilder? _emptyWidget;
 
   void initWidget(
-      {Widget? loadingWidget, Widget? errorWidget, Widget? emptyWidget}) {
-    _loadingWidget = loadingWidget??Container();
-    _errorWidget = errorWidget??Container();
-    _emptyWidget = emptyWidget??Container();
+      {LoadingViewBuilder? loadingWidget, LoadingViewBuilder? errorWidget, LoadingViewBuilder? emptyWidget}) {
+    _loadingWidget = loadingWidget;
+    _errorWidget = errorWidget;
+    _emptyWidget = emptyWidget;
   }
 
   static void initGlobeLoading(
-      {Widget? loadingWidget, Widget? errorWidget, Widget? emptyWidget}) {
-    _globeLoadingWidget = loadingWidget??Container();
-    _globeEmptyWidget = emptyWidget??Container();
-    _globeErrorWidget = errorWidget??Container();
+      {LoadingViewBuilder? loadingWidget, LoadingViewBuilder? errorWidget, LoadingViewBuilder? emptyWidget}) {
+    _globeLoadingWidget = loadingWidget;
+    _globeEmptyWidget = emptyWidget;
+    _globeErrorWidget = errorWidget;
   }
 
   Widget getLoadingWidget() {
     if (_loadingWidget != null) {
-      return _loadingWidget??Container();
+      return _loadingWidget!("");
     } else if (_globeLoadingWidget != null) {
-      return _globeLoadingWidget??Container();
+      return _globeLoadingWidget!("");
     } else {
       return Center(
         child: CircularProgressIndicator(),
@@ -62,7 +63,7 @@ class LoadingViewPlugin {
       return InkWell(
         highlightColor: Colors.transparent,
         radius: 0,
-        child: _errorWidget,
+        child: _errorWidget!(error),
         onTap: () {
           event();
         },
@@ -71,7 +72,7 @@ class LoadingViewPlugin {
       return InkWell(
         highlightColor: Colors.transparent,
         radius: 0,
-        child: _globeErrorWidget,
+        child: _globeErrorWidget!(error),
         onTap: () {
           event();
         },
@@ -120,7 +121,7 @@ class LoadingViewPlugin {
       return InkWell(
         highlightColor: Colors.transparent,
         radius: 0,
-        child: _emptyWidget,
+        child: _emptyWidget!(""),
         onTap: () {
           event();
         },
@@ -129,7 +130,7 @@ class LoadingViewPlugin {
       return InkWell(
         highlightColor: Colors.transparent,
         radius: 0,
-        child: _globeEmptyWidget,
+        child: _globeEmptyWidget!(""),
         onTap: () {
           event();
         },
@@ -171,5 +172,17 @@ class LoadingViewPlugin {
         },
       );
     }
+  }
+
+  void release(){
+    _loadingWidget = null;
+    _emptyWidget = null;
+    _errorWidget = null;
+  }
+
+  static void clearGlobal(){
+    _globeLoadingWidget = null;
+    _globeEmptyWidget= null;
+    _globeErrorWidget = null;
   }
 }

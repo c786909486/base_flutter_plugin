@@ -21,6 +21,7 @@ export 'package:base_flutter/src/widget/picker/choose_item_model.dart';
 export 'package:base_flutter/src/widget/picker/choose_item_page.dart';
 export 'package:base_flutter/src/widget/input/common_input.dart';
 export 'package:base_flutter/src/widget/expand_able_text.dart';
+export 'package:base_flutter/src/widget/loading_view_plugin.dart';
 
 export 'package:pull_to_refresh/pull_to_refresh.dart';
 export 'package:pull_to_refresh/src/smart_refresher.dart';
