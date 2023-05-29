@@ -2,7 +2,7 @@ name: base_flutter
 description: A new Flutter project.
 version: 0.0.1
 author: kzCai
-homepage:
+homepage: https://github.com/c786909486/base_flutter_plugin
 
 environment:
   sdk: ">=2.12.0 <4.0.0"
