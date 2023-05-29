@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class DatePickerTheme with Diagnosticable {
+class DateTimePickerTheme with Diagnosticable {
   final TextStyle cancelStyle;
   final TextStyle doneStyle;
   final TextStyle itemStyle;
@@ -17,7 +17,7 @@ class DatePickerTheme with Diagnosticable {
   final String cancelText;
 
 
-  const DatePickerTheme({
+  const DateTimePickerTheme({
     this.cancelStyle = const TextStyle(color: Colors.black54, fontSize: 16),
     this.doneStyle = const TextStyle(color: Colors.blue, fontSize: 16),
     this.itemStyle = const TextStyle(color: Color(0xFF000046), fontSize: 18),

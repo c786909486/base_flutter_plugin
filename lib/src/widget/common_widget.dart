@@ -23,7 +23,6 @@ AppBar CommonAppBar(String title,
     centerTitle: centerTitle,
     elevation: elevation,
     automaticallyImplyLeading: automaticallyImplyLeading,
-    brightness: brightness,
     iconTheme: iconTheme ?? IconThemeData(color: Colors.black),
     key: key,
     title: Text(

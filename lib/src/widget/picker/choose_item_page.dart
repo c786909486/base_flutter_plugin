@@ -67,8 +67,8 @@ class _ChooseItemState<T extends ChooseItemModel>
             ? widget.themeData?.iconTheme
             : Theme.of(context).iconTheme,
         actionsIconTheme: widget.themeData != null
-            ? widget.themeData?.accentIconTheme
-            : Theme.of(context).accentIconTheme,
+            ? widget.themeData?.iconTheme
+            : Theme.of(context).iconTheme,
         backgroundColor: widget.themeData != null
             ? widget.themeData?.primaryColor
             : Theme.of(context).primaryColor,
