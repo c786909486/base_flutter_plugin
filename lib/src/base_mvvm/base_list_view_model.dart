@@ -5,12 +5,21 @@ abstract class BaseListViewModel<T> extends BaseViewModel {
   BaseListViewModel(BuildContext context) : super(context);
 
   List<T> listItems = [];
-  RefreshController controller = new RefreshController();
+  RefreshController? controller = new RefreshController();
 
   var startDateStr = "";
   var endDateStr = "";
   DateTime? startDateTime;
   DateTime? endDateTime;
+
+  @override
+  void onCreated() {
+    if(controller==null){
+      controller = new RefreshController();
+    }
+    super.onCreated();
+
+  }
 
   void setSearchDateRange(String _startTime, String _endTime) {
     var start = _startTime.toDate();
@@ -109,13 +118,13 @@ abstract class BaseListViewModel<T> extends BaseViewModel {
     }
     if (showAni) {
       if (loadingState == LoadingState.showContent) {
-        controller.requestRefresh(needCallback: false);
+        controller?.requestRefresh(needCallback: false);
       }
     }
 
     try {
       var list = await requestListData();
-      controller.refreshCompleted();
+      controller?.refreshCompleted();
       if (list.isNotEmpty) {
         page++;
         listItems = list;
@@ -125,7 +134,7 @@ abstract class BaseListViewModel<T> extends BaseViewModel {
         showEmptyState();
       }
     } catch (e) {
-      controller.refreshCompleted();
+      controller?.refreshCompleted();
       showErrorState(e.toNetError());
       if (BuildConfig.isDebug&&mounted) {
         Log.d('requestError', e.toString(), current: StackTrace.current);
@@ -136,7 +145,7 @@ abstract class BaseListViewModel<T> extends BaseViewModel {
   Future<void> requestLoadMore() async {
     try {
       var list = await requestListData();
-      controller.loadComplete();
+      controller?.loadComplete();
       if (list.isNotEmpty) {
         page++;
         listItems.addAll(list);
@@ -146,11 +155,27 @@ abstract class BaseListViewModel<T> extends BaseViewModel {
         showToast("暂无更多数据");
       }
     } catch (e) {
-      controller.loadComplete();
+      controller?.loadComplete();
       showToast(e.toNetError());
       if (BuildConfig.isDebug&&mounted) {
         Log.d('requestError', e.toString(), current: StackTrace.current);
       }
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  void onDispose() {
+    controller = null;
+    listItems.clear();
+    startDateStr = "";
+    endDateStr = "";
+    startDateTime = null;
+    endDateTime = null;
+    super.onDispose();
   }
 }

@@ -279,18 +279,18 @@ class HttpGo {
   * error统一处理*/
 
   static String formatError(e) {
-    if (e is DioError) {
-      if (e.type == DioErrorType.connectionTimeout) {
+    if (e is DioException) {
+      if (e.type == DioExceptionType.connectionTimeout) {
         return "连接超时";
-      } else if (e.type == DioErrorType.sendTimeout) {
+      } else if (e.type == DioExceptionType.sendTimeout) {
         return "请求超时";
-      } else if (e.type == DioErrorType.receiveTimeout) {
+      } else if (e.type == DioExceptionType.receiveTimeout) {
         return "响应超时";
-      } else if (e.type == DioErrorType.badResponse) {
+      } else if (e.type == DioExceptionType.badResponse) {
         return checkError(e.message??"");
-      } else if (e.type == DioErrorType.cancel) {
+      } else if (e.type == DioExceptionType.cancel) {
         return "";
-      } else if (e.type == DioErrorType.unknown) {
+      } else if (e.type == DioExceptionType.unknown) {
         return e.message??"";
       } else {
         return "未知错误";

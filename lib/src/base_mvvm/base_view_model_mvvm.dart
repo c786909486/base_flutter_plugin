@@ -13,7 +13,7 @@ abstract class BaseViewModel with ChangeNotifier {
 
   List<BaseMvvmModel> _models = [];
 
-  final BuildContext _context;
+  BuildContext? _context;
 
   bool mounted = false;
 
@@ -70,7 +70,7 @@ abstract class BaseViewModel with ChangeNotifier {
 
   EventPostMethodWithData? _sendMessageEvent;
 
-  LoadingState loadingState = LoadingState.showContent;
+  LoadingState? loadingState = LoadingState.showContent;
 
 
   void addBaseEvent({
@@ -154,7 +154,25 @@ abstract class BaseViewModel with ChangeNotifier {
     for(BaseMvvmModel model in _models){
       model.onCleared();
     }
+    _models.clear();
+    _release();
     
+  }
+
+  void _release(){
+    _context = null;
+    _toastEvent = null;
+    _showDialogEvent = null;
+    _hideDialogEvent = null;
+    _showLoadingEvent = null;
+    _showErrorEvent = null;
+    _showEmptyEvent = null;
+    _showContent = null;
+    _finishRefreshEvent = null;
+    _finishLoadMoreEvent = null;
+    _finishEvent = null;
+    _sendMessageEvent = null;
+    loadingState = null;
   }
 
   void onCreated(){
@@ -175,6 +193,7 @@ abstract class BaseViewModel with ChangeNotifier {
   void receiveMessage(SendMessageEvent event){
 
   }
+
 
 
 }
