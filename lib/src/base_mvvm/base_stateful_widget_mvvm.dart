@@ -282,7 +282,9 @@ abstract class BaseMvvmState<M extends BaseViewModel,
   void dispose() {
     _clearLoading();
     onDestroy();
+    _loadingViewPlugin = null;
     super.dispose();
+    vm = null;
   }
 
   void _clearLoading(){
@@ -294,6 +296,8 @@ abstract class BaseMvvmState<M extends BaseViewModel,
     vm?.onDispose();
     BuildConfig.pageList.remove(widget);
     _subscription?.cancel();
+    _subscription = null;
+    buildContext = null;
 
   }
 
@@ -323,7 +327,7 @@ abstract class BaseMvvmListState<M extends BaseListViewModel,
   @override
   Widget? buildLoadingContentView() {
     return SmartRefresher(
-      controller: viewModel.controller,
+      controller: viewModel.controller!,
       onRefresh: viewModel.requestRefresh,
       onLoading: viewModel.requestLoadMore,
       enablePullDown: canPullDown,
@@ -362,7 +366,7 @@ abstract class BaseMvvmRefreshState<M extends BaseListViewModel,
   @override
   Widget? buildLoadingContentView() {
     return SmartRefresher(
-        controller: viewModel.controller,
+        controller: viewModel.controller!,
         onRefresh: viewModel.requestRefresh,
         onLoading: viewModel.requestLoadMore,
         enablePullDown: canPullDown,
