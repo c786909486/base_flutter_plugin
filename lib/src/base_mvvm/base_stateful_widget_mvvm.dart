@@ -5,6 +5,7 @@ import 'package:base_flutter/base_flutter.dart';
 import 'package:base_flutter/src/base_mvvm/base_view_model_mvvm.dart';
 import 'package:base_flutter/src/base_mvvm/base_view_mvvm.dart';
 import 'package:base_flutter/src/message/message_event.dart';
+import 'package:base_flutter/src/utils/app_life_utils.dart';
 import 'package:base_flutter/src/widget/loading_view_plugin.dart';
 import 'package:base_flutter/src/widget/progress_dialog.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,8 +27,10 @@ abstract class BaseStatefulMvvmWidget extends StatefulWidget {
   String get className => _className;
 }
 
+
 abstract class BaseMvvmState<M extends BaseViewModel,
-        W extends BaseStatefulMvvmWidget> extends State<W> with LifecycleMixin
+        W extends BaseStatefulMvvmWidget> extends State<W>
+    with LifecycleMixin
     implements IBaseMvvmView {
   M? vm;
 
@@ -46,17 +49,25 @@ abstract class BaseMvvmState<M extends BaseViewModel,
 
   BuildContext? buildContext;
 
+  String get widgetName => widget.className;
+
+  String get widgetTitle => "";
+
+  bool get isAddToAppLife => true;
+
   @override
   void initState() {
     super.initState();
     if (BuildConfig.isDebug) {
       Log.d('currentPage', widget.className);
     }
+    if(isAddToAppLife){
+      AppLifeUtils.instance.openPage(widgetName, widgetTitle, widget);
+    }
   }
 
   @override
   void onContextReady() {
-
     onCreate();
     super.onContextReady();
   }
@@ -70,7 +81,9 @@ abstract class BaseMvvmState<M extends BaseViewModel,
   }
 
   void addLoadingWidget(
-      {LoadingViewBuilder? loadingWidget, LoadingViewBuilder? errorWidget, LoadingViewBuilder? emptyWidget}) {
+      {LoadingViewBuilder? loadingWidget,
+      LoadingViewBuilder? errorWidget,
+      LoadingViewBuilder? emptyWidget}) {
     _loadingViewPlugin?.initWidget(
         loadingWidget: loadingWidget!,
         errorWidget: errorWidget!,
@@ -283,11 +296,14 @@ abstract class BaseMvvmState<M extends BaseViewModel,
     _clearLoading();
     onDestroy();
     _loadingViewPlugin = null;
+    if(isAddToAppLife){
+      AppLifeUtils.instance.closePage(widgetName, widgetTitle, widget);
+    }
     super.dispose();
     vm = null;
   }
 
-  void _clearLoading(){
+  void _clearLoading() {
     _loadingViewPlugin?.release();
   }
 
@@ -298,7 +314,6 @@ abstract class BaseMvvmState<M extends BaseViewModel,
     _subscription?.cancel();
     _subscription = null;
     buildContext = null;
-
   }
 
   @override
@@ -309,7 +324,6 @@ abstract class BaseMvvmState<M extends BaseViewModel,
   @override
   void onPause() {
     vm?.onPause();
-
   }
 
   void finish({dynamic result}) {
@@ -333,7 +347,7 @@ abstract class BaseMvvmListState<M extends BaseListViewModel,
       enablePullDown: canPullDown,
       enablePullUp: canPullUp,
       child: ListView.separated(
-        padding: listPadding,
+          padding: listPadding,
           itemBuilder: (context, index) {
             return createItemWidget(index);
           },
@@ -345,9 +359,8 @@ abstract class BaseMvvmListState<M extends BaseListViewModel,
   }
 
   bool get canPullUp => false;
+
   bool get canPullDown => true;
-
-
 
   Widget get separatorDivider => Container();
 
@@ -375,6 +388,7 @@ abstract class BaseMvvmRefreshState<M extends BaseListViewModel,
   }
 
   bool get canPullUp => false;
+
   bool get canPullDown => true;
 
   Widget createScrollWidget();
