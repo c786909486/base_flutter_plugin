@@ -57,6 +57,7 @@ export 'package:base_flutter/src/widget/common_widget.dart';
 export 'package:base_flutter/src/widget/show_image_page.dart';
 export 'package:base_flutter/src/utils/go_util.dart';
 export 'package:base_flutter/src/utils/cache_manage_utils.dart';
+export 'package:base_flutter/src/utils/app_life_utils.dart';
 export 'package:base_flutter/src/widget/image_loader_widget.dart';
 export 'package:base_flutter/src/widget/icon_title_tap_widget.dart';
 export 'package:base_flutter/src/widget/flat_button.dart';
