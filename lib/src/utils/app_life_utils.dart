@@ -21,6 +21,12 @@ class AppLifeUtils {
   OnPageStartEndListener? _onCloseListener;
   OnPageChangeListener? _onPageChangeListener;
 
+  void addPageListener({OnPageStartEndListener? onStartListener,OnPageStartEndListener? onCloseListener,OnPageChangeListener? onPageChangeListener}){
+    _onStartListener = onStartListener;
+    _onCloseListener = onCloseListener;
+    _onPageChangeListener = onPageChangeListener;
+  }
+
   var _widgetList = <Widget>[];
 
   void openPage(String pageName, String pageTitle, Widget page) {
