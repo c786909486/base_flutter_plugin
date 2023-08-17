@@ -26,6 +26,7 @@ class ImageLoad extends StatelessWidget {
   final bool isAntiAlias;
   final double scale;
   final bool isAsset;
+  final String? package;
 
   ImageLoad(
     this.path, {
@@ -48,7 +49,8 @@ class ImageLoad extends StatelessWidget {
     this.isAntiAlias = false,
     this.scale = 1.0,
         this.placeholder,
-        this.isAsset = false
+        this.isAsset = false,
+        this.package
   });
 
   @override
@@ -97,6 +99,7 @@ class ImageLoad extends StatelessWidget {
             isAntiAlias: isAntiAlias,
           )
         : isAsset?Image.asset(path,scale: scale, frameBuilder: frameBuilder,
+        package: package,
         errorBuilder: (
             context,
             error,
