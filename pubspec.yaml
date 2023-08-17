@@ -20,7 +20,7 @@ dependencies:
   # dio cookie管理
   dio_cookie_manager: ^2.1.4
 
-  cached_network_image: ^3.2.3
+  cached_network_image: ^3.2.0
 
 
   # 本地路径管理
