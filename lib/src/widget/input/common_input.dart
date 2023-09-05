@@ -66,6 +66,7 @@ class CommonInput extends StatefulWidget {
     this.textSize = 15,
     this.maxLines,
     this.minLines,
+    this.clearWidget,
     this.onSubmitted,
     this.onChanged,
     this.border,
