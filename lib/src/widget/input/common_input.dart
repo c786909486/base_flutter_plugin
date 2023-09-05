@@ -37,6 +37,7 @@ class CommonInput extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;
   int? maxLines;
+  int? minLines;
   Widget? headWidget;
   bool needClear;
   Widget? clearWidget;
@@ -64,6 +65,7 @@ class CommonInput extends StatefulWidget {
     this.errorBorder,
     this.textSize = 15,
     this.maxLines,
+    this.minLines,
     this.onSubmitted,
     this.onChanged,
     this.border,
@@ -260,6 +262,7 @@ class _CommonInputWidget extends State<CommonInput> {
             }
           },
           maxLines: widget.maxLines,
+          minLines: widget.minLines,
         ),
       ],
     );
