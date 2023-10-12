@@ -118,7 +118,7 @@ abstract class BaseListViewModel<T> extends BaseViewModel {
     }
     if (showAni) {
       if (loadingState == LoadingState.showContent) {
-        controller?.requestRefresh(needCallback: false);
+        controller?.headerMode?.value = RefreshStatus.refreshing;
       }
     }
 
