@@ -336,7 +336,9 @@ abstract class BaseMvvmListState<M extends BaseListViewModel,
   Widget? buildLoadingContentView() {
     return SmartRefresher(
       controller: viewModel.controller!,
-      onRefresh: viewModel.requestRefresh,
+      onRefresh: (){
+        viewModel.requestRefresh(showAni: false);
+      },
       onLoading: viewModel.requestLoadMore,
       enablePullDown: canPullDown,
       enablePullUp: canPullUp,

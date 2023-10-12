@@ -1,3 +1,5 @@
+import 'package:base_flutter/base_flutter.dart';
+import 'package:example/test_list_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,6 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      navigatorKey: NavigateService.getInstance().key,
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -106,7 +109,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: (){
+          Go().push(TestListPage());
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
