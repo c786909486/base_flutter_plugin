@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:base_flutter/base_flutter.dart';
-import 'package:dio_net_work/http_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

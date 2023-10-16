@@ -102,7 +102,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "5531134ec267bfad482c754a1726324dc12ad863"
+      resolved-ref: "28ed104d60b0f5f634e48dc2fc83c4b3b7c1e87d"
       url: "https://gitee.com/code1993/dio_net_work_package.git"
     source: git
     version: "0.0.1"

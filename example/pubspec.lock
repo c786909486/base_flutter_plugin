@@ -112,6 +112,15 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.4"
+  dio_net_work:
+    dependency: transitive
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "5531134ec267bfad482c754a1726324dc12ad863"
+      url: "https://gitee.com/code1993/dio_net_work_package.git"
+    source: git
+    version: "0.0.1"
   event_bus:
     dependency: transitive
     description:
