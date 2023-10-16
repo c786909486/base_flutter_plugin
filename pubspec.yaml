@@ -16,15 +16,14 @@ dependencies:
   shared_preferences: ^2.1.0
   sp_util: ^2.0.3
   # dio网络请求框架
-  dio: ^5.1.1
-  # dio cookie管理
-  dio_cookie_manager: ^2.1.4
+  dio_net_work:
+    git:
+      url: https://gitee.com/code1993/dio_net_work_package.git
+
 
   cached_network_image: ^3.2.3
 
 
-  # 本地路径管理
-  path_provider: ^2.0.14
 #  # aes加密库
 #  cipher2: ^0.3.5
   #状态管理

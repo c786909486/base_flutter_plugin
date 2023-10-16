@@ -82,7 +82,7 @@ packages:
     source: hosted
     version: "3.0.3"
   dio:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: dio
       sha256: a9d76e72985d7087eb7c5e7903224ae52b337131518d127c554b9405936752b8
@@ -90,13 +90,22 @@ packages:
     source: hosted
     version: "5.2.1+1"
   dio_cookie_manager:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: dio_cookie_manager
       sha256: b45f11c2fcbccf39c5952ab68910b3a155486c4fa730ceb4ce867c4943169ea1
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.4"
+  dio_net_work:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "5531134ec267bfad482c754a1726324dc12ad863"
+      url: "https://gitee.com/code1993/dio_net_work_package.git"
+    source: git
+    version: "0.0.1"
   event_bus:
     dependency: "direct main"
     description:
@@ -265,7 +274,7 @@ packages:
     source: hosted
     version: "1.8.2"
   path_provider:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: path_provider
       sha256: "3087813781ab814e4157b172f1a11c46be20179fcc9bea043e0fba36bc0acaa2"
