@@ -21,7 +21,7 @@ extension DateExt on DateTime {
 
 extension StringExt on String {
   ///json字符串转map
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toObjMap() {
     return jsonDecode(this);
   }
 
