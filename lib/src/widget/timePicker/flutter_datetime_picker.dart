@@ -25,7 +25,7 @@ class DatePicker {
     DateChangedCallback? onConfirm,
     locale: LocaleType.zh,
     DateTime? currentTime,
-    DatePickerTheme? theme,
+    DateTimePickerTheme? theme,
   }) {
     Navigator.push(
         context,
@@ -55,7 +55,7 @@ class DatePicker {
         DateChangedCallback? onConfirm,
         locale: LocaleType.zh,
         DateTime? currentTime,
-        DatePickerTheme? theme,
+        DateTimePickerTheme? theme,
       }) {
     Navigator.push(
         context,
@@ -88,7 +88,7 @@ class DatePicker {
     DateTime? currentTime,
         String title = '',
         TextStyle? titleStyle,
-    DatePickerTheme? theme,
+    DateTimePickerTheme? theme,
   }) {
     Navigator.push(
         context,
@@ -117,7 +117,7 @@ class DatePicker {
     DateTime? currentTime,
         String title="",
         TextStyle? titleStyle,
-    DatePickerTheme? theme,
+    DateTimePickerTheme? theme,
   }) {
     Navigator.push(
         context,
@@ -145,7 +145,7 @@ class DatePicker {
         String title = "",
         TextStyle? titleStyle,
     BasePickerModel? pickerModel,
-    DatePickerTheme? theme,
+    DateTimePickerTheme? theme,
   }) {
     Navigator.push(
         context,
@@ -174,13 +174,13 @@ class _DatePickerRoute<T> extends PopupRoute<T> {
     RouteSettings? settings,
     pickerModel,
   })  : this.pickerModel = pickerModel ?? DatePickerModel(),
-        this.theme = theme ?? DatePickerTheme(),
+        this.theme = theme ?? DateTimePickerTheme(),
         super(settings: settings);
 
   final bool showTitleActions;
   final DateChangedCallback? onChanged;
   final DateChangedCallback? onConfirm;
-  final DatePickerTheme? theme;
+  final DateTimePickerTheme? theme;
   final LocaleType? locale;
   final BasePickerModel? pickerModel;
 
@@ -270,7 +270,7 @@ class _DatePickerState extends State<_DatePickerComponent> {
 
   @override
   Widget build(BuildContext context) {
-    DatePickerTheme? theme = widget.route.theme;
+    DateTimePickerTheme? theme = widget.route.theme;
     return new GestureDetector(
       child: new AnimatedBuilder(
         animation: widget.route.animation!,
@@ -299,7 +299,7 @@ class _DatePickerState extends State<_DatePickerComponent> {
     }
   }
 
-  Widget _renderPickerView(DatePickerTheme theme) {
+  Widget _renderPickerView(DateTimePickerTheme theme) {
     Widget itemView = _renderItemView(theme);
     if (widget.route.showTitleActions) {
       return Column(
@@ -314,7 +314,7 @@ class _DatePickerState extends State<_DatePickerComponent> {
 
   Widget _renderColumnView(
       ValueKey key,
-      DatePickerTheme theme,
+      DateTimePickerTheme theme,
       StringAtIndexCallBack stringAtIndexCB,
       FixedExtentScrollController scrollController,
       int layoutProportion,
@@ -366,7 +366,7 @@ class _DatePickerState extends State<_DatePickerComponent> {
     );
   }
 
-  Widget _renderItemView(DatePickerTheme theme) {
+  Widget _renderItemView(DateTimePickerTheme theme) {
     return Container(
       color: theme.backgroundColor ?? Colors.white,
       child: Row(
@@ -422,7 +422,7 @@ class _DatePickerState extends State<_DatePickerComponent> {
   }
 
   // Title View
-  Widget _renderTitleActionsView(DatePickerTheme theme) {
+  Widget _renderTitleActionsView(DateTimePickerTheme theme) {
     String done = _localeDone();
     String cancel = _localeCancel();
 
@@ -484,7 +484,7 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
   final double progress;
   final int? itemCount;
   final bool showTitleActions;
-  final DatePickerTheme theme;
+  final DateTimePickerTheme theme;
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:base_flutter/base_flutter.dart';
 import 'package:base_flutter/src/base_mvvm/base_view_model_mvvm.dart';
@@ -328,6 +329,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,
   void finish({dynamic result}) {
     Navigator.pop(context, result);
   }
+
 }
 
 abstract class BaseMvvmListState<M extends BaseListViewModel,
