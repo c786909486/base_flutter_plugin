@@ -330,10 +330,6 @@ abstract class BaseMvvmState<M extends BaseViewModel,
     Navigator.pop(context, result);
   }
 
-  @override
-  Future<AppExitResponse> didRequestAppExit() {
-    throw UnimplementedError();
-  }
 }
 
 abstract class BaseMvvmListState<M extends BaseListViewModel,

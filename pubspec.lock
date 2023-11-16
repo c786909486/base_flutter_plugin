@@ -180,11 +180,12 @@ packages:
   flutterlifecyclehooks:
     dependency: "direct main"
     description:
-      name: flutterlifecyclehooks
-      sha256: "16e143ea8d549afd54f214661ef5c20ca58e8366ea0923b1a4d5f3ff22e2fc43"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "3.0.2"
+      path: "."
+      ref: HEAD
+      resolved-ref: "70428d7e4ba4c8a2ade345e462bc13176e04c327"
+      url: "https://gitee.com/code1993/flutterlifecyclehooks.git"
+    source: git
+    version: "4.0.0"
   ftoast:
     dependency: "direct main"
     description:
