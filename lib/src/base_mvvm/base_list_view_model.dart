@@ -111,7 +111,13 @@ abstract class BaseListViewModel<T> extends BaseViewModel {
 
   Future<List<T>> requestListData();
 
+  var _inProcess = false;
+
   Future<void> requestRefresh({bool showAni = true}) async {
+    if(_inProcess){
+      return;
+    }
+    _inProcess = true;
     page = 1;
     if (listItems.isEmpty) {
       showLoadingState();
@@ -133,12 +139,15 @@ abstract class BaseListViewModel<T> extends BaseViewModel {
       } else {
         showEmptyState();
       }
+      _inProcess = false;
     } catch (e) {
+      _inProcess = false;
       controller?.refreshCompleted();
       showErrorState(e.toNetError());
       if (BuildConfig.isDebug&&mounted) {
         Log.d('requestError', e.toString(), current: StackTrace.current);
       }
+
     }
   }
 
