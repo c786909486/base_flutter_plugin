@@ -116,11 +116,11 @@ extension StringExt2 on String? {
   }
 }
 
-extension MapExt on Map<String, dynamic> {
-  Map<String, dynamic> toJsonMap() {
-    return RequestParams(this);
-  }
-}
+// extension MapExt on Map<String, dynamic> {
+//   Map<String, dynamic> toJsonMap() {
+//     return RequestParams(this);
+//   }
+// }
 
 ///double适配屏幕尺寸
 extension DoubleExt on double {

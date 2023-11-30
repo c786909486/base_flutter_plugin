@@ -1,16 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
-
 import 'package:base_flutter/base_flutter.dart';
-import 'package:base_flutter/src/base_mvvm/base_view_model_mvvm.dart';
-import 'package:base_flutter/src/base_mvvm/base_view_mvvm.dart';
-import 'package:base_flutter/src/message/message_event.dart';
-import 'package:base_flutter/src/utils/app_life_utils.dart';
-import 'package:base_flutter/src/widget/loading_view_plugin.dart';
-import 'package:base_flutter/src/widget/progress_dialog.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutterlifecyclehooks/flutterlifecyclehooks.dart';
-import 'package:provider/provider.dart';
 
 enum LoadingState { showContent, showError, showEmpty, showLoading }
 
@@ -21,16 +12,13 @@ abstract class BaseStatefulMvvmWidget extends StatefulWidget {
   BaseStatefulMvvmWidget({Key? key, this.params}) : super(key: key) {
     _className = this.runtimeType.toString();
   }
-
   var _className = "";
 
   String get className => _className;
 }
 
-
 abstract class BaseMvvmState<M extends BaseViewModel,
         W extends BaseStatefulMvvmWidget> extends State<W>
-    with LifecycleMixin
     implements IBaseMvvmView {
   M? vm;
 
@@ -55,21 +43,31 @@ abstract class BaseMvvmState<M extends BaseViewModel,
 
   bool get isAddToAppLife => true;
 
+  bool _didRunOnContextReady = false;
+
   @override
   void initState() {
     super.initState();
     if (BuildConfig.isDebug) {
       Log.d('currentPage', widget.className);
     }
-    if(isAddToAppLife){
+    if (isAddToAppLife) {
       AppLifeUtils.instance.openPage(widgetName, widgetTitle, widget);
     }
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (!_didRunOnContextReady) {
+      _didRunOnContextReady = true;
+      onContextReady();
+    }
+  }
+
   void onContextReady() {
     onCreate();
-    super.onContextReady();
   }
 
   void onCreate() {
@@ -296,7 +294,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,
     _clearLoading();
     onDestroy();
     _loadingViewPlugin = null;
-    if(isAddToAppLife){
+    if (isAddToAppLife) {
       AppLifeUtils.instance.closePage(widgetName, widgetTitle, widget);
     }
     super.dispose();
@@ -316,20 +314,10 @@ abstract class BaseMvvmState<M extends BaseViewModel,
     buildContext = null;
   }
 
-  @override
-  void onResume() {
-    vm?.onResume();
-  }
-
-  @override
-  void onPause() {
-    vm?.onPause();
-  }
 
   void finish({dynamic result}) {
     Navigator.pop(context, result);
   }
-
 }
 
 abstract class BaseMvvmListState<M extends BaseListViewModel,
@@ -338,7 +326,7 @@ abstract class BaseMvvmListState<M extends BaseListViewModel,
   Widget? buildLoadingContentView() {
     return SmartRefresher(
       controller: viewModel.controller!,
-      onRefresh: (){
+      onRefresh: () {
         viewModel.requestRefresh(showAni: false);
       },
       onLoading: viewModel.requestLoadMore,

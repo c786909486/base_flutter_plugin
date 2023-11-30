@@ -40,9 +40,6 @@ dependencies:
 #  flutter_lifecycle:
 #    git:
 #      url: 'https://github.com/c786909486/flutter_lifecycle.git'
-  flutterlifecyclehooks:
-    git:
-      url: https://gitee.com/code1993/flutterlifecyclehooks.git
   #时选择器
   flutter_datetime_picker: ^1.5.1
 

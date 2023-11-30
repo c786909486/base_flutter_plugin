@@ -177,15 +177,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutterlifecyclehooks:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "70428d7e4ba4c8a2ade345e462bc13176e04c327"
-      url: "https://gitee.com/code1993/flutterlifecyclehooks.git"
-    source: git
-    version: "4.0.0"
   ftoast:
     dependency: "direct main"
     description:
