@@ -22,8 +22,13 @@ class _TestListState extends BaseMvvmListState<TestListViewModel,TestListPage>{
   }
 
   @override
+  bool get touchOutDismiss => false;
+
+  @override
   Widget createItemWidget(int index) {
-    return CommonText("123123").addToContainer(height: 50,alignment: Alignment.center);
+    return CommonText("123123").addToContainer(height: 50,alignment: Alignment.center).onTap(() {
+      viewModel.showLoadingDialog();
+    });
   }
 
   @override
