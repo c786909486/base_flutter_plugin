@@ -506,4 +506,15 @@ class PickerDataWithIdModel implements IPickerData {
 
   @override
   set name(String _name) {}
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PickerDataWithIdModel &&
+          runtimeType == other.runtimeType &&
+          pickName == other.pickName &&
+          pickId == other.pickId;
+
+  @override
+  int get hashCode => pickName.hashCode ^ pickId.hashCode;
 }
