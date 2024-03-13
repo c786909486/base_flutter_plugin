@@ -21,7 +21,7 @@ dependencies:
       url: https://gitee.com/code1993/dio_net_work_package.git
 
 
-  cached_network_image: ^3.2.3
+  cached_network_image: ^3.3.1
 
 
 #  # aes加密库
