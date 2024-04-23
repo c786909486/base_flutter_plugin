@@ -139,13 +139,14 @@ class CheckWithText extends StatelessWidget {
   MainAxisAlignment mainAxisAlignment;
   Color? checkedColor;
   Color? fillColor;
+  bool enable;
 
   CheckWithText({this.defaultSelected = false,
     required this.title,
     required this.onChanged,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.checkedColor,
-    this.fillColor});
+    this.fillColor,this.enable = true});
 
   @override
   Widget build(BuildContext context) {
@@ -160,20 +161,24 @@ class CheckWithText extends StatelessWidget {
             checkColor: checkedColor,
             value: defaultSelected,
             onChanged: (value) {
-              setState(() {
-                defaultSelected = value ?? false;
-              });
-              onChanged(defaultSelected);
+              if(enable){
+                setState(() {
+                  defaultSelected = value ?? false;
+                });
+                onChanged(defaultSelected);
+              }
             },
             visualDensity: VisualDensity(horizontal: -4, vertical: -4),
           ),
           CommonText(title).addToContainer(constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-100)),
         ],
       ).onTap(() {
-        setState(() {
-          defaultSelected = !defaultSelected;
-        });
-        onChanged(defaultSelected);
+        if(enable){
+          setState(() {
+            defaultSelected = !defaultSelected;
+          });
+          onChanged(defaultSelected);
+        }
       });
     });
   }
