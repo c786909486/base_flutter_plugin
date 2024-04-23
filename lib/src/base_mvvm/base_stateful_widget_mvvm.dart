@@ -271,13 +271,11 @@ abstract class BaseMvvmState<M extends BaseViewModel,
             context: context,
             barrierDismissible: touchOutDismiss,
             builder: (context) {
-              return PopScope(
-                onPopInvoked: (didPop) async {
-                  // 拦截到返回键，证明dialog被手动关闭
-                  print(didPop);
+              return WillPopScope(
+                onWillPop: (){
                   onCloseDialog();
+                  return Future(() => backDismiss);
                 },
-                canPop: backDismiss,
                 child: ProgressDialog(hintText: msg),
               );
             });
