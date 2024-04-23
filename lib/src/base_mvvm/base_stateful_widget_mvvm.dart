@@ -262,19 +262,22 @@ abstract class BaseMvvmState<M extends BaseViewModel,
 
   @override
   void showLoadingDialog(String msg) {
+
     if (mounted && !_isShowDialog) {
       _isShowDialog = true;
+      print("12312331");
       try {
         showTransparentDialog(
             context: context,
             barrierDismissible: touchOutDismiss,
             builder: (context) {
-              return WillPopScope(
-                onWillPop: () async {
+              return PopScope(
+                onPopInvoked: (didPop) async {
                   // 拦截到返回键，证明dialog被手动关闭
+                  print(didPop);
                   onCloseDialog();
-                  return Future.value(backDismiss);
                 },
+                canPop: backDismiss,
                 child: ProgressDialog(hintText: msg),
               );
             });
