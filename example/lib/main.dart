@@ -2,6 +2,8 @@ import 'package:base_flutter/base_flutter.dart';
 import 'package:example/test_list_page.dart';
 import 'package:flutter/material.dart';
 
+import 'net_request_page.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -65,6 +67,17 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  void initState() {
+    initDev();
+    super.initState();
+  }
+
+  Future<void> initDev() async {
+    await SpUtil.getInstance();
+    DevConfig.instance.init();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
@@ -105,12 +118,18 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+
+
+            TextButton(onPressed: (){
+              DevConfig.instance.openDevModel(context);
+            }, child: CommonText("开启开发者模式"))
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Go().push(TestListPage());
+          // Go().push(DeveloperPage());
+          Go().push(NetRequestPage());
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),

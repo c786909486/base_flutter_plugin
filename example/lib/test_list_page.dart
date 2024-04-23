@@ -22,7 +22,8 @@ class _TestListState extends BaseMvvmListState<TestListViewModel,TestListPage>{
   }
 
   @override
-  bool get touchOutDismiss => false;
+  bool get touchOutDismiss => true;
+
 
   @override
   Widget createItemWidget(int index) {
@@ -35,7 +36,9 @@ class _TestListState extends BaseMvvmListState<TestListViewModel,TestListPage>{
   TestListViewModel createViewModel() {
     return TestListViewModel(context);
   }
-  
+
+  @override
+  bool get backDismiss => true;
 }
 
 

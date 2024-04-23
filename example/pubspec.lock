@@ -100,10 +100,10 @@ packages:
     dependency: transitive
     description:
       name: dio
-      sha256: "417e2a6f9d83ab396ec38ff4ea5da6c254da71e4db765ad737a42af6930140b7"
+      sha256: "11e40df547d418cc0c4900a9318b26304e665da6fa4755399a9ff9efd09034b5"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "5.3.3"
+    version: "5.4.3+1"
   dio_cookie_manager:
     dependency: transitive
     description:
@@ -117,7 +117,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "28ed104d60b0f5f634e48dc2fc83c4b3b7c1e87d"
+      resolved-ref: ac24162864d084a5683d5e645955330116b5821e
       url: "https://gitee.com/code1993/dio_net_work_package.git"
     source: git
     version: "0.0.1"
