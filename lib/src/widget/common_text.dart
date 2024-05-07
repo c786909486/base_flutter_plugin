@@ -10,7 +10,7 @@ Widget CommonText(String? text,
     String hintText = "",
     Color hintColor = Colors.grey,
     TextAlign textAlign = TextAlign.start,
-    double height = 1,
+    double? height,
     FontWeight fontWeight = FontWeight.normal,
     bool canCopy = false}) {
   return canCopy ? SelectableText(
