@@ -1,4 +1,5 @@
 import 'package:base_flutter/base_flutter.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../utils/ext_utils.dart';
 import 'clear_text_field.dart';
@@ -140,13 +141,14 @@ class CheckWithText extends StatelessWidget {
   Color? checkedColor;
   Color? fillColor;
   bool enable;
+  TextStyle? textStyle;
 
   CheckWithText({this.defaultSelected = false,
     required this.title,
     required this.onChanged,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.checkedColor,
-    this.fillColor,this.enable = true});
+    this.fillColor,this.enable = true,this.textStyle});
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +172,7 @@ class CheckWithText extends StatelessWidget {
             },
             visualDensity: VisualDensity(horizontal: -4, vertical: -4),
           ),
-          CommonText(title).addToContainer(constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-100)),
+          Text(title,style: textStyle??TextStyle(fontSize: 16,color: Colors.blue),).addToContainer(constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-100)),
         ],
       ).onTap(() {
         if(enable){
