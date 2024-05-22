@@ -435,7 +435,7 @@ class MyMaterialButton extends MaterialButton {
       onHighlightChanged: onHighlightChanged,
       mouseCursor: mouseCursor,
       fillColor: buttonTheme.getFillColor(button),
-      textStyle: theme.textTheme.button!
+      textStyle: theme.textTheme.labelMedium!
           .copyWith(color: buttonTheme.getTextColor(this)),
       focusColor: focusColor ?? buttonTheme.getFocusColor(this),
       hoverColor: hoverColor ?? buttonTheme.getHoverColor(this),
