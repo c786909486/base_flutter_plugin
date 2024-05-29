@@ -94,9 +94,9 @@ class _NetProxyState extends State<NetProxyPage>{
                 saveProxy();
               }, child: CommonText('确定',textColor: Colors.white),
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
-                shape: MaterialStateProperty.all(StadiumBorder()),
-                minimumSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width-32,45))
+                backgroundColor: WidgetStateProperty.all(Theme.of(context).primaryColor),
+                shape: WidgetStateProperty.all(StadiumBorder()),
+                minimumSize: WidgetStateProperty.all(Size(MediaQuery.of(context).size.width-32,45))
               ),)
             ]
           ],

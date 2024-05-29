@@ -15,10 +15,10 @@ class OutlineButton extends StatelessWidget {
       onPressed: onPressed,
       child: child,
       style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.transparent),
-          padding: MaterialStateProperty
+          backgroundColor: WidgetStateProperty.all(Colors.transparent),
+          padding: WidgetStateProperty
           .all(padding),
-          shape: MaterialStateProperty.all(shape??RoundedRectangleBorder(
+          shape: WidgetStateProperty.all(shape??RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(5))))),
     );
   }

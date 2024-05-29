@@ -159,7 +159,7 @@ class CheckWithText extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Checkbox(
-            fillColor: MaterialStateProperty.all(fillColor),
+            fillColor: WidgetStateProperty.all(fillColor),
             checkColor: checkedColor,
             value: defaultSelected,
             onChanged: (value) {
