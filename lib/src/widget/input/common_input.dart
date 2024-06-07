@@ -200,7 +200,7 @@ class _CommonInputWidget extends State<CommonInput> {
                 children: [
 
                   ///显示密码
-                  widget.showPassword && !controller!.text.isEmpty
+                  widget.showPassword
                       ? (_isPassword
                       ? widget.hidePasswordWidget ?? Icon(Ionicons.eye)
                       : widget.visiblePasswordWidget ??
