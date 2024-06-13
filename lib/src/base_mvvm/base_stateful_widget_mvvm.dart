@@ -47,7 +47,9 @@ abstract class BaseMvvmState<M extends BaseViewModel,
 
   @override
   void initState() {
+
     super.initState();
+    onContextReady();
     if (BuildConfig.isDebug) {
       Log.d('currentPage', widget.className);
     }
@@ -59,10 +61,9 @@ abstract class BaseMvvmState<M extends BaseViewModel,
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
     if (!_didRunOnContextReady) {
       _didRunOnContextReady = true;
-      onContextReady();
+      // onContextReady();
     }
   }
 
@@ -83,9 +84,9 @@ abstract class BaseMvvmState<M extends BaseViewModel,
       LoadingViewBuilder? errorWidget,
       LoadingViewBuilder? emptyWidget}) {
     _loadingViewPlugin?.initWidget(
-        loadingWidget: loadingWidget!,
-        errorWidget: errorWidget!,
-        emptyWidget: emptyWidget!);
+        loadingWidget: loadingWidget,
+        errorWidget: errorWidget,
+        emptyWidget: emptyWidget);
   }
 
   void receiveMessage(SendMessageEvent event) {

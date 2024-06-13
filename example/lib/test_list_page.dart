@@ -10,6 +10,15 @@ class TestListPage extends BaseStatefulMvvmWidget{
 }
 
 class _TestListState extends BaseMvvmListState<TestListViewModel,TestListPage>{
+
+  @override
+  void initState() {
+    super.initState();
+    addLoadingWidget(loadingWidget: (str){
+      return CommonText('加载中。。。').addToContainer(height: 100);
+    });
+  }
+
   @override
   Widget buildRootView(BuildContext context, Widget loadingContentWidget) {
     return Scaffold(
@@ -28,7 +37,7 @@ class _TestListState extends BaseMvvmListState<TestListViewModel,TestListPage>{
   @override
   Widget createItemWidget(int index) {
     return CommonText("123123").addToContainer(height: 50,alignment: Alignment.center).onTap(() {
-      viewModel.showLoadingDialog();
+      viewModel.requestRefresh();
     });
   }
 
@@ -46,7 +55,8 @@ class TestListViewModel extends BaseListViewModel<String>{
   TestListViewModel(super.context);
 
   @override
-  Future<List<String>> requestListData() {
+  Future<List<String>> requestListData() async {
+    await Future.delayed(Duration(seconds: 2));
     return Future(() => ['','','','']);
   }
   
@@ -55,5 +65,6 @@ class TestListViewModel extends BaseListViewModel<String>{
     super.onCreated();
     requestRefresh(showAni: false);
   }
+
   
 }
