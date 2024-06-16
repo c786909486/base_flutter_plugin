@@ -231,6 +231,9 @@ class _CommonInputWidget extends State<CommonInput> {
                       controller!.text = "";
                       _offLength = 0;
                       showClear = false;
+                      if (widget.onChanged != null) {
+                        widget.onChanged!('');
+                      }
                     });
                   })
                       : Container(
