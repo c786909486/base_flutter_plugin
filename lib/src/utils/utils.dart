@@ -231,3 +231,43 @@ showBottomSelectSheet<T extends IPickerData>(BuildContext context,
                     topRight: 20.radius, topLeft: 20.radius)));
       });
 }
+
+showBottomSelectSheet2(BuildContext context,
+    {required List<Widget> items, String title = '请选择'}) {
+  showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        var list = <Widget>[
+          CommonText(title)
+              .addToContainer(padding: EdgeInsets.symmetric(vertical: 10)),
+          Divider(
+            color: Colors.grey,
+            height: 1,
+          ),
+        ];
+
+        list.addAll(items);
+
+        list.addAll([
+          Container(
+            height: 10,
+            color: Colors.grey[200],
+          ),
+          CommonText('取消', textColor: Theme.of(context).primaryColor)
+              .addToContainer(padding: EdgeInsets.symmetric(vertical: 10))
+              .onTap(() {
+            Navigator.pop(context);
+          })
+        ]);
+        return SafeArea(child:  Column(
+          mainAxisSize: MainAxisSize.min,
+          children: list,
+        )).addToContainer(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topRight: 20.radius, topLeft: 20.radius)));
+      });
+}
