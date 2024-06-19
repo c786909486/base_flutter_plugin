@@ -49,13 +49,15 @@ abstract class BaseMvvmState<M extends BaseViewModel,
   void initState() {
 
     super.initState();
-    onContextReady();
-    if (BuildConfig.isDebug) {
-      Log.d('currentPage', widget.className);
-    }
-    if (isAddToAppLife) {
-      AppLifeUtils.instance.openPage(widgetName, widgetTitle, widget);
-    }
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp){
+      onContextReady();
+      if (BuildConfig.isDebug) {
+        Log.d('currentPage', widget.className);
+      }
+      if (isAddToAppLife) {
+        AppLifeUtils.instance.openPage(widgetName, widgetTitle, widget);
+      }
+    });
   }
 
   @override
