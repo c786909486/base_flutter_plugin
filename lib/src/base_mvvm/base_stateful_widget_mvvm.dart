@@ -47,7 +47,6 @@ abstract class BaseMvvmState<M extends BaseViewModel,
 
   @override
   void initState() {
-
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp){
       onContextReady();
@@ -57,6 +56,9 @@ abstract class BaseMvvmState<M extends BaseViewModel,
       if (isAddToAppLife) {
         AppLifeUtils.instance.openPage(widgetName, widgetTitle, widget);
       }
+      if(vm!=null){
+        onViewModelCreated();
+      }
     });
   }
 
@@ -65,7 +67,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,
     super.didChangeDependencies();
     if (!_didRunOnContextReady) {
       _didRunOnContextReady = true;
-      // onContextReady();
+
     }
   }
 
@@ -107,9 +109,9 @@ abstract class BaseMvvmState<M extends BaseViewModel,
     return ChangeNotifierProvider<M>(
       create: (_) {
         vm = createViewModel();
-        Future.delayed(Duration(milliseconds: 1), () {
-          onViewModelCreated();
-        });
+        // Future.delayed(Duration(milliseconds: 1), () {
+        //
+        // });
         return vm!;
       },
       child: Consumer<M>(
