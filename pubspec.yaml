@@ -47,6 +47,9 @@ dependencies:
 
   photo_view: ^0.14.0
 
+  install_apk_plugin:
+    git: https://github.com/c786909486/install_apk_plugin.git
+
 
 
 dev_dependencies:

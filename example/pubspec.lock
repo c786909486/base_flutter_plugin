@@ -216,6 +216,15 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.0.2"
+  install_apk_plugin:
+    dependency: transitive
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "3623106efb8c4275ff85d530c32fd079b76f6360"
+      url: "https://github.com/c786909486/install_apk_plugin.git"
+    source: git
+    version: "0.0.1"
   ionicons:
     dependency: transitive
     description:

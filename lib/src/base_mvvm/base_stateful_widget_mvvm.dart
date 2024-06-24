@@ -109,9 +109,6 @@ abstract class BaseMvvmState<M extends BaseViewModel,
     return ChangeNotifierProvider<M>(
       create: (_) {
         vm = createViewModel();
-        // Future.delayed(Duration(milliseconds: 1), () {
-        //
-        // });
         return vm!;
       },
       child: Consumer<M>(

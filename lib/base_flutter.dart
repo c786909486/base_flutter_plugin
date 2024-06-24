@@ -60,6 +60,7 @@ export 'package:base_flutter/src/widget/image_loader_widget.dart';
 export 'package:base_flutter/src/widget/icon_title_tap_widget.dart';
 export 'package:base_flutter/src/widget/material_button.dart';
 export 'package:base_flutter/src/utils/net_error_utils.dart';
+export 'package:base_flutter/src/utils/app_update_utils.dart';
 export 'package:base_flutter/src/tools/net_proxy_set_page.dart';
 export 'package:base_flutter/src/dev/developer_page.dart';
 export 'package:base_flutter/src/dev/dev_config.dart';

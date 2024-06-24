@@ -18,11 +18,17 @@ class _NetRequestState extends BaseMvvmState<NetRequestViewModel,NetRequestPage>
             Go().push(DeveloperPage());
           }),
 
-          SizedBox(height: 30,),
+
           CommonText('网络请求').onTap(() {
             viewModel.requestNet();
           }),
-        ],
+
+
+          CommonText('app更新').onTap(() {
+            viewModel.appUpdate();
+          }),
+
+        ].insertWidget(SizedBox(height: 30,),),
       ),
     );
   }
@@ -62,5 +68,16 @@ class NetRequestViewModel extends BaseViewModel{
       hideDialog();
     }
 
+  }
+
+  void appUpdate(){
+    AppUpdateUtils.instance.checkVersion(context: context, versionRequest: () async {
+      var data = await HttpGo.instance.postData("https://saastest.yytong.com/ophApi/app/interface/autoUpdate",data: {'appType': '1'},options: Options(contentType: Headers.formUrlEncodedContentType));
+      var version = data['version'];
+      var url = data['url'];
+      return NetVersionInfo(netVerions: version, fileUrl: url, isForce: true);
+    },compare: (netVersion){
+      return true;
+    });
   }
 }

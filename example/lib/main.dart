@@ -117,7 +117,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
             TextButton(onPressed: (){
               DevConfig.instance.openDevModel(context);
-            }, child: CommonText("开启开发者模式"))
+            }, child: CommonText("开启开发者模式")),
+
           ],
         ),
       ),
