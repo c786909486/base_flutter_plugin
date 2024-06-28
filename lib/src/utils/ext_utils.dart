@@ -73,7 +73,7 @@ extension StringExt on String {
 
 extension dynamicExt on dynamic {
   String toNetError() {
-    return HttpGo.formatError(this);
+    return NetErrorUtils.getNetError(this);
   }
 }
 

@@ -1,3 +1,5 @@
+import 'package:base_flutter/base_flutter.dart';
+
 class NetErrorUtils {
   static Function(dynamic error)? netStr;
 
@@ -6,6 +8,6 @@ class NetErrorUtils {
   }
 
   static String getNetError(dynamic error) {
-    return netStr == null ? error.toString() : netStr!(error);
+    return netStr == null ? HttpGo.formatError(error) : netStr!(error);
   }
 }
