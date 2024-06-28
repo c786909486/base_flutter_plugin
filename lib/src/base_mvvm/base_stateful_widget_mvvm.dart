@@ -116,7 +116,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,
           vm = provider;
           _addBaseCallback();
 
-          return buildRootView(context, createLoadingView() ?? Container());
+          return buildRootView(context, createLoadingView(context) ?? Container());
         },
       ),
     );
@@ -179,13 +179,13 @@ abstract class BaseMvvmState<M extends BaseViewModel,
   ///创建根布局
   Widget buildRootView(BuildContext context, Widget loadingContentWidget);
 
-  Widget? createLoadingView() {
+  Widget? createLoadingView(BuildContext context) {
     if (vm?.loadingState == LoadingState.showLoading) {
-      return _loadingViewPlugin?.getLoadingWidget();
+      return _loadingViewPlugin?.getLoadingWidget(context);
     } else if (vm?.loadingState == LoadingState.showEmpty) {
-      return _loadingViewPlugin?.getEmptyWidget(() => onRetryClick());
+      return _loadingViewPlugin?.getEmptyWidget(context,() => onRetryClick());
     } else if (vm?.loadingState == LoadingState.showError) {
-      return _loadingViewPlugin?.getErrorWidget(
+      return _loadingViewPlugin?.getErrorWidget(context,
           pageError, () => onRetryClick());
     } else {
       return buildLoadingContentView();

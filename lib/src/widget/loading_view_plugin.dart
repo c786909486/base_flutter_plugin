@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 typedef OnRetryEvent();
-typedef LoadingViewBuilder = Widget Function(String msg);
+typedef LoadingViewBuilder = Widget Function(BuildContext context,String msg);
 
 class LoadingViewPlugin {
   static TextStyle _textStyle = TextStyle(fontSize: 18, color: Colors.black);
@@ -46,11 +46,11 @@ class LoadingViewPlugin {
     _globeErrorWidget = errorWidget;
   }
 
-  Widget getLoadingWidget() {
+  Widget getLoadingWidget(BuildContext context) {
     if (_loadingWidget != null) {
-      return _loadingWidget!("");
+      return _loadingWidget!(context,"");
     } else if (_globeLoadingWidget != null) {
-      return _globeLoadingWidget!("");
+      return _globeLoadingWidget!(context,"");
     } else {
       return Center(
         child: CircularProgressIndicator(),
@@ -58,12 +58,12 @@ class LoadingViewPlugin {
     }
   }
 
-  Widget getErrorWidget(String error, OnRetryEvent event) {
+  Widget getErrorWidget(BuildContext context,String error, OnRetryEvent event) {
     if (_errorWidget != null) {
       return InkWell(
         highlightColor: Colors.transparent,
         radius: 0,
-        child: _errorWidget!(error),
+        child: _errorWidget!(context,error),
         onTap: () {
           event();
         },
@@ -72,7 +72,7 @@ class LoadingViewPlugin {
       return InkWell(
         highlightColor: Colors.transparent,
         radius: 0,
-        child: _globeErrorWidget!(error),
+        child: _globeErrorWidget!(context,error),
         onTap: () {
           event();
         },
@@ -116,12 +116,12 @@ class LoadingViewPlugin {
     }
   }
 
-  Widget getEmptyWidget(OnRetryEvent event) {
+  Widget getEmptyWidget(BuildContext context,OnRetryEvent event) {
     if (_emptyWidget != null) {
       return InkWell(
         highlightColor: Colors.transparent,
         radius: 0,
-        child: _emptyWidget!(""),
+        child: _emptyWidget!(context,""),
         onTap: () {
           event();
         },
@@ -130,7 +130,7 @@ class LoadingViewPlugin {
       return InkWell(
         highlightColor: Colors.transparent,
         radius: 0,
-        child: _globeEmptyWidget!(""),
+        child: _globeEmptyWidget!(context,""),
         onTap: () {
           event();
         },

@@ -20,7 +20,7 @@ class _TestListState extends BaseMvvmListState<TestListViewModel,TestListPage>{
   @override
   void onCreate() {
     super.onCreate();
-    addLoadingWidget(loadingWidget: (str){
+    addLoadingWidget(loadingWidget: (context,str){
       return CommonText('加载中。。。').addToContainer(height: 100);
     });
   }
