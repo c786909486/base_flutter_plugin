@@ -16,9 +16,9 @@ dependencies:
   shared_preferences: ^2.1.0
   sp_util: ^2.0.3
   # dio网络请求框架
-  dio: ^5.1.1
+  dio: ^4.0.0
   # dio cookie管理
-  dio_cookie_manager: ^2.1.4
+  dio_cookie_manager: ^2.0.0
 
   cached_network_image: ^3.1.0
 
