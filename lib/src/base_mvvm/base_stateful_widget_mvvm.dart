@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:base_flutter/base_flutter.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutterlifecyclehooks/flutterlifecyclehooks.dart';
 
 enum LoadingState { showContent, showError, showEmpty, showLoading }
 
@@ -18,7 +19,7 @@ abstract class BaseStatefulMvvmWidget extends StatefulWidget {
 }
 
 abstract class BaseMvvmState<M extends BaseViewModel,
-        W extends BaseStatefulMvvmWidget> extends State<W>
+        W extends BaseStatefulMvvmWidget> extends State<W> with LifecycleMixin
     implements IBaseMvvmView {
   M? vm;
 
@@ -45,11 +46,12 @@ abstract class BaseMvvmState<M extends BaseViewModel,
 
   bool _didRunOnContextReady = false;
 
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp){
-      onContextReady();
+      onContextInit(context);
       if (BuildConfig.isDebug) {
         Log.d('currentPage', widget.className);
       }
@@ -71,9 +73,10 @@ abstract class BaseMvvmState<M extends BaseViewModel,
     }
   }
 
-  void onContextReady() {
+  void onContextInit(BuildContext context) {
     onCreate();
   }
+
 
   void onCreate() {
     BuildConfig.pageList.add(widget);

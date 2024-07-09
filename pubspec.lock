@@ -169,6 +169,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutterlifecyclehooks:
+    dependency: "direct main"
+    description:
+      name: flutterlifecyclehooks
+      sha256: "6844e66c1a31ed6d310cb29d4a16bd54004acbfeedbfcb1dd4b1594d38e66beb"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "5.0.0"
   ftoast:
     dependency: "direct main"
     description:

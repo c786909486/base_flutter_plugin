@@ -50,6 +50,9 @@ dependencies:
   install_apk_plugin:
     git: https://github.com/c786909486/install_apk_plugin.git
 
+  flutterlifecyclehooks: ^5.0.0
+
+
 
 
 dev_dependencies:
