@@ -16,7 +16,7 @@ abstract class BaseRouteUtils {
   push(Widget page,{params, RouteSettings? settings, bool maintainState = true, bool fullscreenDialog = false}){
     return NavigateService.getInstance().navigator.push( MaterialPageRoute(builder: (context){
       return page;
-    },settings: settings,maintainState: maintainState,fullscreenDialog: fullscreenDialog));
+    },settings: settings??RouteSettings(name: page.runtimeType.toString()),maintainState: maintainState,fullscreenDialog: fullscreenDialog));
   }
 
   open(Widget page,{params,String? name}){
@@ -25,11 +25,11 @@ abstract class BaseRouteUtils {
     },settings: RouteSettings(name: name,arguments: params)));
   }
 
-  pushRemoveUntil(Widget page,){
+  pushRemoveUntil(Widget page,{RouteSettings? settings, bool maintainState = true, bool fullscreenDialog = false}){
     return NavigateService.getInstance().navigator.pushAndRemoveUntil(new MaterialPageRoute(
       builder: (BuildContext context) {
         return page;
-      },
+      },settings:  settings??RouteSettings(name: page.runtimeType.toString()),maintainState: maintainState,fullscreenDialog: fullscreenDialog
     ), (route) => route == null);
   }
 
@@ -37,10 +37,10 @@ abstract class BaseRouteUtils {
     return NavigateService.getInstance().navigator.pushNamed(name,arguments: params);
   }
 
-  pushAndPop(Widget page, {params, RouteSettings? settings, result}) {
+  pushAndPop(Widget page, {RouteSettings? settings, bool maintainState = true, bool fullscreenDialog = false, result}) {
     return NavigateService.getInstance().navigator.pushReplacement(MaterialPageRoute(builder: (context){
       return page;
-    }),result: result);
+    },settings:  settings??RouteSettings(name: page.runtimeType.toString()),maintainState: maintainState,fullscreenDialog: fullscreenDialog),result: result);
   }
 
   pushReplacement(String name, {params, RouteSettings? settings, result}) {

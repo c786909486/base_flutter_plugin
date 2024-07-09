@@ -338,6 +338,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,
 
   @override
   void onPause() {
+    // TODO: implement onPause
   }
 }
 
