@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:base_flutter/base_flutter.dart';
+import 'package:base_flutter/src/base_mvvm/page_life/page_life_circle_mixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutterlifecyclehooks/flutterlifecyclehooks.dart';
 
@@ -19,7 +20,7 @@ abstract class BaseStatefulMvvmWidget extends StatefulWidget {
 }
 
 abstract class BaseMvvmState<M extends BaseViewModel,
-        W extends BaseStatefulMvvmWidget> extends State<W> with LifecycleMixin
+        W extends BaseStatefulMvvmWidget> extends State<W> with LifecycleMixin,PageLifeCircleMixin
     implements IBaseMvvmView {
   M? vm;
 
@@ -329,6 +330,14 @@ abstract class BaseMvvmState<M extends BaseViewModel,
 
   void finish({dynamic result}) {
     Navigator.pop(context, result);
+  }
+
+  @override
+  void onResume() {
+  }
+
+  @override
+  void onPause() {
   }
 }
 
