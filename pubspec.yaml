@@ -48,7 +48,7 @@ dependencies:
   photo_view: ^0.14.0
 
   install_apk_plugin:
-    git: https://github.com/c786909486/install_apk_plugin.git
+    git: https://gitee.com/code1993/install_apk_plugin.git
 
   flutterlifecyclehooks: ^5.0.0
 

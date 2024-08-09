@@ -207,7 +207,7 @@ packages:
       path: "."
       ref: HEAD
       resolved-ref: "3623106efb8c4275ff85d530c32fd079b76f6360"
-      url: "https://github.com/c786909486/install_apk_plugin.git"
+      url: "https://gitee.com/code1993/install_apk_plugin.git"
     source: git
     version: "0.0.1"
   ionicons:
