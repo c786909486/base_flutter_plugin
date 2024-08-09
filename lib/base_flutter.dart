@@ -64,6 +64,7 @@ export 'package:base_flutter/src/utils/app_update_utils.dart';
 export 'package:base_flutter/src/tools/net_proxy_set_page.dart';
 export 'package:base_flutter/src/dev/developer_page.dart';
 export 'package:base_flutter/src/dev/dev_config.dart';
+export 'package:base_flutter/src/base_mvvm/page_life/page_life_circle_mixin.dart';
 export 'package:sp_util/sp_util.dart';
 export 'package:ionicons/ionicons.dart';
 

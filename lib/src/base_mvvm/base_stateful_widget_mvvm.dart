@@ -334,11 +334,12 @@ abstract class BaseMvvmState<M extends BaseViewModel,
 
   @override
   void onResume() {
+    // print("lifeCir===>resume");
   }
 
   @override
   void onPause() {
-    // TODO: implement onPause
+    // print("lifeCir===>pause");
   }
 }
 

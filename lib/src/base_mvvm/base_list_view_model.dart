@@ -119,7 +119,7 @@ abstract class BaseListViewModel<T> extends BaseViewModel {
     }
     _inProcess = true;
     page = 1;
-    if (listItems.isEmpty) {
+    if (listItems.isEmpty||loadingState==LoadingState.showEmpty||loadingState==LoadingState.showError) {
       showLoadingState();
     }
     if (showAni) {
