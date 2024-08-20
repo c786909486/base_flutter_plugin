@@ -51,7 +51,9 @@ class CommonInput extends StatefulWidget {
   CommonInputType keyboardType;
   bool autoFocus;
   FocusNode? focusNode;
+  TextEditingController? controller;
   final TextInputAction? textInputAction;
+
 
 
   // TextType?  textType;
@@ -86,6 +88,7 @@ class CommonInput extends StatefulWidget {
     this.focusNode,
     this.textInputAction,
     this.isDense,
+    this.controller,
     this.keyboardType = CommonInputType.text});
 
   @override
@@ -107,12 +110,15 @@ class _CommonInputWidget extends State<CommonInput> {
     _offLength = text.length;
     showClear = text.isNotEmpty;
     _keyborder = _getTextInputType();
+    controller = widget.controller;
     super.initState();
-    controller = TextEditingController.fromValue(TextEditingValue(
-        text: text,
-        composing: TextRange.collapsed(text.isNotEmpty ? 0 : -1),
-        selection: TextSelection.fromPosition(TextPosition(
-            offset: text.length, affinity: TextAffinity.downstream))));
+    if(controller==null){
+      controller = TextEditingController.fromValue(TextEditingValue(
+          text: text,
+          composing: TextRange.collapsed(text.isNotEmpty ? 0 : -1),
+          selection: TextSelection.fromPosition(TextPosition(
+              offset: text.length, affinity: TextAffinity.downstream))));
+    }
   }
 
   ///输入类型
