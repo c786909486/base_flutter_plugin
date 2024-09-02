@@ -260,7 +260,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,
     }
   }
 
-  bool get touchOutDismiss => true;
+  bool get touchOutDismiss => false;
 
   bool get backDismiss => true;
 
