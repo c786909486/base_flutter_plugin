@@ -112,19 +112,27 @@ abstract class BaseViewModel with ChangeNotifier {
   }
 
   void hideDialog(){
-    _hideDialogEvent!();
+    if(mounted){
+      _hideDialogEvent!();
+    }
   }
 
   void showLoadingState(){
-    _showLoadingEvent!();
+    if(mounted){
+      _showLoadingEvent!();
+    }
   }
 
   void showErrorState(String error){
-    _showErrorEvent!(error);
+    if(mounted){
+      _showErrorEvent!(error);
+    }
   }
 
   void showEmptyState({String msg = "暂无数据"}){
-    _showEmptyEvent!(msg);
+    if(mounted){
+      _showEmptyEvent!(msg);
+    }
   }
 
   void finishRefresh(){
@@ -132,19 +140,27 @@ abstract class BaseViewModel with ChangeNotifier {
   }
 
   void finishLoadMore(){
-    _finishLoadMoreEvent!();
+   if(mounted){
+     _finishLoadMoreEvent!();
+   }
   }
 
   void showContent(){
-    _showContent!();
+    if(mounted){
+      _showContent!();
+    }
   }
 
   void finish({dynamic data}){
-    _finishEvent!(data);
+   if(mounted){
+     _finishEvent!(data);
+   }
   }
 
   void sendMessage(SendMessageEvent event){
-    _sendMessageEvent!(event);
+   if(mounted){
+     _sendMessageEvent!(event);
+   }
   }
 
 
