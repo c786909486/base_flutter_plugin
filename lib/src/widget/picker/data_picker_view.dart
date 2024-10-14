@@ -35,25 +35,25 @@ class DataPickerView {
 
   DataPickerView(this.context, this.first,
       {Key? key,
-      List<List<IPickerData>>? second,
-      List<List<List<IPickerData>>>? third,
-      this.onSubmitListener,
-      Widget? title,
-      String cancelText = "取消",
-      String submitText = "确定",
-      Color backgroundColor = Colors.white,
-      Color titleBarColor = Colors.white,
-      TextStyle? centerStyle,
-      TextStyle? submitStyle,
-      TextStyle? cancelStyle,
-      List<int> flexs = _weight,
-      this.firstScrollController,
-      this.secondScrollController,
-      this.thirdScrollController,
-      this.currentFirstData,
-      this.currentSecondData,
-      this.currentThirdData,
-      double itemExtent = 40}) {
+        List<List<IPickerData>>? second,
+        List<List<List<IPickerData>>>? third,
+        this.onSubmitListener,
+        Widget? title,
+        String cancelText = "取消",
+        String submitText = "确定",
+        Color backgroundColor = Colors.white,
+        Color titleBarColor = Colors.white,
+        TextStyle? centerStyle,
+        TextStyle? submitStyle,
+        TextStyle? cancelStyle,
+        List<int> flexs = _weight,
+        this.firstScrollController,
+        this.secondScrollController,
+        this.thirdScrollController,
+        this.currentFirstData,
+        this.currentSecondData,
+        this.currentThirdData,
+        double itemExtent = 40}) {
     this.second = second;
     this.third = third;
     this.height = height;
@@ -153,25 +153,25 @@ class _DataPickerRoute<T> extends PopupRoute<T> {
 
   _DataPickerRoute(this.first,
       {List<List<IPickerData>>? second,
-      List<List<List<IPickerData>>>? third,
-      this.onSubmitListener,
-      Widget? title,
-      String cancelText = "取消",
-      String submitText = "确定",
-      Color backgroundColor = Colors.white,
-      Color titleBarColor = Colors.white,
-      TextStyle? centerStyle,
-      TextStyle? submitStyle,
-      TextStyle? cancelStyle,
-      List<int> flexs = _weight,
-      this.firstScrollController,
-      this.secondScrollController,
-      this.thirdScrollController,
-      this.currentFirstData,
-      this.currentSecondData,
-      this.currentThirdData,
-      this.barrierLable = "",
-      double itemExtent = 40}) {
+        List<List<List<IPickerData>>>? third,
+        this.onSubmitListener,
+        Widget? title,
+        String cancelText = "取消",
+        String submitText = "确定",
+        Color backgroundColor = Colors.white,
+        Color titleBarColor = Colors.white,
+        TextStyle? centerStyle,
+        TextStyle? submitStyle,
+        TextStyle? cancelStyle,
+        List<int> flexs = _weight,
+        this.firstScrollController,
+        this.secondScrollController,
+        this.thirdScrollController,
+        this.currentFirstData,
+        this.currentSecondData,
+        this.currentThirdData,
+        this.barrierLable = "",
+        double itemExtent = 40}) {
     this.second = second;
     this.third = third;
     this.height = height;
@@ -276,23 +276,23 @@ class MyPicker extends StatefulWidget {
 
   MyPicker(
       {Key? key,
-      this.first,
-      List<List<IPickerData>>? second,
-      List<List<List<IPickerData>>>? third,
-      this.onSubmitListener,
-      Widget? title,
-      String cancelText = "取消",
-      String submitText = "确定",
-      Color backgroundColor = Colors.white,
-      Color titleBarColor = Colors.white,
-      TextStyle? centerStyle,
-      TextStyle? submitStyle,
-      TextStyle? cancelStyle,
-      List<int> flexs = _weight,
-      this.currentFirstData,
-      this.currentSecondData,
-      this.currentThirdData,
-      double itemExtent = 40}) {
+        this.first,
+        List<List<IPickerData>>? second,
+        List<List<List<IPickerData>>>? third,
+        this.onSubmitListener,
+        Widget? title,
+        String cancelText = "取消",
+        String submitText = "确定",
+        Color backgroundColor = Colors.white,
+        Color titleBarColor = Colors.white,
+        TextStyle? centerStyle,
+        TextStyle? submitStyle,
+        TextStyle? cancelStyle,
+        List<int> flexs = _weight,
+        this.currentFirstData,
+        this.currentSecondData,
+        this.currentThirdData,
+        double itemExtent = 40}) {
     this.second = second;
     this.third = third;
     this.height = height;
@@ -327,9 +327,17 @@ class _MyPickerWidget extends State<MyPicker> {
     if (widget.currentFirstData != null) {
       int current = widget.first!.indexOf(widget.currentFirstData!);
       defaultFirstController =
-          new FixedExtentScrollController(initialItem: current);
+      new FixedExtentScrollController(initialItem: current);
       widget._firstSelection = current;
+
+      if(widget.currentSecondData!=null){
+        int secondCurrent = widget.second![current]!.indexOf(widget.currentSecondData!);
+        defaultSecondController = new FixedExtentScrollController(initialItem: secondCurrent);
+        widget._secondSelection = secondCurrent;
+      }
     }
+
+
   }
 
   @override
@@ -359,15 +367,15 @@ class _MyPickerWidget extends State<MyPicker> {
                 child: widget.title == null
                     ? Container()
                     : Center(
-                        child: widget.title,
-                      ),
+                  child: widget.title,
+                ),
               ),
               TextButton(
                 child: Text(
                   widget.submitText ?? "确定",
                   style: widget.submitStyle == null
                       ? TextStyle(
-                          color: Theme.of(context).primaryColor, fontSize: 16)
+                      color: Theme.of(context).primaryColor, fontSize: 16)
                       : widget.submitStyle,
                 ),
                 onPressed: () {
@@ -414,63 +422,63 @@ class _MyPickerWidget extends State<MyPicker> {
                 widget.second == null || widget.second!.isEmpty
                     ? Container()
                     : Expanded(
-                        flex: widget.flexs![1],
-                        child: CupertinoPicker(
-                          backgroundColor: widget.backgroundColor,
-                          scrollController: defaultSecondController,
-                          children:
-                              widget.second == null || widget.second!.isEmpty
-                                  ? []
-                                  : widget.second![widget._firstSelection]
-                                      .map((item) {
-                                      return Center(
-                                        child: Text(
-                                          item.name,
-                                          style: widget.centerStyle == null
-                                              ? TextStyle(fontSize: 17)
-                                              : widget.centerStyle,
-                                        ),
-                                      );
-                                    }).toList(),
-                          onSelectedItemChanged: (index) {
-                            widget._secondSelection = index;
-                            setState(() {
-                              if (widget.third != null) {
-                                defaultThirdController!.jumpToItem(0);
-                              }
-                            });
-                          },
-                          itemExtent: widget.itemExtent!,
+                  flex: widget.flexs![1],
+                  child: CupertinoPicker(
+                    backgroundColor: widget.backgroundColor,
+                    scrollController: defaultSecondController,
+                    children:
+                    widget.second == null || widget.second!.isEmpty
+                        ? []
+                        : widget.second![widget._firstSelection]
+                        .map((item) {
+                      return Center(
+                        child: Text(
+                          item.name,
+                          style: widget.centerStyle == null
+                              ? TextStyle(fontSize: 17)
+                              : widget.centerStyle,
                         ),
-                      ),
+                      );
+                    }).toList(),
+                    onSelectedItemChanged: (index) {
+                      widget._secondSelection = index;
+                      setState(() {
+                        if (widget.third != null) {
+                          defaultThirdController!.jumpToItem(0);
+                        }
+                      });
+                    },
+                    itemExtent: widget.itemExtent!,
+                  ),
+                ),
                 widget.third == null || widget.third!.isEmpty
                     ? Container()
                     : Expanded(
-                        flex: widget.flexs![2],
-                        child: CupertinoPicker(
-                          scrollController: defaultThirdController,
-                          backgroundColor: widget.backgroundColor,
-                          children:
-                              widget.third == null || widget.third!.isEmpty
-                                  ? []
-                                  : widget.third![widget._firstSelection]
-                                          [widget._secondSelection]
-                                      .map((item) {
-                                      return Center(
-                                        child: Text(
-                                          item.name,
-                                          style: widget.centerStyle == null
-                                              ? TextStyle(fontSize: 17)
-                                              : widget.centerStyle,
-                                        ),
-                                      );
-                                    }).toList(),
-                          onSelectedItemChanged: (index) {
-                            widget._thirdSelection = index;
-                          },
-                          itemExtent: widget.itemExtent!,
+                  flex: widget.flexs![2],
+                  child: CupertinoPicker(
+                    scrollController: defaultThirdController,
+                    backgroundColor: widget.backgroundColor,
+                    children:
+                    widget.third == null || widget.third!.isEmpty
+                        ? []
+                        : widget.third![widget._firstSelection]
+                    [widget._secondSelection]
+                        .map((item) {
+                      return Center(
+                        child: Text(
+                          item.name,
+                          style: widget.centerStyle == null
+                              ? TextStyle(fontSize: 17)
+                              : widget.centerStyle,
                         ),
-                      ),
+                      );
+                    }).toList(),
+                    onSelectedItemChanged: (index) {
+                      widget._thirdSelection = index;
+                    },
+                    itemExtent: widget.itemExtent!,
+                  ),
+                ),
               ],
             ),
           ),
@@ -486,9 +494,9 @@ class IPickerData {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is IPickerData &&
-          runtimeType == other.runtimeType &&
-          name == other.name;
+          other is IPickerData &&
+              runtimeType == other.runtimeType &&
+              name == other.name;
 
   @override
   int get hashCode => name.hashCode;
@@ -509,10 +517,10 @@ class PickerDataWithIdModel implements IPickerData {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PickerDataWithIdModel &&
-          runtimeType == other.runtimeType &&
-          pickName == other.pickName &&
-          pickId == other.pickId;
+          other is PickerDataWithIdModel &&
+              runtimeType == other.runtimeType &&
+              pickName == other.pickName &&
+              pickId == other.pickId;
 
   @override
   int get hashCode => pickName.hashCode ^ pickId.hashCode;
