@@ -27,6 +27,7 @@ class ImageLoad extends StatelessWidget {
   final double scale;
   final bool isAsset;
   final String? package;
+  final Map<String, String>? headers;
 
   ImageLoad(
     this.path, {
@@ -50,14 +51,15 @@ class ImageLoad extends StatelessWidget {
     this.scale = 1.0,
         this.placeholder,
         this.isAsset = false,
-        this.package
+        this.package,
+        this.headers
   });
 
   @override
   Widget build(BuildContext context) {
     return path.startsWith("http") || path.startsWith("https")
         ? Image(
-            image: CachedNetworkImageProvider(path, scale: scale),
+            image: CachedNetworkImageProvider(path, scale: scale,headers: headers),
             frameBuilder: frameBuilder,
             loadingBuilder: loadingBuilder!=null?loadingBuilder:placeholder.isNullOrEmpty()?null:(context,child,process){
               if(process==null){
