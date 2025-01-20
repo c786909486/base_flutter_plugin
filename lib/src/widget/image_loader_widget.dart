@@ -3,9 +3,11 @@ import 'package:base_flutter/base_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 
+typedef ImageCookieInit = String Function();
 class ImageLoad extends StatelessWidget {
-  final String path;
 
+  final String path;
+  static ImageCookieInit? cookieInit;
   final ImageFrameBuilder? frameBuilder;
   final ImageLoadingBuilder? loadingBuilder;
   final String? errorImage;
@@ -27,7 +29,7 @@ class ImageLoad extends StatelessWidget {
   final double scale;
   final bool isAsset;
   final String? package;
-  final Map<String, String>? headers;
+  Map<String, String>? headers;
 
   ImageLoad(
     this.path, {
@@ -57,6 +59,14 @@ class ImageLoad extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if(cookieInit!=null){
+      String cookie = cookieInit!();
+      if(headers==null){
+        headers = {"Cookie":cookie};
+      }else{
+        headers!['Cookie'] = cookie;
+      }
+    }
     return path.startsWith("http") || path.startsWith("https")
         ? Image(
             image: CachedNetworkImageProvider(path, scale: scale,headers: headers),

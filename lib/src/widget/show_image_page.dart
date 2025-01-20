@@ -10,8 +10,9 @@ class ShowImagePage extends StatelessWidget {
   List<String> galleryItems;
   int position;
   String image;
+  final Map<String, String>? headers;
 
-  ShowImagePage(this.galleryItems, {this.position = 0,this.image = ''}){
+  ShowImagePage(this.galleryItems, {this.position = 0,this.image = '',this.headers}){
     if(!image.isNullOrEmpty()){
       position = galleryItems.indexOf(image);
     }
@@ -30,7 +31,7 @@ class ShowImagePage extends StatelessWidget {
                 builder: (BuildContext context, int index) {
                   var image = galleryItems[index];
                   return PhotoViewGalleryPageOptions(
-                    imageProvider: getImageProvider(image),
+                    imageProvider: getImageProvider(image,headers: headers),
                     initialScale: PhotoViewComputedScale.contained,
                     heroAttributes:
                     PhotoViewHeroAttributes(tag: galleryItems[index]),
@@ -69,9 +70,9 @@ class ShowImagePage extends StatelessWidget {
 
 }
 
-ImageProvider getImageProvider(String image) {
+ImageProvider getImageProvider(String image,{final Map<String, String>? headers}) {
   if (image.contains('http')) {
-    return CachedNetworkImageProvider(image);
+    return CachedNetworkImageProvider(image,headers: headers);
   } else if (image.startsWith('assets') || image.startsWith('images')) {
     return AssetImage(image);
   } else {
@@ -79,11 +80,12 @@ ImageProvider getImageProvider(String image) {
   }
 }
 
-showBigImage(BuildContext context, List<String> images, {int position = 0}) {
+showBigImage(BuildContext context, List<String> images, {int position = 0,final Map<String, String>? headers}) {
   Navigator.push(context, MaterialPageRoute(builder: (context) {
     return ShowImagePage(
       images,
       position: position,
+      headers: headers,
     );
   }));
 }
