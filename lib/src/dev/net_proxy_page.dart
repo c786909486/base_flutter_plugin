@@ -1,5 +1,4 @@
 import 'package:base_flutter/base_flutter.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NetProxyPage extends StatefulWidget{

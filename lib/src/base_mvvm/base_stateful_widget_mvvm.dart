@@ -1,30 +1,15 @@
 import 'dart:async';
-import 'dart:ui';
-
 import 'package:base_flutter/base_flutter.dart';
-import 'package:base_flutter/src/base_mvvm/base_view_model_mvvm.dart';
-import 'package:base_flutter/src/base_mvvm/base_view_mvvm.dart';
-import 'package:base_flutter/src/message/message_event.dart';
-import 'package:base_flutter/src/utils/app_life_utils.dart';
-import 'package:base_flutter/src/widget/loading_view_plugin.dart';
-import 'package:base_flutter/src/widget/progress_dialog.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutterlifecyclehooks/flutterlifecyclehooks.dart';
-import 'package:provider/provider.dart';
 
 enum LoadingState { showContent, showError, showEmpty, showLoading }
 
-@immutable
 abstract class BaseStatefulMvvmWidget extends StatefulWidget {
+
   final Map<String, dynamic>? params;
 
-  BaseStatefulMvvmWidget({Key? key, this.params}) : super(key: key) {
-    _className = this.runtimeType.toString();
-  }
-
-  var _className = "";
-
-  String get className => _className;
+  BaseStatefulMvvmWidget({Key? key, this.params}) : super(key: key);
+  
 }
 
 
@@ -49,17 +34,20 @@ abstract class BaseMvvmState<M extends BaseViewModel,
 
   BuildContext? buildContext;
 
-  String get widgetName => widget.className;
+  String get widgetName => _className;
 
   String get widgetTitle => "";
 
   bool get isAddToAppLife => true;
 
+  String _className = "";
+
   @override
   void initState() {
     super.initState();
+     _className = widget.runtimeType.toString();
     if (BuildConfig.isDebug) {
-      Log.d('currentPage', widget.className);
+      Log.d('currentPage', _className);
     }
     if(isAddToAppLife){
       AppLifeUtils.instance.openPage(widgetName, widgetTitle, widget);

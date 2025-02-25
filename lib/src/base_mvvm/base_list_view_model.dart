@@ -1,5 +1,5 @@
 import 'package:base_flutter/base_flutter.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/widgets.dart';
 
 abstract class BaseListViewModel<T> extends BaseViewModel {
   BaseListViewModel(BuildContext context) : super(context);

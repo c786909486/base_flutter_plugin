@@ -9,7 +9,6 @@ export "package:base_flutter/src/base_mvvm/base_model_mvvm.dart";
 export "package:base_flutter/src/base_mvvm/base_stateful_widget_mvvm.dart";
 export "package:base_flutter/src/base_mvvm/base_view_model_mvvm.dart";
 export "package:base_flutter/src/base_mvvm/base_view_mvvm.dart";
-export 'package:base_flutter/src/utils/screen_healper.dart';
 export 'package:base_flutter/src/utils/ext_utils.dart';
 export 'package:base_flutter/src/utils/log_utils.dart';
 export 'package:base_flutter/src/widget/clear_text_field.dart';
@@ -69,7 +68,6 @@ export 'package:ionicons/ionicons.dart';
 
 // export 'package:permission_handler/permission_handler.dart';
 export 'package:base_flutter/src/widget/circle/circle_process_widget.dart';
-export 'package:base_flutter/src/utils/permission_utils.dart';
 export 'package:base_flutter/src/widget/click/click_listener.dart';
 export 'package:ionicons/ionicons.dart';
 export 'package:base_flutter/src/base_mvvm/base_list_view_model.dart';

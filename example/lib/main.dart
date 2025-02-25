@@ -1,5 +1,5 @@
+import 'package:base_flutter/base_flutter.dart';
 import 'package:flutter/material.dart';
-
 void main() {
   runApp(const MyApp());
 }
@@ -44,15 +44,18 @@ class _MyHomePageState extends State<MyHomePage> {
   num time = 0;
 
   void _incrementCounter() {
-    var start = DateTime.now();
-    for(var i =0;i<=5000;i++ ){
-      setState(() {
-        text+="+${i}";
-      });
-    }
-    setState(() {
-      time = (DateTime.now().millisecond-start.millisecond)/1000;
-    });
+    // var start = DateTime.now();
+    // for(var i =0;i<=5000;i++ ){
+    //   setState(() {
+    //     text+="+${i}";
+    //   });
+    // }
+    // setState(() {
+    //   time = (DateTime.now().millisecond-start.millisecond)/1000;
+    // });
+    Navigator.push(context, MaterialPageRoute(builder: (context){
+      return NetProxySetPage();
+    }));
 
   }
 

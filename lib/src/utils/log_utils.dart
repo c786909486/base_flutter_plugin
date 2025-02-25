@@ -1,5 +1,4 @@
 import 'package:base_flutter/base_flutter.dart';
-import 'package:base_flutter/src/utils/ext_utils.dart';
 
 class Log {
   static bool _isDebug = true;
