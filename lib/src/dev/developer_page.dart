@@ -1,6 +1,5 @@
 import 'package:base_flutter/base_flutter.dart';
 import 'package:base_flutter/src/dev/net_proxy_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DeveloperPage extends StatefulWidget{

@@ -121,6 +121,7 @@ class DataPickerView {
   }
 }
 
+// ignore: unused_element
 class _DataPickerRoute<T> extends PopupRoute<T> {
   final List<IPickerData> first;
   List<List<IPickerData>>? second;
@@ -331,7 +332,7 @@ class _MyPickerWidget extends State<MyPicker> {
       widget._firstSelection = current;
 
       if(widget.currentSecondData!=null){
-        int secondCurrent = widget.second![current]!.indexOf(widget.currentSecondData!);
+        int secondCurrent = widget.second![current].indexOf(widget.currentSecondData!);
         defaultSecondController = new FixedExtentScrollController(initialItem: secondCurrent);
         widget._secondSelection = secondCurrent;
       }

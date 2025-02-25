@@ -1,8 +1,5 @@
-import 'package:base_flutter/src/message/message_event.dart';
 import 'package:flutter/cupertino.dart';
-
 import '../../base_flutter.dart';
-import 'base_model_mvvm.dart';
 
 typedef EventPostMethodWithMsg(String msg);
 typedef EventPostMethod();

@@ -1,22 +1,14 @@
 import 'dart:async';
-import 'dart:ui';
 import 'package:base_flutter/base_flutter.dart';
-import 'package:base_flutter/src/base_mvvm/page_life/page_life_circle_mixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutterlifecyclehooks/flutterlifecyclehooks.dart';
 
 enum LoadingState { showContent, showError, showEmpty, showLoading }
 
-@immutable
 abstract class BaseStatefulMvvmWidget extends StatefulWidget {
   final Map<String, dynamic>? params;
 
-  BaseStatefulMvvmWidget({Key? key, this.params}) : super(key: key) {
-    _className = this.runtimeType.toString();
-  }
-  var _className = "";
-
-  String get className => _className;
+  BaseStatefulMvvmWidget({Key? key, this.params}) : super(key: key);
 }
 
 abstract class BaseMvvmState<M extends BaseViewModel,
@@ -39,7 +31,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,
 
   BuildContext? buildContext;
 
-  String get widgetName => widget.className;
+  String get widgetName => _className;
 
   String get widgetTitle => "";
 
@@ -47,14 +39,16 @@ abstract class BaseMvvmState<M extends BaseViewModel,
 
   bool _didRunOnContextReady = false;
 
+  String _className = "";
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp){
       onContextInit(context);
+      _className = widget.runtimeType.toString();
       if (BuildConfig.isDebug) {
-        Log.d('currentPage', widget.className);
+        Log.d('currentPage', _className);
       }
       if (isAddToAppLife) {
         AppLifeUtils.instance.openPage(widgetName, widgetTitle, widget);
