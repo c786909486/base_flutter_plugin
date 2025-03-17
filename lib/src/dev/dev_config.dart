@@ -47,7 +47,7 @@ class DevConfig {
   void addNetFloating(BuildContext context) {
     if(overlayEntry != null) {
       overlayEntry?.remove();
-      networkRecords.call();
+      networkRecords.clear();
       overlayEntry = null;
     }
     if(!canGetNetRequest) {
