@@ -9,6 +9,9 @@ class DeveloperPage extends StatefulWidget{
 }
 
 class _DeveloperState extends State<DeveloperPage>{
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +21,14 @@ class _DeveloperState extends State<DeveloperPage>{
           children: [
             IconTitleTextWidget('网络代理',arrow: Icon(Icons.keyboard_arrow_right_sharp),).onTap(() {
               Go().push(NetProxyPage());
-            })
+            }),
+
+            IconTitleWidget('抓取数据返回',contentWidget: Switch(value: DevConfig.instance.canGetNetRequest, onChanged: (value){
+              setState(() {
+               DevConfig.instance.canGetNetRequest = value;
+              });
+              DevConfig.instance.addNetFloating(context);
+            }),showArrow: false,),
           ],
         ),
       ),

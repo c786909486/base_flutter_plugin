@@ -56,7 +56,6 @@ class StateLifecycleManager {
 
   onResume(String routerName) {
     if(_map.containsKey(routerName)){
-      var item =  _map[routerName];
       _map[routerName]?.onResume();
     }
   }
