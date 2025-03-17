@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
-
 import 'package:base_flutter/base_flutter.dart';
 import 'package:base_flutter/src/dev/network_record_page.dart';
 import 'package:flutter/cupertino.dart';
