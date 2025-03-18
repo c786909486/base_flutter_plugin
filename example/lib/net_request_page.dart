@@ -60,8 +60,17 @@ class NetRequestViewModel extends BaseViewModel{
 
   Future<void> requestNet() async {
     showLoadingDialog();
+    var head = {
+      "client-type":'3',
+      "app-version":'1.0.0',
+      "app-type":'1',
+    };
+    var data = {
+      "username":'admin111',
+      'password':'Zhyly@2022'
+    };
     try{
-      await HttpGo.instance.postData("https://saastest.yytong.com/ophApi/customerAskLeave/listBean");
+      await HttpGo.instance.postData("https://saastest.yytong.com/ophApi/auth/login",data: data,options: Options(headers: head,contentType: Headers.formUrlEncodedContentType));
       hideDialog();
     }catch(e){
       showToast(e.toNetError());

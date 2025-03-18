@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:base_flutter/base_flutter.dart';
+import 'package:flutter/services.dart';
 
 class NetworkRecordPage extends StatefulWidget {
   static NetworkRecordPage? _instance;
@@ -83,45 +86,92 @@ class _NetworkRecordPageState extends State<NetworkRecordPage> {
         maxHeight: MediaQuery.of(context).size.height * 0.9,
       ),
       builder: (context) {
-        return SingleChildScrollView(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-            left: 16,
-            right: 16,
-            top: 16,
-          ),
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.9,
           child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // 拖动指示器
               Center(
                 child: Container(
                   width: 40,
                   height: 4,
-                  margin: EdgeInsets.only(bottom: 16),
+                  margin: EdgeInsets.symmetric(vertical: 16),
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
               ),
-              Text('请求详情', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              SizedBox(height: 10),
-              Text('URL: ${record.url}'),
-              Text('Method: ${record.method}'),
-              Text('Time: ${record.timestamp.toString()}'),
-              Text('Duration: ${record.duration.inMilliseconds}ms'),
-              Text('Status: ${record.statusCode ?? "未知"}'),
-              Divider(),
-              Text('Headers:', style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(record.headers.toString()),
-              Divider(),
-              Text('Request Body:', style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(record.requestBody?.toString() ?? "空"),
-              Divider(),
-              Text('Response Body:', style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(record.responseBody?.toString() ?? "空"),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('请求详情', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 10),
+                    // 基本信息
+                    SelectableText('URL: ${record.url}',),
+                    SelectableText('Method: ${record.method}'),
+                    SelectableText('Time: ${record.timestamp.toString()}'),
+                    SelectableText('Duration: ${record.duration.inMilliseconds}ms'),
+                    SelectableText('Status: ${record.statusCode ?? "未知"}'),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Divider(),
+                      _buildSectionHeader('Headers:', record.headers),
+                      Flexible(
+                        flex: 2,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: record.headers.entries.map((entry) => Padding(
+                              padding: EdgeInsets.only(left: 16, top: 4),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: Text(entry.key, style: TextStyle(color: Colors.blue)),
+                                  ),
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    flex: 3,
+                                    child: Text(entry.value.toString()),
+                                  ),
+                                ],
+                              ),
+                            )).toList(),
+                          ),
+                        ),
+                      ),
+                      Divider(),
+                      // Request Body 部分
+                      _buildSectionHeader('Request Body:', record.requestBody),
+                      Flexible(
+                        flex: 2,
+                        child: SingleChildScrollView(
+                          child: _buildRequestBody(record),
+                        ),
+                      ),
+                      Divider(),
+                      // Response Body 部分
+                      _buildSectionHeader('Response Body:', record.responseBody),
+                      Flexible(
+                        flex: 3,
+                        child: SingleChildScrollView(
+                          child: _buildResponseBody(record),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         );
@@ -129,3 +179,76 @@ class _NetworkRecordPageState extends State<NetworkRecordPage> {
     );
   }
 }
+
+Widget _buildRequestBody(NetworkRecord record) {
+    final contentType = record.headers['content-type']?.toString().toLowerCase() ?? '';
+    if (contentType.contains('json')) {
+      try {
+        // 尝试格式化 JSON
+        const JsonEncoder encoder = JsonEncoder.withIndent('  ');
+        final formattedJson = encoder.convert(record.requestBody);
+        return Text(formattedJson);
+      } catch (e) {
+        return Text(record.requestBody?.toString() ?? "空");
+      }
+    } else {
+      // 非 JSON 格式，以键值对形式显示
+      if (record.requestBody is Map) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: (record.requestBody as Map).entries.map((entry) => Padding(
+            padding: EdgeInsets.only(left: 16, top: 4),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    entry.key.toString(),
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                ),
+                SizedBox(width: 8),
+                Expanded(
+                  flex: 3,
+                  child: Text(entry.value.toString()),
+                ),
+              ],
+            ),
+          )).toList(),
+        );
+      } else {
+        return Text(record.requestBody?.toString() ?? "空");
+      }
+    }
+  }
+
+Widget _buildSectionHeader(String title, dynamic content) {
+    return Row(
+      children: [
+        Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+        Spacer(),
+        IconButton(
+          icon: Icon(Icons.copy, size: 20),
+          onPressed: () {
+            final text = content is String ? content : json.encode(content);
+            Clipboard.setData(ClipboardData(text: text));
+            // ToastUtils.shotToast('已复制到剪贴板');
+          },
+        ),
+      ],
+    );
+  }
+
+Widget _buildResponseBody(NetworkRecord record) {
+    try {
+      if (record.responseBody != null) {
+        // const JsonEncoder encoder = JsonEncoder.withIndent('  ');
+        // final formattedJson = encoder.convert(record.responseBody);
+        return Text(record.responseBody);
+      }
+    } catch (e) {
+      // JSON 格式化失败，返回原始字符串
+    }
+    return Text(record.responseBody?.toString() ?? "空");
+  }
