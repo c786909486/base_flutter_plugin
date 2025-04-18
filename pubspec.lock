@@ -397,11 +397,12 @@ packages:
   shared_preferences:
     dependency: "direct main"
     description:
-      name: shared_preferences
-      sha256: "396f85b8afc6865182610c0a2fc470853d56499f75f7499e2a73a9f0539d23d0"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.1.2"
+      path: "packages/shared_preferences/shared_preferences"
+      ref: HEAD
+      resolved-ref: "74bf3d4bbb974316cf792b7d8b29b0d25a046311"
+      url: "https://gitcode.com/openharmony-sig/flutter_packages.git"
+    source: git
+    version: "2.2.0"
   shared_preferences_android:
     dependency: transitive
     description:
@@ -425,6 +426,15 @@ packages:
       sha256: "9d387433ca65717bbf1be88f4d5bb18f10508917a8fa2fb02e0fd0d7479a9afa"
       url: "https://pub.flutter-io.cn"
     source: hosted
+    version: "2.2.0"
+  shared_preferences_ohos:
+    dependency: transitive
+    description:
+      path: "packages/shared_preferences/shared_preferences_ohos"
+      ref: HEAD
+      resolved-ref: "74bf3d4bbb974316cf792b7d8b29b0d25a046311"
+      url: "https://gitcode.com/openharmony-sig/flutter_packages.git"
+    source: git
     version: "2.2.0"
   shared_preferences_platform_interface:
     dependency: transitive
@@ -463,14 +473,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.10.0"
-  sp_util:
-    dependency: "direct main"
-    description:
-      name: sp_util
-      sha256: "9da43dce5de79c17a787d0626bf01538d63090ca32521200d22a232171c495dc"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.3"
   sqflite:
     dependency: transitive
     description:

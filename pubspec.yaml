@@ -13,8 +13,11 @@ dependencies:
   #toast
   ftoast: ^2.0.0
   #本地存储
-  shared_preferences: ^2.1.0
-  sp_util: ^2.0.3
+  shared_preferences: 
+    git:
+       url: "https://gitcode.com/openharmony-sig/flutter_packages.git"
+       path: "packages/shared_preferences/shared_preferences"
+
   # dio网络请求框架
   dio_net_work:
     git:
