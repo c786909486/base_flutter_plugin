@@ -217,7 +217,7 @@ extension WidgetExt on Widget {
       ValueChanged<bool>? onFocusChange,
       bool autofocus = false,
       bool requestFocus = true,
-      int delayTime = 1000,
+      int delayTime = 500,
       Map<String, dynamic>? event}) {
     FocusNode defaultNode = new FocusNode();
     return InkWell(
