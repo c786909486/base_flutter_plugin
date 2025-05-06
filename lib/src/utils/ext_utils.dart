@@ -23,6 +23,7 @@ extension StringExt on String {
   Map<String, dynamic> toObjMap() {
     return jsonDecode(this);
   }
+
   //
   // ///判断字符串是否是数字
   // bool isNumeric() {
@@ -216,20 +217,18 @@ extension WidgetExt on Widget {
       ValueChanged<bool>? onFocusChange,
       bool autofocus = false,
       bool requestFocus = true,
-      int delayTime = 500,
+      int delayTime = 1000,
       Map<String, dynamic>? event}) {
     FocusNode defaultNode = new FocusNode();
     return InkWell(
         child: this,
-        onTap: () {
+        onTap: onClick(() {
           if (requestFocus) {
             (focusNode ?? defaultNode).requestFocus(FocusNode());
           }
-
-          onClick(() {
-            onTap();
-          }, delayTime, event);
-        },
+          // print("22222");
+          onTap();
+        }, delayTime, event),
         onDoubleTap: onDoubleTap,
         onLongPress: onLongPress,
         onTapDown: onTapDown,
