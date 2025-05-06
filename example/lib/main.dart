@@ -120,8 +120,12 @@ class _MyHomePageState extends State<MyHomePage> {
             }, child: CommonText("开启开发者模式")),
 
             CommonText('Tab点击测试').onTap((){
+              _incrementCounter();
               print("currentTime====>${DateTime.now()}");
-            })
+            },delayTime: 1000),
+            
+            
+            CommonText('已经点击了${_counter}次')
           ],
         ),
       ),
