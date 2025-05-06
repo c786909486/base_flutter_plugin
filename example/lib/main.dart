@@ -119,8 +119,9 @@ class _MyHomePageState extends State<MyHomePage> {
               DevConfig.instance.openDevModel(context);
             }, child: CommonText("开启开发者模式")),
 
-            
-
+            CommonText('Tab点击测试').onTap((){
+              print("currentTime====>${DateTime.now()}");
+            })
           ],
         ),
       ),
