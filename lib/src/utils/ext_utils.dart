@@ -123,19 +123,15 @@ extension StringExt2 on String? {
 
 ///double适配屏幕尺寸
 extension DoubleExt on double {
-
-
   Radius get radius => Radius.circular(this);
 
   BorderRadius get borderRadius => BorderRadius.circular(this);
 }
 
 extension IntExt on int {
-
   Radius get radius => Radius.circular(this.toDouble());
 
   BorderRadius get borderRadius => BorderRadius.circular(this.toDouble());
-
 }
 
 extension ListExr on List<Widget> {
@@ -195,43 +191,44 @@ extension WidgetExt on Widget {
   }
 
   ///widget点击事件
-  Widget onTap(
-    GestureTapCallback onTap, {
-    Key? key,
-    GestureTapCallback? onDoubleTap,
-    GestureLongPressCallback? onLongPress,
-    GestureTapDownCallback? onTapDown,
-    GestureTapCancelCallback? onTapCancel,
-    ValueChanged<bool>? onHighlightChanged,
-    ValueChanged<bool>? onHover,
-    MouseCursor? mouseCursor,
-    Color focusColor = Colors.transparent,
-    Color hoverColor = Colors.transparent,
-    Color highlightColor = Colors.transparent,
-    WidgetStateProperty<Color?>? overlayColor,
-    Color splashColor = Colors.transparent,
-    InteractiveInkFeatureFactory? splashFactory,
-    double? radius,
-    BorderRadius? borderRadius,
-    ShapeBorder? customBorder,
-    bool? enableFeedback = false,
-    bool excludeFromSemantics = false,
-    FocusNode? focusNode,
-    bool canRequestFocus = true,
-    ValueChanged<bool>? onFocusChange,
-    bool autofocus = false,
-        bool requestFocus = true
-
-  }) {
+  Widget onTap(GestureTapCallback onTap,
+      {Key? key,
+      GestureTapCallback? onDoubleTap,
+      GestureLongPressCallback? onLongPress,
+      GestureTapDownCallback? onTapDown,
+      GestureTapCancelCallback? onTapCancel,
+      ValueChanged<bool>? onHighlightChanged,
+      ValueChanged<bool>? onHover,
+      MouseCursor? mouseCursor,
+      Color focusColor = Colors.transparent,
+      Color hoverColor = Colors.transparent,
+      Color highlightColor = Colors.transparent,
+      WidgetStateProperty<Color?>? overlayColor,
+      Color splashColor = Colors.transparent,
+      InteractiveInkFeatureFactory? splashFactory,
+      double? radius,
+      BorderRadius? borderRadius,
+      ShapeBorder? customBorder,
+      bool? enableFeedback = false,
+      bool excludeFromSemantics = false,
+      FocusNode? focusNode,
+      bool canRequestFocus = true,
+      ValueChanged<bool>? onFocusChange,
+      bool autofocus = false,
+      bool requestFocus = true,
+      int delayTime = 500,
+      Map<String, dynamic>? event}) {
     FocusNode defaultNode = new FocusNode();
     return InkWell(
         child: this,
         onTap: () {
-          if(requestFocus){
-            (focusNode??defaultNode).requestFocus(FocusNode());
+          if (requestFocus) {
+            (focusNode ?? defaultNode).requestFocus(FocusNode());
           }
 
-          onTap();
+          onClick(() {
+            onTap();
+          }, delayTime, event);
         },
         onDoubleTap: onDoubleTap,
         onLongPress: onLongPress,
@@ -247,7 +244,7 @@ extension WidgetExt on Widget {
         radius: radius,
         borderRadius: borderRadius,
         customBorder: customBorder,
-        enableFeedback: enableFeedback,
+        enableFeedback: enableFeedback ?? false,
         excludeFromSemantics: excludeFromSemantics,
         focusNode: focusNode ?? defaultNode,
         canRequestFocus: canRequestFocus,
@@ -290,6 +287,6 @@ extension WidgetExt on Widget {
   }
 }
 
-removeFocus(BuildContext context){
+removeFocus(BuildContext context) {
   FocusScope.of(context).unfocus();
 }

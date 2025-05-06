@@ -119,6 +119,8 @@ class _MyHomePageState extends State<MyHomePage> {
               DevConfig.instance.openDevModel(context);
             }, child: CommonText("开启开发者模式")),
 
+            
+
           ],
         ),
       ),
