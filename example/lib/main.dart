@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //   time = (DateTime.now().millisecond-start.millisecond)/1000;
     // });
     Navigator.push(context, MaterialPageRoute(builder: (context){
-      return NetProxySetPage();
+      return DeveloperPage();
     }));
 
   }
