@@ -6,6 +6,6 @@
 class ImagesRes {
   ImagesRes._();
 
-  static const String PLUGIN_NAME = 'base_flutter';
-  static const String PLUGIN_VERSION = '0.0.1';
+  static const String PROJECT_NAME = 'base_flutter';
+  static const String PROJECT_VERSION = '0.0.1';
 }
