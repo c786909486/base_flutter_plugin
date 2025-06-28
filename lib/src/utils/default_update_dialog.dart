@@ -19,7 +19,9 @@ class DefaultUpdateDialog extends StatefulWidget {
 class _DefaultUpdateDialogState extends State<DefaultUpdateDialog> {
   CancelToken _cancelToken = CancelToken();
   bool _isDownload = false;
+  bool _downloadFinish = false;
   double _value = 0;
+  String filePath = "";
   var version = "";
 
   @override
@@ -94,12 +96,26 @@ class _DefaultUpdateDialogState extends State<DefaultUpdateDialog> {
                       padding: const EdgeInsets.only(
                           bottom: 15.0, left: 15.0, right: 15.0, top: 5.0),
                       child: _isDownload
-                          ? LinearProgressIndicator(
-                              backgroundColor: Color(0xffdddddd),
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(primaryColor),
-                              value: _value,
-                            )
+                          ? Column(
+                             children: [
+                               LinearProgressIndicator(
+                                 backgroundColor: Color(0xffdddddd),
+                                 valueColor:
+                                 AlwaysStoppedAnimation<Color>(primaryColor),
+                                 value: _value,
+                               ),
+                               if(_downloadFinish)
+                                 TextButton(onPressed: (){
+                                   InstallApkPlugin.installApk(filePath);
+                                 },child: CommonText("立即安装",textColor: Colors.white),style: TextButton.styleFrom(
+                                   shape: RoundedRectangleBorder(
+                                     borderRadius:
+                                     BorderRadius.circular(18.0),
+                                   ),
+                                   backgroundColor: Colors.blue
+                                 ),)
+                             ]
+                          )
                           : Row(
                               mainAxisAlignment: versionInfo.isForce
                                   ? MainAxisAlignment.center
@@ -155,7 +171,13 @@ class _DefaultUpdateDialogState extends State<DefaultUpdateDialog> {
                                                 _value = count / total;
                                                 setState(() {});
                                                 if (count == total) {
-                                                  Navigator.pop(context);
+                                                  this.filePath = filePath;
+                                                  setState(() {
+                                                    _downloadFinish = true;
+                                                  });
+                                                  if(!versionInfo.isForce){
+                                                    Navigator.pop(context);
+                                                  }
                                                   // InstallApkPlugin.install(path);
                                                   InstallApkPlugin.installApk(filePath);
                                                 }
