@@ -84,7 +84,7 @@ class NetRequestViewModel extends BaseViewModel{
       var data = await HttpGo.instance.postData("https://saastest.yytong.com/ophApi/app/interface/autoUpdate",data: {'appType': '1'},options: Options(contentType: Headers.formUrlEncodedContentType));
       var version = data['version'];
       var url = data['url'];
-      return NetVersionInfo(netVerions: version, fileUrl: url, isForce: true);
+      return NetVersionInfo(netVerions: version, fileUrl: url, isForce: false);
     },compare: (netVersion){
       return true;
     });
