@@ -240,6 +240,15 @@ packages:
       url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
     source: hosted
     version: "4.0.2"
+  install_apk_plugin_plus:
+    dependency: transitive
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "72f768915589f8ed8aed516b10f41a29a0de2210"
+      url: "https://gitee.com/code1993/install_apk_plugin_plus.git"
+    source: git
+    version: "0.0.1"
   ionicons:
     dependency: transitive
     description:
@@ -622,5 +631,5 @@ packages:
     source: hosted
     version: "1.1.0"
 sdks:
-  dart: ">=3.7.2 <4.0.0"
+  dart: ">=3.7.0-0 <4.0.0"
   flutter: ">=3.22.0"
