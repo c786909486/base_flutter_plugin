@@ -8,4 +8,5 @@ class ImagesRes {
 
   static const String PROJECT_NAME = 'base_flutter';
   static const String PROJECT_VERSION = '0.0.1';
+  static const String UPDATE_HEAD = 'images/update_head.png';
 }
