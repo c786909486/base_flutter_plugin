@@ -217,13 +217,13 @@ packages:
       url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
     source: hosted
     version: "4.0.2"
-  install_apk_plugin:
+  install_apk_plugin_plus:
     dependency: "direct main"
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "3623106efb8c4275ff85d530c32fd079b76f6360"
-      url: "https://gitee.com/code1993/install_apk_plugin.git"
+      resolved-ref: "72f768915589f8ed8aed516b10f41a29a0de2210"
+      url: "https://gitee.com/code1993/install_apk_plugin_plus.git"
     source: git
     version: "0.0.1"
   ionicons:
