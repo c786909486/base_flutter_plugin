@@ -245,7 +245,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "3623106efb8c4275ff85d530c32fd079b76f6360"
+      resolved-ref: e0eee114058cb6b15e6823b14a8b459612d15a9f
       url: "https://gitee.com/code1993/install_apk_plugin.git"
     source: git
     version: "0.0.1"
