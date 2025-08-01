@@ -4,7 +4,7 @@ import 'package:base_flutter/src/utils/app_update_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:install_apk_plugin/install_apk_plugin.dart';
+import 'package:install_apk_plugin_plus/install_apk_plugin_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
 class DefaultUpdateDialog extends BaseUpdateDialog {
@@ -58,7 +58,7 @@ class _DefaultUpdateDialogState extends BaseUpdateState<DefaultUpdateDialog> {
                         if (downloadFinish)
                           TextButton(
                             onPressed: () {
-                              InstallApkPlugin.installApk(filePath);
+                              InstallApkPluginPlus().installApk(filePath);
                             },
                             child: CommonText("立即安装", textColor: Colors.white),
                             style: TextButton.styleFrom(
@@ -129,7 +129,7 @@ class _DefaultUpdateDialogState extends BaseUpdateState<DefaultUpdateDialog> {
                                               Navigator.pop(context);
                                             }
                                             // InstallApkPlugin.install(path);
-                                            InstallApkPlugin
+                                            InstallApkPluginPlus()
                                                 .installApk(filePath);
                                           }
                                         }
