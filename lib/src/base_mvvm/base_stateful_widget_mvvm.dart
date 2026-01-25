@@ -181,7 +181,7 @@ abstract class BaseMvvmState<M extends BaseViewModel,
     if (vm?.loadingState == LoadingState.showLoading) {
       return _loadingViewPlugin?.getLoadingWidget(context);
     } else if (vm?.loadingState == LoadingState.showEmpty) {
-      return _loadingViewPlugin?.getEmptyWidget(context,() => onRetryClick());
+      return _loadingViewPlugin?.getEmptyWidget(context,emptyMsg,() => onRetryClick());
     } else if (vm?.loadingState == LoadingState.showError) {
       return _loadingViewPlugin?.getErrorWidget(context,
           pageError, () => onRetryClick());
