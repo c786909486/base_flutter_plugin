@@ -116,12 +116,12 @@ class LoadingViewPlugin {
     }
   }
 
-  Widget getEmptyWidget(BuildContext context,OnRetryEvent event) {
+  Widget getEmptyWidget(BuildContext context,String msg,OnRetryEvent event) {
     if (_emptyWidget != null) {
       return InkWell(
         highlightColor: Colors.transparent,
         radius: 0,
-        child: _emptyWidget!(context,""),
+        child: _emptyWidget!(context,msg),
         onTap: () {
           event();
         },
@@ -130,7 +130,7 @@ class LoadingViewPlugin {
       return InkWell(
         highlightColor: Colors.transparent,
         radius: 0,
-        child: _globeEmptyWidget!(context,""),
+        child: _globeEmptyWidget!(context,msg),
         onTap: () {
           event();
         },
@@ -154,7 +154,7 @@ class LoadingViewPlugin {
                 height: 20,
               ),
               Text(
-                "暂无数据",
+                msg.isNotEmpty?msg:"暂无数据",
                 style: _textStyle,
               ),
               Container(
