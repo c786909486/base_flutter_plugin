@@ -46,7 +46,7 @@ class ProgressDialogState extends State<ProgressDialog>{
                         brightness: Brightness.dark // 局部指定夜间模式，加载圈颜色会设置为白色
                     )
                 ),
-                child: const CupertinoActivityIndicator(radius: 14.0),
+                child: const CupertinoActivityIndicator(radius: 14.0,color: Colors.white,),
               ),
               Container(height: 8,),
               Text(widget.hintText??"", style: const TextStyle(color: Colors.white),)
