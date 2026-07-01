@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:base_flutter/src/utils/ext_utils.dart';
 import 'package:flutter/services.dart';
-import 'package:ionicons/ionicons.dart';
 
 import '../number_textinput_format.dart';
 
@@ -208,9 +207,9 @@ class _CommonInputWidget extends State<CommonInput> {
                   ///显示密码
                   widget.showPassword
                       ? (_isPassword
-                      ? widget.hidePasswordWidget ?? Icon(Ionicons.eye)
+                      ? widget.hidePasswordWidget ?? Icon(Icons.remove_red_eye)
                       : widget.visiblePasswordWidget ??
-                      Icon(Ionicons.eye_off))
+                      Icon(Icons.remove_red_eye_outlined))
                       .onTap(() {
                     setState(() {
                       if (_isPassword) {
@@ -228,7 +227,7 @@ class _CommonInputWidget extends State<CommonInput> {
                   (widget.needClear && showClear)
                       ? (widget.clearWidget ??
                       Icon(
-                        Ionicons.close_circle,
+                        Icons.clear,
                         size: 20,
                       ))
                       .onTap(() {
@@ -461,9 +460,9 @@ class _EditTextInputWidget extends State<EditTextInput> {
                   ///显示密码
                   widget.showPassword && !controller!.text.isEmpty
                       ? (_isPassword
-                      ? widget.hidePasswordWidget ?? Icon(Ionicons.eye)
+                      ? widget.hidePasswordWidget ?? Icon(Icons.remove_red_eye)
                       : widget.visiblePasswordWidget ??
-                      Icon(Ionicons.eye_off))
+                      Icon(Icons.remove_red_eye_outlined))
                       .onTap(() {
                     setState(() {
                       if (_isPassword) {
@@ -481,7 +480,7 @@ class _EditTextInputWidget extends State<EditTextInput> {
                   (widget.needClear && showClear)
                       ? (widget.clearWidget ??
                       Icon(
-                        Ionicons.close_circle,
+                        Icons.close,
                         size: 20,
                       ))
                       .onTap(() {

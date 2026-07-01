@@ -43,7 +43,7 @@ dependencies:
   #时选择器
   flutter_datetime_picker: ^1.5.1
 
-  ionicons: ^0.2.2
+#  ionicons: ^0.2.2
 
   photo_view: ^0.14.0
 

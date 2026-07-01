@@ -226,14 +226,6 @@ packages:
       url: "https://gitee.com/code1993/install_apk_plugin_plus.git"
     source: git
     version: "0.0.1"
-  ionicons:
-    dependency: "direct main"
-    description:
-      name: ionicons
-      sha256: "5496bc65a16115ecf05b15b78f494ee4a8869504357668f0a11d689e970523cf"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.2.2"
   leak_tracker:
     dependency: transitive
     description:

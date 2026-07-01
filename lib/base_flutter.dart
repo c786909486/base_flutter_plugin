@@ -65,11 +65,9 @@ export 'package:base_flutter/src/dev/developer_page.dart';
 export 'package:base_flutter/src/dev/dev_config.dart';
 export 'package:base_flutter/src/base_mvvm/page_life/page_life_circle_mixin.dart';
 export 'package:sp_util/sp_util.dart';
-export 'package:ionicons/ionicons.dart';
 
 export 'package:base_flutter/src/widget/circle/circle_process_widget.dart';
 export 'package:base_flutter/src/widget/click/click_listener.dart';
-export 'package:ionicons/ionicons.dart';
 export 'package:base_flutter/src/base_mvvm/base_list_view_model.dart';
 export 'package:base_flutter/src/widget/popup_widget.dart';
 export 'package:base_flutter/src/widget/expand_item_widget.dart';
