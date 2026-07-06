@@ -100,10 +100,10 @@ packages:
     dependency: transitive
     description:
       name: dio
-      sha256: aff32c08f92787a557dd5c0145ac91536481831a01b4648136373cddb0e64f8c
+      sha256: ea2bad3c89a27635ce2d85cce4d6b199da49a5a48ec77b03e45b65a3b90922b0
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "5.9.2"
+    version: "5.10.0"
   dio_cookie_manager:
     dependency: transitive
     description:
@@ -117,7 +117,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: ac24162864d084a5683d5e645955330116b5821e
+      resolved-ref: "04d77a7e8486036454763766463095794ff0d1f6"
       url: "https://gitee.com/code1993/dio_net_work_package.git"
     source: git
     version: "0.0.1"
@@ -125,10 +125,10 @@ packages:
     dependency: transitive
     description:
       name: dio_web_adapter
-      sha256: "2f9e64323a7c3c7ef69567d5c800424a11f8337b8b228bad02524c9fb3c1f340"
+      sha256: dd58dc3861eb36edb13b217efc006a1c21e5bbc341de8c229b85634fa5e362e4
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.1.2"
+    version: "2.2.0"
   event_bus:
     dependency: transitive
     description:

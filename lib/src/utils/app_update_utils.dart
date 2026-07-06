@@ -68,7 +68,7 @@ class AppUpdateUtils {
         file.deleteSync();
       }
       errorListener(error);
-    });
+    },useNewDio: false);
   }
 
   /// * 版本号对比，0代表相等，1代表version1大于version2，-1代表version1小于version2
