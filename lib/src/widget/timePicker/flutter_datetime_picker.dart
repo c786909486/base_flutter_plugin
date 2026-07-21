@@ -89,6 +89,8 @@ class DatePicker {
         String title = '',
         TextStyle? titleStyle,
     DateTimePickerTheme? theme,
+    DateTime? minTime,
+    DateTime? maxTime,
   }) {
     Navigator.push(
         context,
@@ -102,7 +104,7 @@ class DatePicker {
             barrierLabel:
                 MaterialLocalizations.of(context).modalBarrierDismissLabel,
             pickerModel:
-                TimePickerModel(currentTime: currentTime, locale: locale)));
+                TimePickerModel(currentTime: currentTime, locale: locale, minTime: minTime, maxTime: maxTime)));
   }
 
   ///
@@ -118,6 +120,8 @@ class DatePicker {
         String title="",
         TextStyle? titleStyle,
     DateTimePickerTheme? theme,
+    DateTime? minTime,
+    DateTime? maxTime,
   }) {
     Navigator.push(
         context,
@@ -130,7 +134,7 @@ class DatePicker {
             barrierLabel:
                 MaterialLocalizations.of(context).modalBarrierDismissLabel,
             pickerModel:
-                DateTimePickerModel(currentTime: currentTime, locale: locale)));
+                DateTimePickerModel(currentTime: currentTime, locale: locale, minTime: minTime, maxTime: maxTime)));
   }
 
   ///
