@@ -1,0 +1,44 @@
+{
+  "name": "base-flutter-generator",
+  "displayName": "Base Flutter Generator",
+  "description": "Generate Flutter pages with MVVM architecture based on Base Flutter framework",
+  "version": "1.0.0",
+  "publisher": "kzCai",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "activationEvents": [
+    "onCommand:base-flutter.newPage"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "base-flutter.newPage",
+        "title": "[Base] New Page"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "base-flutter.newPage",
+          "group": "base-flutter"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "^18.0.0",
+    "typescript": "^5.0.0"
+  }
+}
