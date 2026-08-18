@@ -44,11 +44,9 @@ Widget createInput(String text, ITextFieldCallBack fieldCallBack,
     {String hintText = "请输入",
       ITextInputType keyboardType = ITextInputType.text,
       int weight = 3}) {
-  FocusNode node = new FocusNode();
   return ITextField(
     inputText: text,
     hintText: "请输入",
-    // focusNode: node,
     textStyle: TextStyle(color: Colors.black, fontSize: 15.0),
     keyboardType: keyboardType,
     textInputAction: TextInputAction.next,
@@ -58,25 +56,8 @@ Widget createInput(String text, ITextFieldCallBack fieldCallBack,
     textAlign: TextAlign.right,
     needDelete: false,
     autofocus: false,
-    // onSubmitted: (content) {
-    //   node.unfocus();
-    // },
     contentPadding: EdgeInsets.all(0),
   ).setWeight(weight);
-  // var controller = TextEditingController.fromValue(TextEditingValue(
-  //     text: text, selection: TextSelection.collapsed(offset: text.length)));
-  // return TextField(
-  //   controller: controller,
-  //   focusNode: node,
-  //   style: TextStyle(color: ColorRes.text_black, fontSize: 15.0),
-  //   decoration: InputDecoration(
-  //     hintText: hintText,
-  //     border: OutlineInputBorder(borderSide: BorderSide.none),
-  //     hintStyle:
-  //     TextStyle(fontSize: 15.0, color: ColorRes.item_title_color),
-  //   ),
-  //   textAlign: TextAlign.right,
-  // )
 }
 
 Widget createNormalInput(String text,
@@ -86,51 +67,89 @@ Widget createNormalInput(String text,
       TextAlign? textAlign = TextAlign.right,
       int weight = 3,
     }) {
-  FocusNode node = new FocusNode();
-  TextEditingController controller = TextEditingController.fromValue(
-      TextEditingValue(
-          text: text,
-          selection: new TextSelection.fromPosition(TextPosition(
-              affinity: TextAffinity.downstream, offset: text.length))));
-  return weight == 0
-      ? TextField(
-    controller: controller,
-
-    // focusNode: node,
-    style: TextStyle(color: Colors.black, fontSize: 15.0),
+  return _NormalInputField(
+    text: text,
+    fieldCallBack: fieldCallBack,
+    hintText: hintText,
     keyboardType: keyboardType,
-    textInputAction: TextInputAction.next,
-    onChanged: fieldCallBack,
-    textAlign: textAlign ?? TextAlign.right,
-    autofocus: false,
-    // onSubmitted: (content) {
-    //   node.unfocus();
-    // },
-    decoration: InputDecoration(
-      border: OutlineInputBorder(borderSide: BorderSide.none),
-      hintText: hintText,
-      contentPadding: EdgeInsets.all(0),
-      hintStyle: TextStyle(fontSize: 15.0, color: Color(0xFF646566)),
-    ),
-  )
-      : TextField(
-    controller: controller,
+    textAlign: textAlign,
+    weight: weight,
+  );
+}
 
-    // focusNode: node,
-    style: TextStyle(color: Colors.black, fontSize: 15.0),
-    keyboardType: keyboardType,
-    textInputAction: TextInputAction.next,
-    onChanged: fieldCallBack,
-    textAlign: textAlign ?? TextAlign.right,
-    autofocus: false,
+///管理 TextEditingController 生命周期，避免每次build新建controller导致输入状态丢失/内存泄漏
+class _NormalInputField extends StatefulWidget {
+  final String text;
+  final ITextFieldCallBack fieldCallBack;
+  final String hintText;
+  final TextInputType keyboardType;
+  final TextAlign? textAlign;
+  final int weight;
 
-    decoration: InputDecoration(
-      border: OutlineInputBorder(borderSide: BorderSide.none),
-      hintText: hintText,
-      contentPadding: EdgeInsets.all(0),
-      hintStyle: TextStyle(fontSize: 15.0, color: Color(0xFF646566)),
-    ),
-  ).setWeight(weight);
+  const _NormalInputField({
+    Key? key,
+    required this.text,
+    required this.fieldCallBack,
+    this.hintText = "请输入",
+    this.keyboardType = TextInputType.text,
+    this.textAlign = TextAlign.right,
+    this.weight = 3,
+  }) : super(key: key);
+
+  @override
+  State<_NormalInputField> createState() => _NormalInputFieldState();
+}
+
+class _NormalInputFieldState extends State<_NormalInputField> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController.fromValue(_valueOf(widget.text));
+  }
+
+  @override
+  void didUpdateWidget(_NormalInputField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // 外部text变化时同步，但避免覆盖用户正在输入的内容
+    if (oldWidget.text != widget.text && widget.text != _controller.text) {
+      _controller.value = _valueOf(widget.text);
+    }
+  }
+
+  TextEditingValue _valueOf(String text) {
+    return TextEditingValue(
+        text: text,
+        selection: TextSelection.fromPosition(TextPosition(
+            affinity: TextAffinity.downstream, offset: text.length)));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final field = TextField(
+      controller: _controller,
+      style: const TextStyle(color: Colors.black, fontSize: 15.0),
+      keyboardType: widget.keyboardType,
+      textInputAction: TextInputAction.next,
+      onChanged: widget.fieldCallBack,
+      textAlign: widget.textAlign ?? TextAlign.right,
+      autofocus: false,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(borderSide: BorderSide.none),
+        hintText: widget.hintText,
+        contentPadding: EdgeInsets.all(0),
+        hintStyle: TextStyle(fontSize: 15.0, color: Color(0xFF646566)),
+      ),
+    );
+    return widget.weight == 0 ? field : field.setWeight(widget.weight);
+  }
 }
 
 class CheckWithText extends StatelessWidget {

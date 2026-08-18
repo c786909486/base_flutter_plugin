@@ -20,7 +20,12 @@ class NavigateService {
 
   final GlobalKey<NavigatorState> key = GlobalKey();
 
-  NavigatorState get navigator => key.currentState!;
+  NavigatorState? _navigator;
+
+  NavigatorState get navigator {
+    // 缓存查找结果，避免每次调用currentState!重复查找
+    return _navigator ??= key.currentState!;
+  }
 
   get pushNamed => navigator.pushNamed;
   get push =>  navigator.push;

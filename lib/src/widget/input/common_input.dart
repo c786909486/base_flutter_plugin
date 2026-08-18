@@ -102,6 +102,7 @@ class _CommonInputWidget extends State<CommonInput> {
   int _offLength = 0;
   TextEditingController? controller;
   TextInputType _keyborder = TextInputType.text;
+  bool _ownsController = false;
 
   @override
   void initState() {
@@ -117,7 +118,17 @@ class _CommonInputWidget extends State<CommonInput> {
           composing: TextRange.collapsed(text.isNotEmpty ? 0 : -1),
           selection: TextSelection.fromPosition(TextPosition(
               offset: text.length, affinity: TextAffinity.downstream))));
+      _ownsController = true;
     }
+  }
+
+  @override
+  void dispose() {
+    // 仅释放内部创建的controller，外部传入的由调用方管理
+    if (_ownsController) {
+      controller?.dispose();
+    }
+    super.dispose();
   }
 
   ///输入类型
@@ -370,6 +381,12 @@ class _EditTextInputWidget extends State<EditTextInput> {
             offset: widget.text.length, affinity: TextAffinity.downstream))));
     super.initState();
 
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
   }
 
   ///输入类型

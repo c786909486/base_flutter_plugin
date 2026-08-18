@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 typedef ImageCookieInit = String Function();
 typedef ImageHeader = Map<String, String>? Function();
 
-class ImageLoad extends StatelessWidget {
+class ImageLoad extends StatefulWidget {
   final String path;
   static ImageCookieInit? cookieInit;
   static ImageHeader? headerInit;
@@ -33,6 +33,10 @@ class ImageLoad extends StatelessWidget {
   final String? package;
   Map<String, String>? headers;
 
+  ///限制解码尺寸（像素），不传时按 [width]/[height] 与设备像素比自动推导
+  final int? cacheWidth;
+  final int? cacheHeight;
+
   ImageLoad(this.path,
       {this.frameBuilder,
       this.loadingBuilder,
@@ -55,43 +59,86 @@ class ImageLoad extends StatelessWidget {
       this.placeholder,
       this.isAsset = false,
       this.package,
-      this.headers});
+      this.headers,
+      this.cacheWidth,
+      this.cacheHeight});
 
   @override
-  Widget build(BuildContext context) {
-    if (headerInit != null) {
-      var headerMap = headerInit!();
+  State<ImageLoad> createState() => _ImageLoadState();
+}
+
+class _ImageLoadState extends State<ImageLoad> {
+  ///缓存的headers，避免每次build生成新Map导致缓存key变化、图片反复下载
+  Map<String, String>? _headers;
+
+  @override
+  void initState() {
+    super.initState();
+    _headers = _resolveHeaders();
+  }
+
+  @override
+  void didUpdateWidget(ImageLoad oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // 外部传入的headers变化时才重新合并全局header
+    if (oldWidget.headers != widget.headers) {
+      _headers = _resolveHeaders();
+    }
+  }
+
+  Map<String, String>? _resolveHeaders() {
+    Map<String, String>? headers = widget.headers;
+    if (ImageLoad.headerInit != null) {
+      var headerMap = ImageLoad.headerInit!();
       if (headers == null) {
         headers = headerMap;
       } else {
-        headers!.addAll(headerMap ?? {});
+        headers = {...headers, ...?headerMap};
       }
     }
-    if (cookieInit != null) {
-      String cookie = cookieInit!();
-      if (headers == null) {
-        headers = {"Cookie": cookie};
-      } else {
-        headers!['Cookie'] = cookie;
-      }
+    if (ImageLoad.cookieInit != null) {
+      String cookie = ImageLoad.cookieInit!();
+      headers = {...?headers, 'Cookie': cookie};
     }
-    return path.startsWith("http") || path.startsWith("https")
+    return headers;
+  }
+
+  ///根据显示尺寸与设备像素比推导解码尺寸，避免全分辨率解码大图
+  int? get _cacheWidth {
+    if (widget.cacheWidth != null) return widget.cacheWidth;
+    if (widget.width == null) return null;
+    final dpr = MediaQuery.maybeOf(context)?.devicePixelRatio ?? 1.0;
+    return (widget.width! * dpr).round();
+  }
+
+  int? get _cacheHeight {
+    if (widget.cacheHeight != null) return widget.cacheHeight;
+    if (widget.height == null) return null;
+    final dpr = MediaQuery.maybeOf(context)?.devicePixelRatio ?? 1.0;
+    return (widget.height! * dpr).round();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.path.startsWith("http") || widget.path.startsWith("https")
         ? Image(
-            image: CachedNetworkImageProvider(path,
-                scale: scale, headers: headers),
-            frameBuilder: frameBuilder,
-            loadingBuilder: loadingBuilder != null
-                ? loadingBuilder
-                : placeholder.isNullOrEmpty()
+            // 用ResizeImage限制解码尺寸，避免全分辨率解码大图
+            image: ResizeImage.resizeIfNeeded(_cacheWidth, _cacheHeight,
+                CachedNetworkImageProvider(widget.path,
+                    scale: widget.scale, headers: _headers)),
+            frameBuilder: widget.frameBuilder,
+            loadingBuilder: widget.loadingBuilder != null
+                ? widget.loadingBuilder
+                : widget.placeholder.isNullOrEmpty()
                     ? null
                     : (context, child, process) {
                         if (process == null) {
                           return child;
                         } else {
                           return Image.asset(
-                            placeholder ?? "",
-                            width: width,
-                            height: height,
+                            widget.placeholder ?? "",
+                            width: widget.width,
+                            height: widget.height,
                           );
                         }
                       },
@@ -100,98 +147,107 @@ class ImageLoad extends StatelessWidget {
               error,
               stackTrace,
             ) {
-              print("error========>${error.toString()}");
-              return errorImage.isNullOrEmpty()
+              if (BuildConfig.isDebug) {
+                Log.d('ImageLoad', "error========>${error.toString()}");
+              }
+              return widget.errorImage.isNullOrEmpty()
                   ? Container(
-                      width: width,
-                      height: height,
+                      width: widget.width,
+                      height: widget.height,
                     )
                   : Image.asset(
-                      errorImage!,
-                      width: width,
-                      height: height,
+                      widget.errorImage!,
+                      width: widget.width,
+                      height: widget.height,
                     );
             },
-            semanticLabel: semanticLabel,
-            excludeFromSemantics: excludeFromSemantics,
-            width: width,
-            height: height,
-            color: color,
-            colorBlendMode: colorBlendMode,
-            fit: fit,
-            alignment: alignment,
-            repeat: repeat,
-            centerSlice: centerSlice,
-            matchTextDirection: matchTextDirection,
-            gaplessPlayback: gaplessPlayback,
-            filterQuality: filterQuality,
-            isAntiAlias: isAntiAlias,
+            semanticLabel: widget.semanticLabel,
+            excludeFromSemantics: widget.excludeFromSemantics,
+            width: widget.width,
+            height: widget.height,
+            color: widget.color,
+            colorBlendMode: widget.colorBlendMode,
+            fit: widget.fit,
+            alignment: widget.alignment,
+            repeat: widget.repeat,
+            centerSlice: widget.centerSlice,
+            matchTextDirection: widget.matchTextDirection,
+            gaplessPlayback: widget.gaplessPlayback,
+            filterQuality: widget.filterQuality,
+            isAntiAlias: widget.isAntiAlias,
           )
-        : isAsset
-            ? Image.asset(path,
-                scale: scale,
-                frameBuilder: frameBuilder,
-                package: package, errorBuilder: (
+        : widget.isAsset
+            ? Image.asset(widget.path,
+                scale: widget.scale,
+                frameBuilder: widget.frameBuilder,
+                package: widget.package,
+                cacheWidth: _cacheWidth,
+                cacheHeight: _cacheHeight,
+                errorBuilder: (
                 context,
                 error,
                 stackTrace,
               ) {
-                return errorImage.isNullOrEmpty()
+                return widget.errorImage.isNullOrEmpty()
                     ? Container(
-                        width: width,
-                        height: height,
+                        width: widget.width,
+                        height: widget.height,
                       )
                     : Image.asset(
-                        errorImage!,
-                        width: width,
-                        height: height,
+                        widget.errorImage!,
+                        width: widget.width,
+                        height: widget.height,
                       );
               },
-                semanticLabel: semanticLabel,
-                excludeFromSemantics: excludeFromSemantics,
-                width: width,
-                height: height,
-                color: color,
-                colorBlendMode: colorBlendMode,
-                fit: fit,
-                alignment: alignment,
-                repeat: repeat,
-                centerSlice: centerSlice,
-                matchTextDirection: matchTextDirection,
-                gaplessPlayback: gaplessPlayback,
-                filterQuality: filterQuality,
-                isAntiAlias: isAntiAlias)
-            : Image.file(new File(path),
-                scale: scale, frameBuilder: frameBuilder, errorBuilder: (
+                semanticLabel: widget.semanticLabel,
+                excludeFromSemantics: widget.excludeFromSemantics,
+                width: widget.width,
+                height: widget.height,
+                color: widget.color,
+                colorBlendMode: widget.colorBlendMode,
+                fit: widget.fit,
+                alignment: widget.alignment,
+                repeat: widget.repeat,
+                centerSlice: widget.centerSlice,
+                matchTextDirection: widget.matchTextDirection,
+                gaplessPlayback: widget.gaplessPlayback,
+                filterQuality: widget.filterQuality,
+                isAntiAlias: widget.isAntiAlias)
+            : Image.file(new File(widget.path),
+                scale: widget.scale,
+                frameBuilder: widget.frameBuilder,
+                cacheWidth: _cacheWidth,
+                cacheHeight: _cacheHeight,
+                errorBuilder: (
                 context,
                 error,
                 stackTrace,
               ) {
-                return errorImage.isNullOrEmpty()
+                return widget.errorImage.isNullOrEmpty()
                     ? Container(
-                        width: width,
-                        height: height,
+                        width: widget.width,
+                        height: widget.height,
                       )
                     : Image.asset(
-                        errorImage!,
-                        width: width,
-                        height: height,
+                        widget.errorImage!,
+                        width: widget.width,
+                        height: widget.height,
                       );
               },
-                semanticLabel: semanticLabel,
-                excludeFromSemantics: excludeFromSemantics,
-                width: width,
-                height: height,
-                color: color,
-                colorBlendMode: colorBlendMode,
-                fit: fit,
-                alignment: alignment,
-                repeat: repeat,
-                centerSlice: centerSlice,
-                matchTextDirection: matchTextDirection,
-                gaplessPlayback: gaplessPlayback,
-                filterQuality: filterQuality,
-                isAntiAlias: isAntiAlias);
+                semanticLabel: widget.semanticLabel,
+                excludeFromSemantics: widget.excludeFromSemantics,
+                width: widget.width,
+                height: widget.height,
+                color: widget.color,
+                colorBlendMode: widget.colorBlendMode,
+                fit: widget.fit,
+                alignment: widget.alignment,
+                repeat: widget.repeat,
+                centerSlice: widget.centerSlice,
+                matchTextDirection: widget.matchTextDirection,
+                gaplessPlayback: widget.gaplessPlayback,
+                filterQuality: widget.filterQuality,
+                isAntiAlias: widget.isAntiAlias);
   }
 }
 

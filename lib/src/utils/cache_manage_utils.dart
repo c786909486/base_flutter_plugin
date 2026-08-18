@@ -26,32 +26,31 @@ class CacheManageUtils{
 
   Future<String> loadCache() async {
     double value = await _getTotalSizeOfFilesInDir(_tempDir!);
-    print('临时目录大小: ' + value.toString());
     String size = _renderSize(value);
     return size;
     //清除缓存
     // delDir(tempDir)
   }
 
-  ///计算缓存大小
+  ///计算缓存大小（异步遍历，避免同步IO阻塞UI）
   Future _getTotalSizeOfFilesInDir(final FileSystemEntity file) async {
     if (file is File) {
       int length = await file.length();
       return double.parse(length.toString());
     }
     if (file is Directory) {
-      final List children = file.listSync();
+      final List children = await file.list().toList();
       double total = 0;
-      if (children != null)
-        for (final FileSystemEntity child in children)
-          total += await _getTotalSizeOfFilesInDir(child);
+      for (final FileSystemEntity child in children) {
+        total += await _getTotalSizeOfFilesInDir(child);
+      }
       return total;
     }
     return 0;
   }
 
  String _renderSize(double value) {
-    if (null == value||value==0) {
+    if (value==0) {
       return "0M";
     }
     List<String> unitArr = []
@@ -68,11 +67,10 @@ class CacheManageUtils{
     return size + unitArr[index];
   }
 
-//递归方式删除目录
+//递归方式删除目录（异步版本）
   Future<Null> delDir(FileSystemEntity file) async {
     if (file is Directory) {
-      final List<FileSystemEntity> children = file.listSync();
-      for (final FileSystemEntity child in children) {
+      await for (final FileSystemEntity child in file.list()) {
         await delDir(child);
       }
     }

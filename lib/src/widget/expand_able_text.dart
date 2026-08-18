@@ -23,26 +23,53 @@ class ExpandableText extends StatefulWidget {
 }
 
 class _ExpandableTextState extends State<ExpandableText> {
-  // final String text;
-  // final int maxLines;
-  // final TextStyle style;
   bool expand;
-  // final Color expandColor;
-  _ExpandableTextState( this.expand) {
-    if (expand == null) {
-      expand = false;
+  _ExpandableTextState(this.expand);
+
+  ///缓存的测量结果：避免滚动/重建时重复执行昂贵的 TextPainter.layout
+  bool? _didExceed;
+  double? _layoutWidth;
+  String? _layoutText;
+  int? _layoutMaxLines;
+  TextStyle? _layoutStyle;
+
+  @override
+  void didUpdateWidget(ExpandableText oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // 文本/行数/样式任一变化时，缓存失效，下次build重新测量
+    if (oldWidget.text != widget.text ||
+        oldWidget.maxLines != widget.maxLines ||
+        oldWidget.style != widget.style) {
+      _didExceed = null;
     }
+  }
+
+  bool _needsLayout(double maxWidth) {
+    return _didExceed == null ||
+        _layoutWidth != maxWidth ||
+        _layoutText != widget.text ||
+        _layoutMaxLines != widget.maxLines ||
+        _layoutStyle != widget.style;
   }
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, size) {
-      final span = TextSpan(text: widget.text ?? '', style: widget.style);
-      final tp = TextPainter(
-          text: span, maxLines: widget.maxLines, textDirection: TextDirection.ltr);
-      tp.layout(maxWidth: size.maxWidth);
+      if (_needsLayout(size.maxWidth)) {
+        final span = TextSpan(text: widget.text ?? '', style: widget.style);
+        final tp = TextPainter(
+            text: span,
+            maxLines: widget.maxLines,
+            textDirection: TextDirection.ltr);
+        tp.layout(maxWidth: size.maxWidth);
+        _didExceed = tp.didExceedMaxLines;
+        _layoutWidth = size.maxWidth;
+        _layoutText = widget.text;
+        _layoutMaxLines = widget.maxLines;
+        _layoutStyle = widget.style;
+      }
 
-      if (tp.didExceedMaxLines) {
+      if (_didExceed!) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

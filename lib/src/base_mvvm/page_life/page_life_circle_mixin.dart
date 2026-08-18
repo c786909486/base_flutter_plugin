@@ -36,32 +36,45 @@ class StateLifecycleManager {
   static StateLifecycleManager _getInstance() {
     return _instance;
   }
-  final Map<String,PageLifeCircleMixin> _map = {};
+
+  ///按页面名索引的实例列表，支持同名页面多实例共存（如同时打开两个同名页面）
+  final Map<String, List<PageLifeCircleMixin>> _map = {};
+
+  ///已注册实例集合（identity语义），O(1)判断是否已注册
+  final Set<PageLifeCircleMixin> _registered = {};
 
   StateLifecycleManager._();
 
   ///添加
   addLifecycle(PageLifeCircleMixin lifecycleMixin) {
-    if (!_map.containsValue(lifecycleMixin)) {
-      _map[lifecycleMixin.widget.runtimeType.toString()] = lifecycleMixin;
+    if (_registered.add(lifecycleMixin)) {
+      final key = lifecycleMixin.widget.runtimeType.toString();
+      _map.putIfAbsent(key, () => []).add(lifecycleMixin);
     }
   }
 
   ///移除
   removeLifecycle(PageLifeCircleMixin lifecycleMixin) {
-    if (_map.containsValue(lifecycleMixin)) {
-      _map.remove(lifecycleMixin.widget.runtimeType.toString());
+    if (_registered.remove(lifecycleMixin)) {
+      final key = lifecycleMixin.widget.runtimeType.toString();
+      _map[key]?.remove(lifecycleMixin);
+      if (_map[key]?.isEmpty ?? true) {
+        _map.remove(key);
+      }
     }
   }
 
   onResume(String routerName) {
-    if(_map.containsKey(routerName)){
-      _map[routerName]?.onResume();
+    final list = _map[routerName];
+    if (list != null && list.isNotEmpty) {
+      // 通知最近注册（最上层）的同名页面
+      list.last.onResume();
     }
   }
   onPause(String routerName) {
-    if(_map.containsKey(routerName)){
-      _map[routerName]?.onPause();
+    final list = _map[routerName];
+    if (list != null && list.isNotEmpty) {
+      list.last.onPause();
     }
   }
 }

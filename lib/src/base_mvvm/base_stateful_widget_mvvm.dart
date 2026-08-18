@@ -107,12 +107,13 @@ abstract class BaseMvvmState<M extends BaseViewModel,
     return ChangeNotifierProvider<M>(
       create: (_) {
         vm = createViewModel();
+        // 事件回调只在 vm 创建时注册一次，避免每次 rebuild 重复创建闭包
+        _addBaseCallback();
         return vm!;
       },
       child: Consumer<M>(
         builder: (_, provider, __) {
           vm = provider;
-          _addBaseCallback();
 
           return buildRootView(context, createLoadingView(context) ?? Container());
         },
@@ -217,10 +218,9 @@ abstract class BaseMvvmState<M extends BaseViewModel,
   @override
   void showEmpty({String msg = ""}) {
     if (mounted) {
-      setState(() {
-        emptyMsg = msg;
-        vm?.loadingState = LoadingState.showEmpty;
-      });
+      emptyMsg = msg;
+      vm?.loadingState = LoadingState.showEmpty;
+      vm?.notifyStateChange();
     }
   }
 
@@ -228,10 +228,9 @@ abstract class BaseMvvmState<M extends BaseViewModel,
   @override
   void showErrorPage(String error) {
     if (mounted) {
-      setState(() {
-        pageError = error;
-        vm?.loadingState = LoadingState.showError;
-      });
+      pageError = error;
+      vm?.loadingState = LoadingState.showError;
+      vm?.notifyStateChange();
     }
   }
 
@@ -239,18 +238,16 @@ abstract class BaseMvvmState<M extends BaseViewModel,
   @override
   void showLoading() {
     if (mounted) {
-      setState(() {
-        vm?.loadingState = LoadingState.showLoading;
-      });
+      vm?.loadingState = LoadingState.showLoading;
+      vm?.notifyStateChange();
     }
   }
 
   @override
   void showContent() {
     if (mounted) {
-      setState(() {
-        vm?.loadingState = LoadingState.showContent;
-      });
+      vm?.loadingState = LoadingState.showContent;
+      vm?.notifyStateChange();
     }
   }
 
@@ -263,7 +260,6 @@ abstract class BaseMvvmState<M extends BaseViewModel,
 
     if (mounted && !_isShowDialog) {
       _isShowDialog = true;
-      print("12312331");
       try {
         showTransparentDialog(
             context: context,
@@ -272,7 +268,6 @@ abstract class BaseMvvmState<M extends BaseViewModel,
               return PopScope(
                 onPopInvoked: (didPop) async {
                   // 拦截到返回键，证明dialog被手动关闭
-                  print(didPop);
                   onCloseDialog();
                 },
                 canPop: backDismiss,
@@ -281,7 +276,6 @@ abstract class BaseMvvmState<M extends BaseViewModel,
             });
       } catch (e) {
         /// 异常原因主要是页面没有build完成就调用Progress。
-        print(e);
       }
     }
   }
@@ -349,17 +343,31 @@ abstract class BaseMvvmListState<M extends BaseListViewModel,
       onLoading: viewModel.requestLoadMore,
       enablePullDown: canPullDown,
       enablePullUp: canPullUp,
-      child: ListView.separated(
-          padding: listPadding,
-          itemBuilder: (context, index) {
-            return createItemWidget(index);
-          },
-          separatorBuilder: (context, index) {
-            return separatorDivider;
-          },
-          itemCount: viewModel.listItems.length),
+      child: itemExtent != null
+          // 配置了固定item高度时使用builder，滚动时跳过layout、性能更优；
+          // 注意此时separatorDivider不生效，分隔线请在item内部自行处理
+          ? ListView.builder(
+              padding: listPadding,
+              itemExtent: itemExtent,
+              itemBuilder: (context, index) {
+                return createItemWidget(index);
+              },
+              itemCount: viewModel.listItems.length)
+          : ListView.separated(
+              padding: listPadding,
+              itemBuilder: (context, index) {
+                return createItemWidget(index);
+              },
+              separatorBuilder: (context, index) {
+                return separatorDivider;
+              },
+              itemCount: viewModel.listItems.length),
     );
   }
+
+  ///列表项固定高度，可显著提升滚动性能；
+  ///若列表项高度不固定，返回null使用自动布局
+  double? get itemExtent => null;
 
   bool get canPullUp => false;
 

@@ -25,9 +25,6 @@ class DataPickerView {
   late IPickerData? currentFirstData;
   late IPickerData? currentSecondData;
   late IPickerData? currentThirdData;
-  late int _firstSelection = 0;
-  late int _secondSelection = 0;
-  late int _thirdSelection = 0;
 
   static const List<int> _weight = [1, 1, 1];
 
@@ -143,9 +140,6 @@ class _DataPickerRoute<T> extends PopupRoute<T> {
   late IPickerData? currentFirstData;
   late IPickerData? currentSecondData;
   late IPickerData? currentThirdData;
-  late int _firstSelection = 0;
-  late int _secondSelection = 0;
-  late int _thirdSelection = 0;
   String? barrierLable;
 
   static const List<int> _weight = [1, 1, 1];
@@ -267,9 +261,6 @@ class MyPicker extends StatefulWidget {
   late IPickerData? currentFirstData;
   late IPickerData? currentSecondData;
   late IPickerData? currentThirdData;
-  int _firstSelection = 0;
-  int _secondSelection = 0;
-  int _thirdSelection = 0;
 
   static const List<int> _weight = [1, 1, 1];
 
@@ -318,6 +309,11 @@ class _MyPickerWidget extends State<MyPicker> {
   FixedExtentScrollController? defaultSecondController;
   FixedExtentScrollController? defaultThirdController;
 
+  ///选中状态放在State中，widget重建不丢状态
+  int _firstSelection = 0;
+  int _secondSelection = 0;
+  int _thirdSelection = 0;
+
   @override
   void initState() {
     super.initState();
@@ -329,12 +325,12 @@ class _MyPickerWidget extends State<MyPicker> {
       int current = widget.first!.indexOf(widget.currentFirstData!);
       defaultFirstController =
       new FixedExtentScrollController(initialItem: current);
-      widget._firstSelection = current;
+      _firstSelection = current;
 
       if(widget.currentSecondData!=null){
         int secondCurrent = widget.second![current].indexOf(widget.currentSecondData!);
         defaultSecondController = new FixedExtentScrollController(initialItem: secondCurrent);
-        widget._secondSelection = secondCurrent;
+        _secondSelection = secondCurrent;
       }
     }
 
@@ -381,8 +377,8 @@ class _MyPickerWidget extends State<MyPicker> {
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
-                  widget.onSubmitListener!(widget._firstSelection,
-                      widget._secondSelection, widget._thirdSelection);
+                  widget.onSubmitListener!(_firstSelection,
+                      _secondSelection, _thirdSelection);
                 },
               ),
             ],
@@ -393,27 +389,31 @@ class _MyPickerWidget extends State<MyPicker> {
               children: <Widget>[
                 Expanded(
                   flex: widget.flexs![0],
-                  child: CupertinoPicker(
+                  child: CupertinoPicker.builder(
                     scrollController: defaultFirstController,
                     backgroundColor: widget.backgroundColor,
-                    children: widget.first!.map((item) {
+                    // 懒构建item，避免每次build重建所有children
+                    itemBuilder: (context, index) {
                       return Center(
                         child: Text(
-                          item.name,
+                          widget.first![index].name,
                           style: widget.centerStyle == null
                               ? TextStyle(fontSize: 17)
                               : widget.centerStyle,
                         ),
                       );
-                    }).toList(),
+                    },
+                    childCount: widget.first!.length,
                     onSelectedItemChanged: (index) {
                       setState(() {
-                        widget._firstSelection = index;
+                        _firstSelection = index;
                         if (widget.second != null) {
                           defaultSecondController?.jumpToItem(0);
+                          _secondSelection = 0;
                         }
                         if (widget.third != null) {
                           defaultThirdController?.jumpToItem(0);
+                          _thirdSelection = 0;
                         }
                       });
                     },
@@ -424,28 +424,27 @@ class _MyPickerWidget extends State<MyPicker> {
                     ? Container()
                     : Expanded(
                   flex: widget.flexs![1],
-                  child: CupertinoPicker(
+                  child: CupertinoPicker.builder(
                     backgroundColor: widget.backgroundColor,
                     scrollController: defaultSecondController,
-                    children:
-                    widget.second == null || widget.second!.isEmpty
-                        ? []
-                        : widget.second![widget._firstSelection]
-                        .map((item) {
+                    itemBuilder: (context, index) {
                       return Center(
                         child: Text(
-                          item.name,
+                          widget.second![_firstSelection][index].name,
                           style: widget.centerStyle == null
                               ? TextStyle(fontSize: 17)
                               : widget.centerStyle,
                         ),
                       );
-                    }).toList(),
+                    },
+                    childCount:
+                        widget.second![_firstSelection].length,
                     onSelectedItemChanged: (index) {
-                      widget._secondSelection = index;
                       setState(() {
+                        _secondSelection = index;
                         if (widget.third != null) {
                           defaultThirdController!.jumpToItem(0);
+                          _thirdSelection = 0;
                         }
                       });
                     },
@@ -456,26 +455,26 @@ class _MyPickerWidget extends State<MyPicker> {
                     ? Container()
                     : Expanded(
                   flex: widget.flexs![2],
-                  child: CupertinoPicker(
+                  child: CupertinoPicker.builder(
                     scrollController: defaultThirdController,
                     backgroundColor: widget.backgroundColor,
-                    children:
-                    widget.third == null || widget.third!.isEmpty
-                        ? []
-                        : widget.third![widget._firstSelection]
-                    [widget._secondSelection]
-                        .map((item) {
+                    itemBuilder: (context, index) {
                       return Center(
                         child: Text(
-                          item.name,
+                          widget.third![_firstSelection]
+                          [_secondSelection][index].name,
                           style: widget.centerStyle == null
                               ? TextStyle(fontSize: 17)
                               : widget.centerStyle,
                         ),
                       );
-                    }).toList(),
+                    },
+                    childCount: widget.third![_firstSelection]
+                        [_secondSelection].length,
                     onSelectedItemChanged: (index) {
-                      widget._thirdSelection = index;
+                      setState(() {
+                        _thirdSelection = index;
+                      });
                     },
                     itemExtent: widget.itemExtent!,
                   ),

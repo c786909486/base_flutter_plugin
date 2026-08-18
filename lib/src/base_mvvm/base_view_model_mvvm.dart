@@ -160,6 +160,13 @@ abstract class BaseViewModel with ChangeNotifier {
    }
   }
 
+  ///触发UI刷新（供View在变更viewModel状态后通知页面重建）
+  void notifyStateChange() {
+    if (mounted) {
+      notifyListeners();
+    }
+  }
+
 
   ///销毁model
   void onDispose(){

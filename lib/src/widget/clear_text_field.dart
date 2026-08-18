@@ -240,4 +240,10 @@ class _ITextFieldState extends State<ITextField> {
                 affinity: TextAffinity.downstream,
                 offset: _inputText.length))));
   }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 }

@@ -23,6 +23,13 @@ class ProgressDialog extends StatefulWidget{
 }
 
 class ProgressDialogState extends State<ProgressDialog>{
+  ///静态缓存，避免每次build新建ThemeData
+  static final ThemeData _darkTheme = ThemeData(
+      cupertinoOverrideTheme: CupertinoThemeData(
+          brightness: Brightness.dark // 局部指定夜间模式，加载圈颜色会设置为白色
+      )
+  );
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -41,11 +48,7 @@ class ProgressDialogState extends State<ProgressDialog>{
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Theme(
-                data: ThemeData(
-                    cupertinoOverrideTheme: CupertinoThemeData(
-                        brightness: Brightness.dark // 局部指定夜间模式，加载圈颜色会设置为白色
-                    )
-                ),
+                data: _darkTheme,
                 child: const CupertinoActivityIndicator(radius: 14.0,color: Colors.white,),
               ),
               Container(height: 8,),

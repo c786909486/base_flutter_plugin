@@ -76,14 +76,19 @@ class ProcessPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round;
     double sweepAngle =
         (_progress.currentValue! / _progress.maxValue!) * 360; //完成角度
-    print(sweepAngle);
     canvas.drawArc(Rect.fromLTRB(0, 0, _radius! * 2, _radius! * 2),
         -90 / 180 * pi, sweepAngle / 180 * pi, false, _paint!);
     canvas.restore();
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
+  bool shouldRepaint(covariant ProcessPainter oldDelegate) {
+    // 仅在进度/颜色/宽度等实际变化时重绘
+    return oldDelegate._progress.currentValue != _progress.currentValue ||
+        oldDelegate._progress.maxValue != _progress.maxValue ||
+        oldDelegate._progress.strokeColor != _progress.strokeColor ||
+        oldDelegate._progress.backgroundColor != _progress.backgroundColor ||
+        oldDelegate._progress.strokeWidth != _progress.strokeWidth ||
+        oldDelegate._progress.radius != _progress.radius;
   }
 }

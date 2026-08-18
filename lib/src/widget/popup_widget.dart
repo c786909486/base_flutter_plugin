@@ -18,18 +18,21 @@ class Popup extends StatelessWidget {
     this.right
   });
 
-   Offset _getPosition() {
+   Offset? _position;
 
-    RenderBox? renderBox = parentKey.currentContext?.findRenderObject() as RenderBox?;
-    final positionGreen = renderBox?.localToGlobal(Offset.zero);
-    print(positionGreen.toString());
-    return positionGreen!;
-  }
+   Offset? _getPosition() {
+     if (_position == null) {
+       RenderBox? renderBox = parentKey.currentContext?.findRenderObject() as RenderBox?;
+       _position = renderBox?.localToGlobal(Offset.zero);
+     }
+     return _position;
+   }
 
 
   @override
   Widget build(BuildContext context) {
-
+    // 只计算一次锚点位置，避免build中重复findRenderObject
+    final offset = _getPosition();
     return Material(
       color: Colors.transparent,
       child: GestureDetector(
@@ -52,8 +55,8 @@ class Popup extends StatelessWidget {
                       }
                     }
                   }),
-              left: left==null?null:_getPosition().dx+(left??0),
-              top: _getPosition().dy+(top??0),
+              left: left==null?null:(offset?.dx??0)+(left??0),
+              top: (offset?.dy??0)+(top??0),
               right: right,
             ),
           ],

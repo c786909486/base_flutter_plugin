@@ -41,6 +41,9 @@ class DevConfig {
   // 添加一个变量来存储悬浮窗位置
   Offset _offset = Offset(0, 100);
 
+  ///拖动时的位置通知器：拖动只更新Transform，避免重建整个overlay子树
+  final ValueNotifier<Offset> _floatingOffset = ValueNotifier(Offset(0, 100));
+
   OverlayEntry? overlayEntry;
   void addNetFloating(BuildContext context) {
     if(overlayEntry != null) {
@@ -51,78 +54,87 @@ class DevConfig {
     if(!canGetNetRequest) {
       return;
     }
-    
+    _floatingOffset.value = _offset;
+
     overlayEntry = OverlayEntry(builder: (context) {
-      return Positioned(
-        top: _offset.dy,
-        left: _offset.dx,
-        child: GestureDetector(
-          // 在 overlayEntry 的 GestureDetector 中修改 onTap
-          onTap: () {
-            
-            // 检查当前路由栈中是否已经存在 NetworkRecordPage
-            bool isRecordPageOpen = false;
-            Navigator.popUntil(context, (route) {
-              if (route.settings.name == 'network_record_page') {
-                isRecordPageOpen = true;
-                return true;
-              }
-              return true;
-            });
-            
-            if (!isRecordPageOpen) {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  settings: RouteSettings(name: 'network_record_page'),
-                  builder: (context) => NetworkRecordPage.instance,
+      return ValueListenableBuilder<Offset>(
+        valueListenable: _floatingOffset,
+        builder: (context, offset, _) {
+          return Positioned(
+            left: 0,
+            top: 0,
+            child: Transform.translate(
+              offset: offset,
+              child: GestureDetector(
+                // 在 overlayEntry 的 GestureDetector 中修改 onTap
+                onTap: () {
+
+                  // 检查当前路由栈中是否已经存在 NetworkRecordPage
+                  bool isRecordPageOpen = false;
+                  Navigator.popUntil(context, (route) {
+                    if (route.settings.name == 'network_record_page') {
+                      isRecordPageOpen = true;
+                      return true;
+                    }
+                    return true;
+                  });
+
+                  if (!isRecordPageOpen) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        settings: RouteSettings(name: 'network_record_page'),
+                        builder: (context) => NetworkRecordPage.instance,
+                      ),
+                    );
+                  }
+                },
+                onPanUpdate: (details) {
+                  _floatingOffset.value += details.delta;
+                },
+                onPanEnd: (details) {
+                  // 获取屏幕尺寸
+                  final size = MediaQuery.of(context).size;
+                  double targetX = _floatingOffset.value.dx;
+
+                  // 水平吸边
+                  if (targetX < size.width / 2) {
+                    targetX = 0; // 吸附到左边
+                  } else {
+                    targetX = size.width - 50; // 吸附到右边，50是悬浮窗宽度
+                  }
+
+                  // 确保不超出屏幕上下边界
+                  double targetY = _floatingOffset.value.dy;
+                  targetY = targetY.clamp(0, size.height - 50);
+
+                  final target = Offset(targetX, targetY);
+                  _floatingOffset.value = target;
+                  _offset = target;
+                },
+                child: Material(
+                  color: Colors.transparent,
+                  // 在 addNetFloating 方法中的 Container 部分
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.blue.withOpacity(0.8),
+                      shape: BoxShape.circle
+                    ),
+                    child: Text(
+                      "${networkRecords.length}",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ),
                 ),
-              );
-            }
-          },
-          onPanUpdate: (details) {
-            _offset += details.delta;
-            overlayEntry?.markNeedsBuild();
-          },
-          onPanEnd: (details) {
-            // 获取屏幕尺寸
-            final size = MediaQuery.of(context).size;
-            double targetX = _offset.dx;
-            
-            // 水平吸边
-            if (targetX < size.width / 2) {
-              targetX = 0; // 吸附到左边
-            } else {
-              targetX = size.width - 50; // 吸附到右边，50是悬浮窗宽度
-            }
-            
-            // 确保不超出屏幕上下边界
-            double targetY = _offset.dy;
-            targetY = targetY.clamp(0, size.height - 50);
-            
-            _offset = Offset(targetX, targetY);
-            overlayEntry?.markNeedsBuild();
-          },
-          child: Material(
-            color: Colors.transparent,
-            // 在 addNetFloating 方法中的 Container 部分
-            child: Container(
-              width: 50,
-              height: 50,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.8),
-                shape: BoxShape.circle
-              ),
-              child: Text(
-                "${networkRecords.length}",
-                style: TextStyle(color: Colors.white, fontSize: 16),
               ),
             ),
-          ),
-        ),
+          );
+        },
       );
     });
-    
+
     Overlay.of(context).insert(overlayEntry!);
     startRecordRequest();
   }
@@ -196,9 +208,7 @@ class DevConfig {
     count++;
     if(_timer==null){
       _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-        var tick = timer.tick;
-        print("currentTick===>${tick}");
-        if(tick==5){
+        if(timer.tick==5){
           timer.cancel();
           _timer = null;
           count = 0;

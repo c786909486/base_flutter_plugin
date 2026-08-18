@@ -219,12 +219,13 @@ extension WidgetExt on Widget {
       bool requestFocus = true,
       int delayTime = 250,
       Map<String, dynamic>? event}) {
-    FocusNode defaultNode = new FocusNode();
     return InkWell(
         child: this,
         onTap: onClick(() {
+          // 仅在调用方显式传入focusNode时请求焦点，
+          // 不再每次点击new FocusNode()（无人持有，泄漏）
           if (requestFocus) {
-            (focusNode ?? defaultNode).requestFocus(FocusNode());
+            focusNode?.requestFocus();
           }
           // print("22222");
           onTap();
@@ -245,7 +246,7 @@ extension WidgetExt on Widget {
         customBorder: customBorder,
         enableFeedback: enableFeedback ?? false,
         excludeFromSemantics: excludeFromSemantics,
-        focusNode: focusNode ?? defaultNode,
+        focusNode: focusNode,
         canRequestFocus: canRequestFocus,
         onFocusChange: onFocusChange,
         autofocus: autofocus);
