@@ -2,6 +2,7 @@ import 'package:base_flutter/base_flutter.dart';
 import 'package:example/test_list_page.dart';
 import 'package:flutter/material.dart';
 
+import 'lifecycle_demo_page.dart';
 import 'net_request_page.dart';
 
 void main() {
@@ -17,6 +18,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       navigatorKey: NavigateService.getInstance().key,
+      // 注册导航监听，驱动页面 onResume/onPause 与 isPageVisible 状态
+      navigatorObservers: [StateNavigatorObserver()],
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -114,6 +117,10 @@ class _MyHomePageState extends State<MyHomePage> {
             TextButton(onPressed: (){
               Go().push(TestListPage());
             }, child: CommonText('test')),
+
+            TextButton(onPressed: (){
+              Go().push(const LifecycleDemoEntryPage());
+            }, child: CommonText('生命周期演示 (onResume / onPause)')),
 
             TextButton(onPressed: (){
               DevConfig.instance.openDevModel(context);

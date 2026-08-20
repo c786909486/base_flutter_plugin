@@ -12,7 +12,7 @@ abstract class BaseStatefulMvvmWidget extends StatefulWidget {
 }
 
 abstract class BaseMvvmState<M extends BaseViewModel,
-        W extends BaseStatefulMvvmWidget> extends State<W> with LifecycleMixin,PageLifeCircleMixin
+        W extends BaseStatefulMvvmWidget> extends State<W> with LifecycleMixin,PageLifeCircleMixin,RouteAware
     implements IBaseMvvmView {
   M? vm;
 
@@ -21,6 +21,15 @@ abstract class BaseMvvmState<M extends BaseViewModel,
   LoadingViewPlugin? _loadingViewPlugin;
 
   bool _isShowDialog = false;
+
+  /// 当前页面是否正在展示（处于页面栈最上层、未被其他页面覆盖）。
+  /// 页面进入/返回时置为 true，跳转到其他页面/关闭时置为 false。
+  bool _isPageVisible = false;
+
+  /// 获取当前页面是否正在展示。
+  /// - 页面首次进入、从其他页面回退回来时为 true；
+  /// - 跳转到其他页面、页面被关闭时为 false。
+  bool get isPageVisible => _isPageVisible;
 
   String pageError = "";
   String emptyMsg = "";
@@ -56,6 +65,8 @@ abstract class BaseMvvmState<M extends BaseViewModel,
       if(vm!=null){
         onViewModelCreated();
       }
+      // 页面首次进入展示，标记为可见并回调 onResume
+      onResume();
     });
   }
 
@@ -292,6 +303,10 @@ abstract class BaseMvvmState<M extends BaseViewModel,
 
   @override
   void dispose() {
+    // 页面关闭，若当前仍处于展示状态则先回调 onPause
+    if (_isPageVisible) {
+      onPause();
+    }
     _clearLoading();
     onDestroy();
     _loadingViewPlugin = null;
@@ -322,12 +337,15 @@ abstract class BaseMvvmState<M extends BaseViewModel,
 
   @override
   void onResume() {
-    // print("lifeCir===>resume");
+    _isPageVisible = true;
+    // if (mounted) {
+    //   setState(() {});
+    // }
   }
 
   @override
   void onPause() {
-    // print("lifeCir===>pause");
+    _isPageVisible = false;
   }
 }
 

@@ -103,19 +103,22 @@ class _ImageLoadState extends State<ImageLoad> {
     return headers;
   }
 
-  ///根据显示尺寸与设备像素比推导解码尺寸，避免全分辨率解码大图
+  ///根据显示尺寸与设备像素比推导解码尺寸，避免全分辨率解码大图；
+  ///width/height为Infinity/NaN/非正数时返回null（无法推导），避免round崩溃
   int? get _cacheWidth {
     if (widget.cacheWidth != null) return widget.cacheWidth;
-    if (widget.width == null) return null;
+    final w = widget.width;
+    if (w == null || !w.isFinite || w <= 0) return null;
     final dpr = MediaQuery.maybeOf(context)?.devicePixelRatio ?? 1.0;
-    return (widget.width! * dpr).round();
+    return (w * dpr).round();
   }
 
   int? get _cacheHeight {
     if (widget.cacheHeight != null) return widget.cacheHeight;
-    if (widget.height == null) return null;
+    final h = widget.height;
+    if (h == null || !h.isFinite || h <= 0) return null;
     final dpr = MediaQuery.maybeOf(context)?.devicePixelRatio ?? 1.0;
-    return (widget.height! * dpr).round();
+    return (h * dpr).round();
   }
 
   @override

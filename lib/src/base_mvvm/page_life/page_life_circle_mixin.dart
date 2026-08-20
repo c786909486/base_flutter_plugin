@@ -1,11 +1,23 @@
 import 'package:flutter/cupertino.dart';
 
 mixin PageLifeCircleMixin <T extends StatefulWidget> on State<T> {
+  /// 当前实例所在的 Route，用于在导航事件中精确定位页面实例（支持同名页面多实例）
+  Route<dynamic>? _route;
+
+  Route<dynamic>? get route => _route;
+
   @mustCallSuper
   @override
   void initState() {
     super.initState();
     StateLifecycleManager.instance.addLifecycle(this);
+  }
+
+  @mustCallSuper
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _route ??= ModalRoute.of(context);
   }
 
   @mustCallSuper
@@ -64,6 +76,29 @@ class StateLifecycleManager {
     }
   }
 
+  ///根据 Route 精确查找页面实例（支持同名页面多实例共存时精确定位）
+  PageLifeCircleMixin? _findByRoute(Route route) {
+    for (final instances in _map.values) {
+      for (final instance in instances) {
+        if (identical(instance.route, route)) {
+          return instance;
+        }
+      }
+    }
+    return null;
+  }
+
+  ///通知指定路由所在的页面恢复展示
+  onResumeByRoute(Route route) {
+    _findByRoute(route)?.onResume();
+  }
+
+  ///通知指定路由所在的页面暂停展示
+  onPauseByRoute(Route route) {
+    _findByRoute(route)?.onPause();
+  }
+
+  ///按页面名通知最近注册（最上层）的同名页面恢复展示
   onResume(String routerName) {
     final list = _map[routerName];
     if (list != null && list.isNotEmpty) {

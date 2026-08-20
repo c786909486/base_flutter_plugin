@@ -39,21 +39,27 @@ class StateNavigatorObserver extends NavigatorObserver {
   @override
   void didPop(Route route, Route? previousRoute) {
     super.didPop(route, previousRoute);
-    if((route is CupertinoPageRoute || route is MaterialPageRoute)){
-      String? routerName = previousRoute?.settings.name;
-      if(routerName != null){
-        StateLifecycleManager.instance.onResume(routerName);
+    if((route is CupertinoPageRoute || route is MaterialPageRoute || route is PageRoute)){
+      Route? previous = previousRoute;
+      if(previous != null){
+        // 从其他页面回退回来：通知上一页恢复展示
+        StateLifecycleManager.instance.onResumeByRoute(previous);
       }
     }
   }
 
+
+
+
+
   @override
   void didPush(Route route, Route? previousRoute) {
     super.didPush(route, previousRoute);
-    if((route is CupertinoPageRoute || route is MaterialPageRoute)){
-      String? routerName = previousRoute?.settings.name;
-      if(routerName != null){
-        StateLifecycleManager.instance.onPause(routerName);
+    if((route is CupertinoPageRoute || route is MaterialPageRoute || route is PageRoute)){
+      Route? previous = previousRoute;
+      if(previous != null){
+        // 跳转到其他页面：通知上一页暂停展示
+        StateLifecycleManager.instance.onPauseByRoute(previous);
       }
     }
   }
