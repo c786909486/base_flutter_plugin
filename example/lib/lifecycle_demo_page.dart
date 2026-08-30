@@ -33,7 +33,7 @@ class _LifecyclePage extends BaseStatefulMvvmWidget {
   final String label;
   final Color color;
 
-  _LifecyclePage({required this.label, required this.color});
+  const _LifecyclePage({required this.label, required this.color, super.key});
 
   @override
   State<StatefulWidget> createState() => _LifecyclePageState();

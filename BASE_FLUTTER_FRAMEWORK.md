@@ -67,6 +67,8 @@ enum LoadingState { showContent, showError, showEmpty, showLoading }
 
 ```dart
 class MyPage extends BaseStatefulMvvmWidget {
+  const MyPage({super.key});
+  
   @override
   State<StatefulWidget> createState() => _MyPageState();
 }
@@ -74,10 +76,10 @@ class MyPage extends BaseStatefulMvvmWidget {
 
 **参数传递**：
 ```dart
-// 通过构造函数传递参数
+// 通过构造函数传递参数（推荐使用 const 构造函数）
 class MyPage extends BaseStatefulMvvmWidget {
   final String id;
-  MyPage({required this.id});
+  const MyPage({required this.id, super.key});
   
   @override
   State<StatefulWidget> createState() => _MyPageState();
@@ -260,6 +262,8 @@ class ListViewModel extends BaseListViewModel<String> {
 **列表页面示例**：
 ```dart
 class ListPage extends BaseStatefulMvvmWidget {
+  const ListPage({super.key});
+  
   @override
   State<StatefulWidget> createState() => _ListPageState();
 }
@@ -664,7 +668,7 @@ Go().push(DeveloperPage());
 class MyPage extends BaseStatefulMvvmWidget {
   final String id;
   
-  MyPage({required this.id});
+  const MyPage({required this.id, super.key});
 
   @override
   State<StatefulWidget> createState() => _MyPageState();
@@ -745,6 +749,8 @@ class MyViewModel extends BaseViewModel {
 ```dart
 // list_page.dart
 class ListPage extends BaseStatefulMvvmWidget {
+  const ListPage({super.key});
+  
   @override
   State<StatefulWidget> createState() => _ListPageState();
 }

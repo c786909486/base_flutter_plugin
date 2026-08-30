@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class NetProxySetPage extends BaseStatefulMvvmWidget{
+  const NetProxySetPage({Key? key}):super(key: key);
+
   @override
   State<StatefulWidget> createState() => _NetProxySetState();
 

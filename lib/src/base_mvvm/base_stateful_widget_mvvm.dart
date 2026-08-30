@@ -8,7 +8,7 @@ enum LoadingState { showContent, showError, showEmpty, showLoading }
 abstract class BaseStatefulMvvmWidget extends StatefulWidget {
   final Map<String, dynamic>? params;
 
-  BaseStatefulMvvmWidget({Key? key, this.params}) : super(key: key);
+  const BaseStatefulMvvmWidget({Key? key, this.params}) : super(key: key);
 }
 
 abstract class BaseMvvmState<M extends BaseViewModel,

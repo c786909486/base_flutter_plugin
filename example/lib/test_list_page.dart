@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class TestListPage extends BaseStatefulMvvmWidget{
+  const TestListPage({super.key});
+
   @override
   State<StatefulWidget> createState() => _TestListState();
   

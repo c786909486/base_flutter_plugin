@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class NetRequestPage extends BaseStatefulMvvmWidget{
+  const NetRequestPage({super.key});
+
   @override
   State<StatefulWidget> createState() => _NetRequestState();
 
