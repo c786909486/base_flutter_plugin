@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
 import 'package:base_flutter/base_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,7 +14,9 @@ class ImageLoad extends StatefulWidget {
   final ImageFrameBuilder? frameBuilder;
   final ImageLoadingBuilder? loadingBuilder;
   final String? errorImage;
+  Widget Function(BuildContext context)? errorBuilder;
   final String? placeholder;
+  Widget Function(BuildContext context)? placeHoldBuilder;
   final double? width;
   final double? height;
   final Color? color;
@@ -32,6 +35,7 @@ class ImageLoad extends StatefulWidget {
   final bool isAsset;
   final String? package;
   Map<String, String>? headers;
+
 
   ///限制解码尺寸（像素），不传时按 [width]/[height] 与设备像素比自动推导
   final int? cacheWidth;
@@ -132,7 +136,13 @@ class _ImageLoadState extends State<ImageLoad> {
             frameBuilder: widget.frameBuilder,
             loadingBuilder: widget.loadingBuilder != null
                 ? widget.loadingBuilder
-                : widget.placeholder.isNullOrEmpty()
+                : widget.placeHoldBuilder!=null?(context, child, process) {
+              if (process == null) {
+                return child;
+              } else {
+                return widget.placeHoldBuilder!(context);
+              }
+            }:  widget.placeholder.isNullOrEmpty()
                     ? null
                     : (context, child, process) {
                         if (process == null) {
@@ -150,6 +160,9 @@ class _ImageLoadState extends State<ImageLoad> {
               error,
               stackTrace,
             ) {
+              if(widget.errorBuilder!=null){
+                return widget.errorBuilder!(context);
+              }
               if (BuildConfig.isDebug) {
                 Log.d('ImageLoad', "error========>${error.toString()}");
               }
