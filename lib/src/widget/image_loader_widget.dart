@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
 import 'package:base_flutter/base_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -35,7 +34,6 @@ class ImageLoad extends StatefulWidget {
   final bool isAsset;
   final String? package;
   Map<String, String>? headers;
-
 
   ///限制解码尺寸（像素），不传时按 [width]/[height] 与设备像素比自动推导
   final int? cacheWidth;
@@ -131,36 +129,37 @@ class _ImageLoadState extends State<ImageLoad> {
         ? Image(
             // 用ResizeImage限制解码尺寸，避免全分辨率解码大图
             image: ResizeImage.resizeIfNeeded(_cacheWidth, _cacheHeight,
-                CachedNetworkImageProvider(widget.path,
-                    scale: widget.scale, headers: _headers)),
+                CachedNetworkImageProvider(widget.path, scale: widget.scale, headers: _headers)),
             frameBuilder: widget.frameBuilder,
             loadingBuilder: widget.loadingBuilder != null
                 ? widget.loadingBuilder
-                : widget.placeHoldBuilder!=null?(context, child, process) {
-              if (process == null) {
-                return child;
-              } else {
-                return widget.placeHoldBuilder!(context);
-              }
-            }:  widget.placeholder.isNullOrEmpty()
-                    ? null
-                    : (context, child, process) {
+                : widget.placeHoldBuilder != null
+                    ? (context, child, process) {
                         if (process == null) {
                           return child;
                         } else {
-                          return Image.asset(
-                            widget.placeholder ?? "",
-                            width: widget.width,
-                            height: widget.height,
-                          );
+                          return widget.placeHoldBuilder!(context);
                         }
-                      },
+                      }
+                    : widget.placeholder.isNullOrEmpty()
+                        ? null
+                        : (context, child, process) {
+                            if (process == null) {
+                              return child;
+                            } else {
+                              return Image.asset(
+                                widget.placeholder ?? "",
+                                width: widget.width,
+                                height: widget.height,
+                              );
+                            }
+                          },
             errorBuilder: (
               context,
               error,
               stackTrace,
             ) {
-              if(widget.errorBuilder!=null){
+              if (widget.errorBuilder != null) {
                 return widget.errorBuilder!(context);
               }
               if (BuildConfig.isDebug) {
@@ -198,8 +197,7 @@ class _ImageLoadState extends State<ImageLoad> {
                 frameBuilder: widget.frameBuilder,
                 package: widget.package,
                 cacheWidth: _cacheWidth,
-                cacheHeight: _cacheHeight,
-                errorBuilder: (
+                cacheHeight: _cacheHeight, errorBuilder: (
                 context,
                 error,
                 stackTrace,
@@ -233,8 +231,7 @@ class _ImageLoadState extends State<ImageLoad> {
                 scale: widget.scale,
                 frameBuilder: widget.frameBuilder,
                 cacheWidth: _cacheWidth,
-                cacheHeight: _cacheHeight,
-                errorBuilder: (
+                cacheHeight: _cacheHeight, errorBuilder: (
                 context,
                 error,
                 stackTrace,
@@ -267,7 +264,6 @@ class _ImageLoadState extends State<ImageLoad> {
   }
 }
 
-String formatImage(String name,
-    {String format = ".png", String parentPath = "images"}) {
+String formatImage(String name, {String format = ".png", String parentPath = "images"}) {
   return "${parentPath}/$name$format";
 }
