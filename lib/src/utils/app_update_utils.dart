@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 import 'dart:math';
 
@@ -9,8 +8,7 @@ import 'default_update_dialog.dart';
 
 typedef RequestNetVersionBuilder = Future<NetVersionInfo> Function();
 typedef CompareListener = bool Function(NetVersionInfo info);
-typedef UpdateDialogBuilder = Widget Function(
-    BuildContext context, NetVersionInfo version);
+typedef UpdateDialogBuilder = Widget Function(BuildContext context, NetVersionInfo version);
 typedef OnDownloadListener = Function(num process, num total, String filePath);
 
 class AppUpdateUtils {
@@ -57,8 +55,7 @@ class AppUpdateUtils {
     Directory? appDocDir = await getExternalStorageDirectory();
     var filePath =
         "${appDocDir!.path}${Platform.pathSeparator}${fileName ?? "${DateTime.now().microsecond}"}_v${netVersion.netVerions}.apk";
-    HttpGo.instance.downloadFile(netVersion.fileUrl, filePath,
-        (process, total) {
+    HttpGo.instance.downloadFile(netVersion.fileUrl, filePath, (process, total) {
       if (onReceiveProgress != null) {
         onReceiveProgress(process, total, filePath);
       }
@@ -68,7 +65,7 @@ class AppUpdateUtils {
         file.deleteSync();
       }
       errorListener(error);
-    },useNewDio: false);
+    }, useNewDio: false);
   }
 
   /// * 版本号对比，0代表相等，1代表version1大于version2，-1代表version1小于version2
@@ -124,8 +121,5 @@ class NetVersionInfo {
   bool isForce;
 
   NetVersionInfo(
-      {required this.netVerions,
-      this.updateLog,
-      required this.fileUrl,
-      required this.isForce});
+      {required this.netVerions, this.updateLog, required this.fileUrl, required this.isForce});
 }
