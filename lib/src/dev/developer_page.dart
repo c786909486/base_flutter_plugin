@@ -1,5 +1,6 @@
 import 'package:base_flutter/base_flutter.dart';
 import 'package:base_flutter/src/dev/net_proxy_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class DeveloperPage extends StatefulWidget{
@@ -19,9 +20,12 @@ class _DeveloperState extends State<DeveloperPage>{
       body: SingleChildScrollView(
         child: Column(
           children: [
-            IconTitleTextWidget('网络代理',arrow: Icon(Icons.keyboard_arrow_right_sharp),).onTap(() {
-              Go().push(NetProxyPage());
-            }),
+            //web 端浏览器不允许应用层设置代理，隐藏该入口
+            //(抓包请使用浏览器 DevTools → Network)
+            if (!kIsWeb)
+              IconTitleTextWidget('网络代理',arrow: Icon(Icons.keyboard_arrow_right_sharp),).onTap(() {
+                Go().push(NetProxyPage());
+              }),
 
             IconTitleWidget('抓取数据返回',contentWidget: Switch(value: DevConfig.instance.canGetNetRequest, onChanged: (value){
               setState(() {

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:base_flutter/base_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
 typedef ImageCookieInit = String Function();
 typedef ImageHeader = Map<String, String>? Function();
@@ -100,7 +101,9 @@ class _ImageLoadState extends State<ImageLoad> {
         headers = {...headers, ...?headerMap};
       }
     }
-    if (ImageLoad.cookieInit != null) {
+    if (!kIsWeb && ImageLoad.cookieInit != null) {
+      //浏览器禁止应用手动设置 Cookie 请求头（会被静默丢弃），
+      //web 端由浏览器自动携带 Cookie（跨域场景配合 NetPlatform.init(withCredentials: true)）
       String cookie = ImageLoad.cookieInit!();
       headers = {...?headers, 'Cookie': cookie};
     }
@@ -123,6 +126,23 @@ class _ImageLoadState extends State<ImageLoad> {
     if (h == null || !h.isFinite || h <= 0) return null;
     final dpr = MediaQuery.maybeOf(context)?.devicePixelRatio ?? 1.0;
     return (h * dpr).round();
+  }
+
+  ///本地路径图片的兜底展示（error 图或占位容器）
+  Widget _buildLocalFallback() {
+    if (widget.errorBuilder != null) {
+      return widget.errorBuilder!(context);
+    }
+    return widget.errorImage.isNullOrEmpty()
+        ? Container(
+            width: widget.width,
+            height: widget.height,
+          )
+        : Image.asset(
+            widget.errorImage!,
+            width: widget.width,
+            height: widget.height,
+          );
   }
 
   @override
@@ -229,7 +249,10 @@ class _ImageLoadState extends State<ImageLoad> {
                 gaplessPlayback: widget.gaplessPlayback,
                 filterQuality: widget.filterQuality,
                 isAntiAlias: widget.isAntiAlias)
-            : Image.file(new File(widget.path),
+            //web 无文件系统，本地路径图片不可用，直接走兜底占位（避免 File 运行时崩溃）
+            : kIsWeb
+                ? _buildLocalFallback()
+                : Image.file(new File(widget.path),
                 scale: widget.scale,
                 frameBuilder: widget.frameBuilder,
                 cacheWidth: _cacheWidth,

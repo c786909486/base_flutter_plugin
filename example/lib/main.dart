@@ -6,6 +6,10 @@ import 'lifecycle_demo_page.dart';
 import 'net_request_page.dart';
 
 void main() {
+  //网络平台初始化（仅 web 生效）：跨域需要携带 cookie 时改为
+  //NetPlatform.init(withCredentials: true)，
+  //前提：后端返回 Access-Control-Allow-Credentials: true 且 Allow-Origin 为具体源
+  NetPlatform.init();
   runApp(const MyApp());
 }
 

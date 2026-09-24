@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
@@ -30,11 +31,29 @@ class ShowImagePage extends StatelessWidget {
                 scrollPhysics: const BouncingScrollPhysics(),
                 builder: (BuildContext context, int index) {
                   var image = galleryItems[index];
+                  if (kIsWeb &&
+                      !image.contains('http') &&
+                      !image.startsWith('assets') &&
+                      !image.startsWith('images')) {
+                    //web 无文件系统：本地路径无法解码，用占位节点避免 FileImage 崩溃
+                    return PhotoViewGalleryPageOptions.customChild(
+                      child: const Center(
+                        child: Icon(
+                          Icons.broken_image,
+                          size: 64,
+                          color: Colors.white54,
+                        ),
+                      ),
+                      initialScale: PhotoViewComputedScale.contained,
+                      heroAttributes:
+                          PhotoViewHeroAttributes(tag: galleryItems[index]),
+                    );
+                  }
                   return PhotoViewGalleryPageOptions(
-                    imageProvider: getImageProvider(image,headers: headers),
+                    imageProvider: getImageProvider(image, headers: headers),
                     initialScale: PhotoViewComputedScale.contained,
                     heroAttributes:
-                    PhotoViewHeroAttributes(tag: galleryItems[index]),
+                        PhotoViewHeroAttributes(tag: galleryItems[index]),
                   );
                 },
                 itemCount: galleryItems.length,
@@ -75,9 +94,11 @@ ImageProvider getImageProvider(String image,{final Map<String, String>? headers}
     return CachedNetworkImageProvider(image,headers: headers);
   } else if (image.startsWith('assets') || image.startsWith('images')) {
     return AssetImage(image);
-  } else {
-    return FileImage(File(image));
+  } else if (kIsWeb) {
+    //web 无文件系统读取本地路径；按网络地址尝试加载，失败由调用方 errorBuilder 兜底
+    return NetworkImage(image);
   }
+  return FileImage(File(image));
 }
 
 showBigImage(BuildContext context, List<String> images, {int position = 0,final Map<String, String>? headers}) {

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../base_flutter.dart';
@@ -52,9 +53,28 @@ class AppUpdateUtils {
       String? fileName,
       OnDownloadListener? onReceiveProgress,
       required onRequestFail errorListener}) async {
+    final name =
+        "${fileName ?? "${DateTime.now().microsecond}"}_v${netVersion.netVerions}.apk";
+    if (kIsWeb) {
+      //web 无文件系统：savePath 仅作为下载文件名，
+      //由 dio 浏览器适配器触发“另存为”，保存位置与进度由浏览器管理。
+      //（path_provider / Platform.pathSeparator / File 在 web 上均不可用）
+      try {
+        await HttpGo.instance.dio!.download(
+          netVersion.fileUrl,
+          name,
+          onReceiveProgress: onReceiveProgress == null
+              ? null
+              : (process, total) => onReceiveProgress(process, total, name),
+        );
+      } catch (e) {
+        errorListener(e.toNetError());
+      }
+      return;
+    }
     Directory? appDocDir = await getExternalStorageDirectory();
     var filePath =
-        "${appDocDir!.path}${Platform.pathSeparator}${fileName ?? "${DateTime.now().microsecond}"}_v${netVersion.netVerions}.apk";
+        "${appDocDir!.path}${Platform.pathSeparator}$name";
     HttpGo.instance.downloadFile(netVersion.fileUrl, filePath, (process, total) {
       if (onReceiveProgress != null) {
         onReceiveProgress(process, total, filePath);

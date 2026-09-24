@@ -1,11 +1,9 @@
-import 'dart:io';
 import 'package:base_flutter/base_flutter.dart';
 import 'package:base_flutter/src/utils/app_update_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:install_apk_plugin_plus/install_apk_plugin_plus.dart';
-import 'package:path_provider/path_provider.dart';
 
 class DefaultUpdateDialog extends BaseUpdateDialog {
   DefaultUpdateDialog({Key? key, required NetVersionInfo netMap})
@@ -55,7 +53,7 @@ class _DefaultUpdateDialogState extends BaseUpdateState<DefaultUpdateDialog> {
                               AlwaysStoppedAnimation<Color>(primaryColor),
                           value: value,
                         ),
-                        if (downloadFinish)
+                        if (downloadFinish && !kIsWeb)
                           TextButton(
                             onPressed: () {
                               InstallApkPluginPlus().installApk(filePath);
@@ -105,6 +103,16 @@ class _DefaultUpdateDialogState extends BaseUpdateState<DefaultUpdateDialog> {
                             height: 36.0,
                             child: TextButton(
                               onPressed: () {
+                                if (kIsWeb) {
+                                  //web 端：触发浏览器“另存为”（浏览器自带下载进度），
+                                  //随后关闭弹窗；web 应用无“安装 APK”概念，
+                                  //版本生效以服务端部署 / 刷新页面为准
+                                  AppUpdateUtils.instance.downloadFile(
+                                      netVersion: versionInfo,
+                                      errorListener: (error) {});
+                                  Navigator.pop(context);
+                                  return;
+                                }
                                 if (defaultTargetPlatform ==
                                     TargetPlatform.android) {
                                   // Navigator.pop(context);

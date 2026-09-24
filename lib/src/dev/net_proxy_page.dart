@@ -1,4 +1,5 @@
 import 'package:base_flutter/base_flutter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class NetProxyPage extends StatefulWidget{
@@ -31,6 +32,22 @@ class _NetProxyState extends State<NetProxyPage>{
 
   @override
   Widget build(BuildContext context) {
+    if (kIsWeb) {
+      //web 端浏览器不允许应用层设置代理（上层入口已隐藏，此处兜底防止被直接 push）
+      return Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(title: Text('网络代理'),),
+        body: Center(
+          child: Padding(
+            padding: EdgeInsets.all(24),
+            child: Text(
+              'Web 端不支持应用内设置代理\n请使用浏览器开发者工具（DevTools → Network）抓包调试',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      );
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(title: Text("网络代理"),),

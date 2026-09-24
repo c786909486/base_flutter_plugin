@@ -141,10 +141,14 @@ class DevConfig {
 
   // 存储网络请求记录
   static List<NetworkRecord> networkRecords = [];
-  
+
+  ///拦截器是否已安装（防止重复开启抓包时叠加同一拦截器导致记录翻倍）
+  bool _netRecordInstalled = false;
+
   void startRecordRequest() {
-    if (!canGetNetRequest) return;
-    
+    if (!canGetNetRequest || _netRecordInstalled) return;
+    _netRecordInstalled = true;
+
     HttpGo.instance.dio!.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
@@ -153,11 +157,16 @@ class DevConfig {
           handler.next(options);
         },
         onResponse: (response, handler) {
-          _recordNetwork(response, response.requestOptions);
+          //开关关闭期间不再记录
+          if (canGetNetRequest) {
+            _recordNetwork(response, response.requestOptions);
+          }
           handler.next(response);
         },
         onError: (error, handler) {
-          _recordNetwork(error.response, error.requestOptions);
+          if (canGetNetRequest) {
+            _recordNetwork(error.response, error.requestOptions);
+          }
           handler.next(error);
         },
       ),
@@ -165,8 +174,13 @@ class DevConfig {
   }
 
   void _recordNetwork(Response? response, RequestOptions options) {
-    final startTime = options.extra['startTime'] as DateTime;
-    final duration = DateTime.now().difference(startTime);
+    final rawStartTime = options.extra['startTime'];
+    //拦截器在请求发出后才安装时，startTime 可能不存在
+    final startTime =
+        rawStartTime is DateTime ? rawStartTime : DateTime.now();
+    final duration = rawStartTime is DateTime
+        ? DateTime.now().difference(rawStartTime)
+        : Duration.zero;
 
     final record = NetworkRecord(
       timestamp: startTime,

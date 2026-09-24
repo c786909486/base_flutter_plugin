@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:synchronized/synchronized.dart';
 class CacheManageUtils{
@@ -13,7 +14,8 @@ class CacheManageUtils{
       await _lock.synchronized(() async {
         if(_singelton==null){
           var singleton = CacheManageUtils._();
-          _tempDir = await getTemporaryDirectory();
+          //web 无文件系统且 path_provider 无 web 实现（会抛 MissingPluginException）
+          _tempDir = kIsWeb ? null : await getTemporaryDirectory();
           _singelton = singleton;
         }
       });
@@ -25,6 +27,10 @@ class CacheManageUtils{
 
 
   Future<String> loadCache() async {
+    if (kIsWeb || _tempDir == null) {
+      //web 端无法遍历本地缓存目录
+      return "未知";
+    }
     double value = await _getTotalSizeOfFilesInDir(_tempDir!);
     String size = _renderSize(value);
     return size;
@@ -69,6 +75,10 @@ class CacheManageUtils{
 
 //递归方式删除目录（异步版本）
   Future<Null> delDir(FileSystemEntity file) async {
+    if (kIsWeb) {
+      //web 无文件系统
+      return;
+    }
     if (file is Directory) {
       await for (final FileSystemEntity child in file.list()) {
         await delDir(child);
