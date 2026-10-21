@@ -1,5 +1,6 @@
 import 'package:base_flutter/base_flutter.dart';
 import 'package:example/test_list_page.dart';
+import 'package:example/ui/list_example_page.dart';
 import 'package:flutter/material.dart';
 
 import 'lifecycle_demo_page.dart';
@@ -10,7 +11,34 @@ void main() {
   //NetPlatform.init(withCredentials: true)，
   //前提：后端返回 Access-Control-Allow-Credentials: true 且 Allow-Origin 为具体源
   NetPlatform.init();
+  initNet();
   runApp(const MyApp());
+}
+
+/// 网络层初始化示例：baseUrl / 超时 / 统一请求头（token）。
+///
+/// 页面里统一用 HttpGo.instance.getData / postData 发起请求，
+/// 具体接口封装见 lib/model/request_net_model.dart。
+void initNet() {
+  HttpGo.instance.setOptions(BaseOptions(
+    baseUrl: 'https://example.com',
+    connectTimeout: const Duration(seconds: 15),
+    receiveTimeout: const Duration(seconds: 30),
+  ));
+  HttpGo.instance.addInterceptor(InterceptorsWrapper(
+    onRequest: (options, handler) {
+      // TODO: 登录成功后把 token 存到本地，这里从登录态读取（示例用占位）
+      const token = '';
+      if (token.isNotEmpty) {
+        options.headers['Authorization'] = 'Bearer $token';
+      }
+      handler.next(options);
+    },
+    onError: (error, handler) {
+      // TODO: 401 时统一清理登录态并跳转登录页
+      handler.next(error);
+    },
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -121,6 +149,10 @@ class _MyHomePageState extends State<MyHomePage> {
             TextButton(onPressed: (){
               Go().push(TestListPage());
             }, child: CommonText('test')),
+
+            TextButton(onPressed: (){
+              Go().push(const ListExample());
+            }, child: CommonText('网络请求列表示例 (HttpGo)')),
 
             TextButton(onPressed: (){
               Go().push(const LifecycleDemoEntryPage());
