@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'package:base_flutter/base_flutter.dart';
 import 'package:base_flutter/src/dev/network_record_page.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:material_ui/material_ui.dart';
+
 
 class DevConfig {
   static DevConfig? _instance;

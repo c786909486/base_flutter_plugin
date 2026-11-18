@@ -1,6 +1,6 @@
 import 'package:base_flutter/base_flutter.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:material_ui/material_ui.dart';
 
 class NetRequestPage extends BaseStatefulMvvmWidget{
   const NetRequestPage({super.key});

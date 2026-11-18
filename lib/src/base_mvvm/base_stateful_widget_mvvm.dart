@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:base_flutter/base_flutter.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutterlifecyclehooks/flutterlifecyclehooks.dart';
 
 enum LoadingState { showContent, showError, showEmpty, showLoading }

@@ -1,8 +1,5 @@
 import 'package:base_flutter/base_flutter.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import '../utils/ext_utils.dart';
-import 'clear_text_field.dart';
+import 'package:material_ui/material_ui.dart';
 
 AppBar CommonAppBar(String title,
     {List<Widget>? actions,

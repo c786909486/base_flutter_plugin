@@ -11,17 +11,20 @@ dependencies:
   flutter:
     sdk: flutter
   #toast
-  ftoast: ^2.0.0
+  ftoast: ^2.1.0
   #本地存储
   shared_preferences: ^2.1.0
   sp_util: ^2.0.3
   # dio网络请求框架
   dio_net_work:
-    git:
-      url: https://gitee.com/code1993/dio_net_work_package.git
+    path: third_party/dio_net_work
 
 
-  cached_network_image: ^3.3.1
+  cached_network_image: ^4.0.6
+
+  cupertino_ui: ^1.1.6
+
+  material_ui: ^1.11.0
 
 
 #  # aes加密库
@@ -33,7 +36,8 @@ dependencies:
   #刷新框架
 #  pull_to_refresh:
 #    git: https://gitee.com/code1993/pull_to_refresh.git
-  pull_to_refresh: ^2.0.0
+  pull_to_refresh:
+    path: third_party/pull_to_refresh
   #消息总线 eventBus
   event_bus: ^2.0.0
   #生命周期
@@ -41,11 +45,13 @@ dependencies:
 #    git:
 #      url: 'https://github.com/c786909486/flutter_lifecycle.git'
   #时选择器
-  flutter_datetime_picker: ^1.5.1
+#  flutter_datetime_picker:
+#    path: third_party/flutter_datetime_picker
 
 #  ionicons: ^0.2.2
 
-  photo_view: ^0.14.0
+  photo_view:
+    path: third_party/photo_view
 
   install_apk_plugin_plus:
     git: https://gitee.com/code1993/install_apk_plugin_plus.git
@@ -72,3 +78,10 @@ flutter:
     - images/
     - images/update_head.png
 
+dependency_overrides:
+  pull_to_refresh:
+    path: third_party/pull_to_refresh
+  photo_view:
+    path: third_party/photo_view
+  dio_net_work:
+    path: third_party/dio_net_work

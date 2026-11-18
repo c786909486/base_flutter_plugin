@@ -1,6 +1,5 @@
 import 'package:base_flutter/src/res/drawables.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 typedef OnRetryEvent();
 typedef LoadingViewBuilder = Widget Function(BuildContext context,String msg);

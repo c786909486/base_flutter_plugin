@@ -1,7 +1,7 @@
 import 'package:base_flutter/base_flutter.dart';
 import 'package:base_flutter/src/dev/net_proxy_page.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class DeveloperPage extends StatefulWidget{
   @override

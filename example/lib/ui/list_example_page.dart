@@ -1,6 +1,6 @@
 import 'package:base_flutter/base_flutter.dart';
 import 'package:example/view_model/list_example_list_view_model.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// 网络请求列表示例。
 ///

@@ -1,8 +1,6 @@
-import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:base_flutter/base_flutter.dart';
+import 'package:material_ui/material_ui.dart';
 
 Widget CommonText(String? text,
     {Color textColor = Colors.black,

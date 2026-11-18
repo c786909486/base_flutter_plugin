@@ -4,8 +4,8 @@ library flutter_datetime_picker;
 import 'package:base_flutter/src/widget/timePicker/date_model.dart';
 import 'package:base_flutter/src/widget/timePicker/datetime_picker_theme.dart';
 import 'package:base_flutter/src/widget/timePicker/i18n_model.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:material_ui/material_ui.dart';
 
 typedef DateChangedCallback(DateTime? time);
 typedef String? StringAtIndexCallBack(int index);

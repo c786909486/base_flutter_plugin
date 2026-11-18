@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:base_flutter/base_flutter.dart';
 import 'package:flutter/services.dart';
+import 'package:material_ui/material_ui.dart';
 
 class NetworkRecordPage extends StatefulWidget {
   static NetworkRecordPage? _instance;

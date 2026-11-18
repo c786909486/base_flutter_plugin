@@ -1,8 +1,7 @@
 import 'package:base_flutter/base_flutter.dart';
 import 'package:base_flutter/src/widget/picker/choose_item_model.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:base_flutter/src/utils/ext_utils.dart';
+import 'package:material_ui/material_ui.dart';
 
 class ChooseItemPage<T extends ChooseItemModel> extends StatefulWidget {
   final List<T> itemData;

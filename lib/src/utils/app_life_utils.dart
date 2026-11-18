@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+
+import 'package:flutter/widgets.dart';
 
 typedef OnPageStartEndListener = Function(
     String pageName, String pageTitle, Widget page);

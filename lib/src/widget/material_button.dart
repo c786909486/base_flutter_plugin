@@ -5,9 +5,9 @@
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A utility class for building Material buttons that depend on the
 /// ambient [ButtonTheme] and [Theme].

@@ -1,5 +1,5 @@
 import 'package:base_flutter/base_flutter.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class BuildConfig {
   static bool _inProduction = const bool.fromEnvironment("dart.vm.product");

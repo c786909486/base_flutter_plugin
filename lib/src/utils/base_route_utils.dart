@@ -1,6 +1,6 @@
 
 import 'package:base_flutter/base_flutter.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 abstract class BaseRouteUtils {
 
